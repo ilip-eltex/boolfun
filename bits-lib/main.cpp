@@ -13,27 +13,18 @@ INT getBit (INT n, INT x) {
 	    return 0;
 }
 
-bool setBit1 (INT n, INT x) {
+bool setBit1 (INT n, INT *x) {
 	if (n >= LEN) 
 		return false;
-	x |= (1 << n);
+	*x |= (1 << n);
 	return true;
 }
 
-bool setBit0 (INT n, INT x) {
+bool setBit0 (INT n, INT *x) {
 	if (n >= LEN)
 		return false;
-	INT *result = &x;
-	*result &= ~(1 << n);
+	*x &= ~(1 << n);
 	return true;
-}
-
-INT getWeight (INT x) {
-	
-}
-
-bool isodd (INT x) {
-	
 }
 
 string toBin (INT x) {
@@ -54,12 +45,24 @@ string toBin (INT x) {
 	return result;
 }
 
+INT getWeight (INT x) {
+	INT result=0;
+	while (x != 0) {
+	    x &= x-1;
+	    result++;
+	}
+	return result;
+}
+
+bool isodd (INT x) {
+	
+}
+
 int main () {
 	INT z; 
 	cin >> z;
 	const string l = toBin(z);
 	cout << l << endl;
-	for (int i=0; i<l.length(); i++)
-	    cout << getBit(i,z) << ' ';
+	cout << getWeight(z) << ' ';
 	return 0;
 }
