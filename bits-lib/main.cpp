@@ -55,7 +55,10 @@ INT getWeight (INT x) {
 }
 
 bool isodd (INT x) {
-	
+	if ( getWeight(x) % 2 == 0 )
+	    return true;
+	else
+	    return false;
 }
 
 int main () {
