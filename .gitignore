@@ -3,3 +3,5 @@ bits-lib/*.layout
 bits-lib/*.exe
 bits-lib/*.o
 bits-lib/*.win
+Debug
+.vs
