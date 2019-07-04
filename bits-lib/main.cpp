@@ -1,13 +1,16 @@
 #define LEN 32
 #define INT uint32_t
-#include "bitslib.hpp"
 #include <iostream>
+#include <string>
 using namespace std;
 
 INT getBit (INT n, INT x) {
 	if (n >= LEN)
 		return -1;
-	return ( (1 << n) & x);
+	if ( ( (INT)1 << n ) & x) 
+	    return 1;
+	else 
+	    return 0;
 }
 
 bool setBit1 (INT n, INT x) {
@@ -38,20 +41,25 @@ string toBin (INT x) {
 		return "0";
 	string result = "";
 	string s = "";
-	for (INT i=LEN-1; i >= 0; i--) 
-		s += to_string( (x >> i) & 1 );
+	for (int i=LEN-1; i >= 0; i--) {
+	   switch ( (x >> i) & 1) {
+	       case 1: s += '1'; break;
+	       case 0: s += '0';
+	   }
+	}
+		
 	INT j=0;
 	while (s[++j] != '1');
 	for (INT i=j; i < LEN; result += s[i++]);
 	return result;
-	
 }
 
 int main () {
 	INT z; 
 	cin >> z;
-	cout << toBin(z) << endl;
-	setBit0(1,z);
-	cout << toBin(z);
+	const string l = toBin(z);
+	cout << l << endl;
+	for (int i=0; i<l.length(); i++)
+	    cout << getBit(i,z) << ' ';
 	return 0;
 }
