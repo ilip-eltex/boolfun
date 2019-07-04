@@ -5,3 +5,4 @@ bits-lib/*.o
 bits-lib/*.win
 Debug
 .vs
+boolfun.vcxproj.user
