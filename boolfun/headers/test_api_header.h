@@ -1,3 +1,6 @@
 #pragma once
 
-int test_api_counter = 5;
+namespace bf
+{
+  int test_api_counter = 5;
+}

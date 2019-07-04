@@ -1,3 +1,6 @@
 #pragma once
 
-int inner_counter = 3;
+namespace bf
+{
+  int inner_counter = 3;
+}
