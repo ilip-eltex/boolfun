@@ -16,11 +16,14 @@ namespace bf
       virtual bvect32 sum(bvect32, bvect32) = 0;
 	  virtual bvect32 multiply(bvect32, bvect32) = 0;
 	  virtual bvect32 power(bvect32, bvect32) = 0;
-	  virtual unsigned char getN() = 0;
+	  virtual unsigned char get_order() = 0;
   };
 
-  GF* get_field(int N)
+  GF* get_field(int order)
   {
-      return 0;
+	  if (order <= 1 || order >= 32)
+		  return NULL;
+	  GF* field = new GFSimple(order);
+	  return field;
   }
 }

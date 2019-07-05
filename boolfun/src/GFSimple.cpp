@@ -1,14 +1,21 @@
 #include "GF_simple.h"
 #include "Polynom.h"
 #include "Binary.h"
+#include "Field_polynom_table.h"
 using namespace bf;
 
 const int MOD = 0;
 const int DIV = 1;
 
+GFSimple::GFSimple(int order)
+{
+	this->order = order;
+	this->field_polynom = get_polynom_from_table(order);
+}
+
 bvect32 GFSimple::mod(bvect32 a)
 {
-	return (bvect32)div(this, a, h, MOD);
+	return (bvect32)div(this, a, field_polynom, MOD);
 }
 
 bvect32 GFSimple::sum(bvect32 a, bvect32 b)
@@ -36,9 +43,9 @@ bvect32 GFSimple::power(bvect32 a, bvect32 b)
 	return c;
 }
 
-unsigned char GFSimple::getN()
+unsigned char GFSimple::get_order()
 {
-	return N;
+	return order;
 }
 
 //Происходит деление a на b в поле field
@@ -51,7 +58,7 @@ static bvect64 div(GF* field, bvect64 a, bvect64 b, int mode)
 	while (deg(a0) >= deg(b))
 	{
 		c = deg(a0) - deg(b);
-		setBit64(&result, c, 1);
+		set_bit_64(&result, c, 1);
 		a0 = field->sum(a0, field->multiply(b, result));
 	}
 	if (mode == MOD)
