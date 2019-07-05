@@ -2,9 +2,10 @@
 #include "Polynom.h"
 #include "Binary.h"
 #include "Field_polynom_table.h"
+#include <cmath>
 #include <stdexcept>
-using namespace bf;
 
+using namespace bf;
 
 const int MOD = 0;
 const int DIV = 1;
@@ -15,8 +16,21 @@ GFSimple::GFSimple(int order)
 	if (order > 31 || order < 2)
 		throw std::invalid_argument("Wrong order!\n");
 
+	this->gen_el = get_generating_element();
 	this->order = order;
 	this->field_polynom = get_polynom_from_table(order);
+}
+
+bvect32 GFSimple::get_generating_element()
+{
+
+	for (size_t i = 1; i < (bvect32)pow(2, order); i++)
+	{
+		for (size_t j = 0; j < (bvect32)pow(2, order); j++)
+		{
+
+		}
+	}
 }
 
 bvect32 GFSimple::mod(bvect32 a)
