@@ -132,11 +132,12 @@
     <ClCompile Include="src\ttable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\GF.h" />
+    <ClInclude Include="src\polynom.h" />
     <ClInclude Include="src\private_headers\Binary.h" />
     <ClInclude Include="src\private_headers\Field_polynom_table.h" />
     <ClInclude Include="src\private_headers\GF_simple.h" />
     <ClInclude Include="src\private_headers\Polynom.h" />
+    <ClInclude Include="src\ttable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
