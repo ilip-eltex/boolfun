@@ -3,7 +3,9 @@
 
 namespace bf 
 {
-	int table[31][4] = { 
+	int table[32][4] = { 
+		{-1,-1,-1,-1},//нулевой
+		{-1,-1,-1,-1},//первый, оба не используются, для простоты нумерации добавлены
 		{2,1,0,0 },
 		{3,1,0,0 },
 		{4,1,0,0 },
@@ -33,15 +35,18 @@ namespace bf
 		{28,1,0,0},
 		{29,2,0,0},
 		{30,1,0,0},
-		{31,3,0,0}, 
-		{32,7,3,2} 
+		{31,3,0,0}
 	};
 
+	//Получаем полином из таблицы по его степени.
 	bvect32 get_polynom_from_table(int deg)
 	{
+		if (deg > 31 || deg < 2)
+			return 0;
+
 		bvect32 result = 0;
 		for (int i = 0; i < 4; i++)
-			set_bit_32(&result, table[deg][i] == 0 ? 0 : table[deg][i] - 1, 1);
+			set_bit_32(&result, table[deg][i], 1);
 
 		return result |= 1;
 	}

@@ -1,7 +1,8 @@
 #pragma once
 #include "GF.h"
 
-namespace bf {
+namespace bf 
+{
 	unsigned char deg(bvect32 a)
 	{
 		for (int i = 31; i >= 0; --i)

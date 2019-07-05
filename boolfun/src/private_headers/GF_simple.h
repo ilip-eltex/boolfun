@@ -1,5 +1,5 @@
-#include <GF.h>
 #pragma once
+#include <GF.h>
 
 namespace bf 
 {

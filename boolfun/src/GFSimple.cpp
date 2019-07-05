@@ -2,13 +2,19 @@
 #include "Polynom.h"
 #include "Binary.h"
 #include "Field_polynom_table.h"
+#include <stdexcept>
 using namespace bf;
+
 
 const int MOD = 0;
 const int DIV = 1;
 
+//Типичный конструктор
 GFSimple::GFSimple(int order)
 {
+	if (order > 31 || order < 2)
+		throw std::invalid_argument("Wrong order!\n");
+
 	this->order = order;
 	this->field_polynom = get_polynom_from_table(order);
 }
@@ -43,6 +49,7 @@ bvect32 GFSimple::power(bvect32 a, bvect32 b)
 	return c;
 }
 
+//Возвращается порядок поля
 unsigned char GFSimple::get_order()
 {
 	return order;
