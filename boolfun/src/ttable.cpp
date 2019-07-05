@@ -10,6 +10,7 @@ bool ttable::set (std::vector<bvect32> arr) {
 	if ( arr.size() >= pow(2,n) )
 		return false;
 	this->_values = arr;
+	this->length = pow(2,n);
 	return true;
 }
 
@@ -26,5 +27,9 @@ ttable::ttable (const polynom &p) {
 		for (uint32_t i=0; i < this->length; i++)
 			result[x] += coeff[i] * pow(x,i);
 	}
-	
+	this->_values = result;
+}
+
+uint32_t get_length () {
+	return this->_length;
 }
