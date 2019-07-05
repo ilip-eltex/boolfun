@@ -126,11 +126,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\tmp.cpp" />
+    <ClCompile Include="src\GF.cpp" />
+    <ClCompile Include="src\GFSimple.cpp" />
+    <ClCompile Include="src\polynom.cpp" />
+    <ClCompile Include="src\ttable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\test_api_header.h" />
-    <ClInclude Include="src\private_headers\test_private_header.h" />
+    <ClInclude Include="headers\GF.h" />
+    <ClInclude Include="src\private_headers\Binary.h" />
+    <ClInclude Include="src\private_headers\Field_polynom_table.h" />
+    <ClInclude Include="src\private_headers\GF_simple.h" />
+    <ClInclude Include="src\private_headers\Polynom.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
