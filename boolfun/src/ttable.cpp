@@ -6,7 +6,7 @@ ttable::ttable(unsigned char n) {
 	this->_values.reserve( static_cast<size_t>( this->length) );	 
 }
 
-bool ttable::set (std::vector<bvect32> arr) {
+bool ttable::set_values (std::vector<bvect32> arr) {
 	if ( arr.size() >= pow(2,n) )
 		return false;
 	this->_values = arr;
@@ -14,7 +14,7 @@ bool ttable::set (std::vector<bvect32> arr) {
 	return true;
 }
 
-bvect32 ttable::get () {
+bvect32 ttable::get_values () {
 	return this->_values;
 } 
 
