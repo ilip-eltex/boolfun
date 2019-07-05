@@ -47,5 +47,11 @@
     <ClInclude Include="headers\GF.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\polynom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ttable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

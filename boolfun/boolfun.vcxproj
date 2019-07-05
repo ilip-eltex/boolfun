@@ -133,6 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\GF.h" />
+    <ClInclude Include="headers\polynom.h" />
+    <ClInclude Include="headers\ttable.h" />
     <ClInclude Include="src\private_headers\Binary.h" />
     <ClInclude Include="src\private_headers\Field_polynom_table.h" />
     <ClInclude Include="src\private_headers\GF_simple.h" />
