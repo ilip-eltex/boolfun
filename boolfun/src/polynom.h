@@ -17,7 +17,8 @@ class polynom {
 		bvect32 get ();
 			
 	private:
-		vector<unsigned char> _values; 
+		vector<unsigned char> _coeff;
+		uint32_t length; 
 };
 	
 }

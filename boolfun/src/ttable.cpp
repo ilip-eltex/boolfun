@@ -2,8 +2,8 @@
 using namespace std;
 
 ttable::ttable(unsigned char n) {
-	this->_values.reserve( static_cast<size_t>(pow(2,n)) );
-		 
+	this->length = pow(2,n);
+	this->_values.reserve( static_cast<size_t>( this->length) );	 
 }
 
 bool ttable::set (std::vector<bvect32> arr) {
@@ -20,8 +20,11 @@ bvect32 ttable::get () {
 ttable::ttable (const polynom &p) {
 	vector<unsigned char> coeff = p.get();
 	vector<unsigned char> result;
-	
-	for (uint32_t i=0; i < temp.size(); i++) {
-		
+	uint32_t limit = pow(2,coeff)
+	for (uint32_t x=0; x < this->length; x++) {
+		result[x] = 0;
+		for (uint32_t i=0; i < this->length; i++)
+			result[x] += coeff[i] * pow(x,i);
 	}
+	
 }

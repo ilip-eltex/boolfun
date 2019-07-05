@@ -14,7 +14,8 @@ class ttable {
 		bool set (std::vector<bvect32> arr);
 		bvect32 get();	
 	private:
-		std::vector<unsigned char> _values; 
+		std::vector<unsigned char> _values;
+		uint32_t length;
 };
 	
 }
