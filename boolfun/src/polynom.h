@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include "GF.h"
 
@@ -6,15 +8,16 @@ namespace bf {
 
 class ttable;
 
-class pol {
+class polynom {
 	
 	public:
-		pol (GF(power(2)));
-		pol (const ttable &t);
+		polynom ();
+		polynom (const ttable &t);
 		bool set ();
+		bvect32 get ();
 			
 	private:
-		vector<bvect32> _values; 
+		vector<unsigned char> _values; 
 };
 	
 }

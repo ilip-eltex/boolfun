@@ -17,4 +17,11 @@ bvect32 ttable::get () {
 	return this->_values;
 } 
 
-
+ttable::ttable (const polynom &p) {
+	vector<unsigned char> coeff = p.get();
+	vector<unsigned char> result;
+	
+	for (uint32_t i=0; i < temp.size(); i++) {
+		
+	}
+}
