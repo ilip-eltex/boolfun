@@ -126,12 +126,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\bitslib.cpp" />
     <ClCompile Include="src\GF.cpp" />
     <ClCompile Include="src\GFSimple.cpp" />
     <ClCompile Include="src\polynom.cpp" />
     <ClCompile Include="src\ttable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\bitslib.h" />
     <ClInclude Include="src\polynom.h" />
     <ClInclude Include="src\private_headers\Binary.h" />
     <ClInclude Include="src\private_headers\Field_polynom_table.h" />
