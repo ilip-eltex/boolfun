@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{1A02F7AB-8B51-48B5-9E81-10EFE682556D}</ProjectGuid>
+    <ProjectGuid>{944A3283-1E35-4B33-8F60-6E0E9F9C79E7}</ProjectGuid>
     <RootNamespace>boolfun</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>headers;src/private_headers;$(IncludePath)</IncludePath>
+    <IncludePath>headers;src\private_headers;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>headers;src/private_headers;$(IncludePath)</IncludePath>
+    <IncludePath>headers;src\private_headers;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>headers;src/private_headers;$(IncludePath)</IncludePath>
+    <IncludePath>headers;src\private_headers;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>headers;src/private_headers;$(IncludePath)</IncludePath>
+    <IncludePath>headers;src\private_headers;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -126,26 +126,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\bitslib.cpp" />
     <ClCompile Include="src\GF.cpp" />
     <ClCompile Include="src\GFSimple.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\polynom.cpp" />
     <ClCompile Include="src\ttable.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-<<<<<<< HEAD
-    <ClInclude Include="headers\GF.h" />
-    <ClInclude Include="headers\polynom.h" />
-    <ClInclude Include="headers\ttable.h" />
-=======
-    <ClInclude Include="src\bitslib.h" />
-    <ClInclude Include="src\polynom.h" />
->>>>>>> c75867329af766ceae1ed2bd98a357b97a073d16
-    <ClInclude Include="src\private_headers\Binary.h" />
-    <ClInclude Include="src\private_headers\Field_polynom_table.h" />
-    <ClInclude Include="src\private_headers\GF_simple.h" />
-    <ClInclude Include="src\private_headers\Polynom.h" />
-    <ClInclude Include="src\ttable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

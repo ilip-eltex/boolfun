@@ -1,7 +1,6 @@
 #include <GF_simple.h>
-#include <Binary.h>
 #include <Field_polynom_table.h>
-#include <Polynom.h>
+#include <privpolynom.h>
 #include <cmath>
 #include <stdexcept>
 
@@ -12,6 +11,28 @@ const int MOD = 0;
 const int DIV = 1;
 int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
 unsigned int true_order;//пор€док пол€, не степень двойки, а 2^n - 1
+
+
+ //ѕроисходит деление a на b в поле field. «десь режимы
+ //                                                    0 - найти MOD
+ //                                                    1 - найти DIV
+static bvect64 div(GF* field, bvect64 a, bvect64 b, int mode)
+{
+  unsigned char c;
+  bvect64 result = 0;
+  bvect32 a0 = a;
+
+  while (deg(a0) >= deg(b))
+  {
+    c = deg(a0) - deg(b);
+    set_bit_64(result, c, 1);
+    a0 = field->sum(a0, field->multiply(b, result));
+  }
+  if (mode == MOD)
+    return a0;
+  else
+    return result;
+}
 
 //“ипичный конструктор
 GFSimple::GFSimple(int order)
@@ -100,25 +121,4 @@ bvect32 GFSimple::power(bvect32 a, bvect32 b)
 unsigned char GFSimple::get_order()
 {
 	return order;
-}
-
-//ѕроисходит деление a на b в поле field. «десь режимы
-//                                                    0 - найти MOD
-//                                                    1 - найти DIV
-static bvect64 div(GF* field, bvect64 a, bvect64 b, int mode)
-{
-	unsigned char c;
-	bvect64 result = 0;
-	bvect32 a0 = a;
-
-	while (deg(a0) >= deg(b))
-	{
-		c = deg(a0) - deg(b);
-		set_bit_64(&result, c, 1);
-		a0 = field->sum(a0, field->multiply(b, result));
-	}
-	if (mode == MOD)
-		return a0;
-	else
-		return result;
 }

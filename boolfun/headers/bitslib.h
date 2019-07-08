@@ -43,7 +43,7 @@ namespace bf {
 		return (x & 1);
 	}
 
-	int prod_32 (bvect32 x, bvect32) {
+	int prod_32 (bvect32 x, bvect32 y) {
 		return is_odd_32 (x & y);
 	}
 //////////////// for bvect64 ///////////////////////////////////////////////
@@ -53,18 +53,18 @@ namespace bf {
 	}
 
 	void set_bit1_64 (bvect64 &x, unsigned int index) {
-		x |= (1 << index);
+		x |= (static_cast<bvect64>(1) << index);
 	}
 
 	void set_bit0_64 (bvect64 &x, unsigned int index) {
-		x &= ~(1 << index);
+		x &= ~(static_cast<bvect64>(1) << index);
 	}
 
 	void set_bit_64 (bvect64 &x, unsigned int value, unsigned int index) {
 		if (value)
-			x |= 1 << index;
+			x |= static_cast<bvect64>(1) << index;
 		else
-			x &= ~(1 << index);
+			x &= ~(static_cast<bvect64>(1) << index);
 	}
 
 	unsigned int get_weight_64 (bvect64 x) {

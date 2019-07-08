@@ -17,7 +17,7 @@ class polynom {
 		void set_coeff (bvect32 n, bvect32 coeff);
 		unsigned char get_coeff (bvect32 n);
 		uint32_t get_length ();
-		GF get_field();
+		GF* get_field();
 			
 	private:
 		std::vector<unsigned char> _coeff;
