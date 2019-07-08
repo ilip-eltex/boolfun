@@ -12,21 +12,40 @@ const int DIV = 1;
 int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
 unsigned int true_order;//порядок поля, не степень двойки, а 2^n - 1
 
+bvect32 GFSimple::sum(bvect32 a, bvect32 b)
+{
+	return (bvect32)(a ^ b);
+}
+
+bvect64 GFSimple::sum(bvect64 a, bvect64 b)
+{
+	return (bvect64)(a ^ b);
+}
+
+bvect64 GFSimple::save_x64_multiply(bvect64 a, bvect64 b)
+{
+	bvect64 c = 0;
+
+	for (int i = 0; i < 32; ++i)
+		sum(c, (bvect64)a << ((i * (b >> i) % 2)));
+
+	return mod(c);
+}
 
  //Происходит деление a на b в поле field. Здесь режимы
  //                                                    0 - найти MOD
  //                                                    1 - найти DIV
-static bvect64 div(GF* field, bvect64 a, bvect64 b, int mode)
+bvect64 GFSimple::div(GFSimple* field, bvect64 a, bvect64 b, int mode)
 {
   unsigned char c;
   bvect64 result = 0;
-  bvect32 a0 = a;
+  bvect64 a0 = a;
 
   while (deg(a0) >= deg(b))
   {
     c = deg(a0) - deg(b);
     set_bit_64(result, c, 1);
-    a0 = field->sum(a0, field->multiply(b, result));
+    a0 = field->sum(a0, field->save_x64_multiply(b, result));
   }
   if (mode == MOD)
     return a0;
@@ -56,11 +75,11 @@ bvect32 GFSimple::get_generating_element()
 
 	int was = 0;
 
-	for (size_t i = 1; i < true_order; i++)
+	for (bvect32 i = 1; i < true_order; i++)
 	{
 		memset(num_to_deg, true_order, 0);
 
-		for (size_t j = 0; j < true_order; j++)
+		for (bvect32 j = 0; j < true_order; j++)
 			if (!num_to_deg[power(i, j)])//ща перепишем
 				num_to_deg[power(i, j)] = j;
 			else
@@ -71,7 +90,7 @@ bvect32 GFSimple::get_generating_element()
 
 		if (!was)
 		{
-			for (size_t k = 0; k < true_order; k++)
+			for (bvect32 k = 0; k < true_order; k++)
 				deg_to_num[num_to_deg[k]] = k;
 
 			gen_el_found = 1;
@@ -80,21 +99,14 @@ bvect32 GFSimple::get_generating_element()
 		}
 		was = 0;
 	}
+	throw std::exception("Shit happened in get_generating_element()...");
+
+	return 0;
 }
 
-bvect32 GFSimple::mod(bvect32 a)
+bvect32 GFSimple::mod(bvect64 a)
 {
 	return (bvect32)div(this, a, field_polynom, MOD);
-}
-
-bvect32 GFSimple::sum(bvect32 a, bvect32 b)
-{
-	return (bvect32)(a ^ b);
-}
-
-bvect64 GFSimple::sum(bvect64 a, bvect64 b)
-{
-	return (bvect64)(a ^ b);
 }
 
 bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
