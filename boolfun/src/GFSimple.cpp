@@ -92,6 +92,11 @@ bvect32 GFSimple::sum(bvect32 a, bvect32 b)
 	return (bvect32)(a ^ b);
 }
 
+bvect64 GFSimple::sum(bvect64 a, bvect64 b)
+{
+	return (bvect64)(a ^ b);
+}
+
 bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 {
 	if(gen_el_found)//Если таблица доступна
@@ -101,7 +106,7 @@ bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 		bvect64 c = 0;
 
 		for (int i = 0; i < 32; ++i)
-			sum(c, a << (((b >> i) % 2)));
+			sum(c, (bvect64)a << ((i * (b >> i) % 2)));
 
 		return mod(c);
 	}
