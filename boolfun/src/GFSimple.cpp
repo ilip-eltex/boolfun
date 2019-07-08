@@ -1,14 +1,17 @@
-#include "GF_simple.h"
-#include "Polynom.h"
-#include "Binary.h"
-#include "Field_polynom_table.h"
+#include <GF_simple.h>
+#include <Binary.h>
+#include <Field_polynom_table.h>
+#include <Polynom.h>
 #include <cmath>
 #include <stdexcept>
+
 
 using namespace bf;
 
 const int MOD = 0;
 const int DIV = 1;
+int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
+unsigned int true_order;//пор€док пол€, не степень двойки, а 2^n - 1
 
 //“ипичный конструктор
 GFSimple::GFSimple(int order)
@@ -16,20 +19,45 @@ GFSimple::GFSimple(int order)
 	if (order > 31 || order < 2)
 		throw std::invalid_argument("Wrong order!\n");
 
+	true_order = (bvect32)pow(2, order) - 1;
+
 	this->gen_el = get_generating_element();
 	this->order = order;
 	this->field_polynom = get_polynom_from_table(order);
 }
 
+//»щем порождающий элемент
 bvect32 GFSimple::get_generating_element()
 {
+	//генерируем одновременно таблицы степеней и чисел
+	deg_to_num = (bvect32*)malloc(true_order * sizeof(bvect32));
+	num_to_deg = (bvect32*)malloc(true_order * sizeof(bvect32));
 
-	for (size_t i = 1; i < (bvect32)pow(2, order); i++)
+	int was = 0;
+
+	for (size_t i = 1; i < true_order; i++)
 	{
-		for (size_t j = 0; j < (bvect32)pow(2, order); j++)
-		{
+		memset(num_to_deg, true_order, 0);
 
+		for (size_t j = 0; j < true_order; j++)
+			if (!num_to_deg[power(i, j)])//ща перепишем
+				num_to_deg[power(i, j)] = j;
+			else
+			{
+				was = 1;
+				break;
+			}
+
+		if (!was)
+		{
+			for (size_t k = 0; k < true_order; k++)
+				deg_to_num[num_to_deg[k]] = k;
+
+			gen_el_found = 1;
+
+			return i;
 		}
+		was = 0;
 	}
 }
 
@@ -45,12 +73,17 @@ bvect32 GFSimple::sum(bvect32 a, bvect32 b)
 
 bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 {
-	bvect64 c = 0;
+	if(gen_el_found)//≈сли таблица доступна
+		return deg_to_num[(num_to_deg[a] + num_to_deg[b]) % true_order];
+	else
+	{
+		bvect64 c = 0;
 
-	for (int i = 0; i < 32; ++i)
-		sum(c, a << (((b >> i) % 2)));
+		for (int i = 0; i < 32; ++i)
+			sum(c, a << (((b >> i) % 2)));
 
-	return mod(c);
+		return mod(c);
+	}
 }
 
 //a в степени b
@@ -69,7 +102,9 @@ unsigned char GFSimple::get_order()
 	return order;
 }
 
-//ѕроисходит деление a на b в поле field
+//ѕроисходит деление a на b в поле field. «десь режимы
+//                                                    0 - найти MOD
+//                                                    1 - найти DIV
 static bvect64 div(GF* field, bvect64 a, bvect64 b, int mode)
 {
 	unsigned char c;

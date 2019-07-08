@@ -126,19 +126,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\bitslib.cpp" />
     <ClCompile Include="src\GF.cpp" />
     <ClCompile Include="src\GFSimple.cpp" />
     <ClCompile Include="src\polynom.cpp" />
     <ClCompile Include="src\ttable.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="headers\GF.h" />
     <ClInclude Include="headers\polynom.h" />
     <ClInclude Include="headers\ttable.h" />
+=======
+    <ClInclude Include="src\bitslib.h" />
+    <ClInclude Include="src\polynom.h" />
+>>>>>>> c75867329af766ceae1ed2bd98a357b97a073d16
     <ClInclude Include="src\private_headers\Binary.h" />
     <ClInclude Include="src\private_headers\Field_polynom_table.h" />
     <ClInclude Include="src\private_headers\GF_simple.h" />
     <ClInclude Include="src\private_headers\Polynom.h" />
+    <ClInclude Include="src\ttable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

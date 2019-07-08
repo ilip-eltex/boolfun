@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <cmath>
+#include <GF.h>
+#include <polynom.h>
 
 namespace bf {
 
@@ -11,9 +13,9 @@ class ttable {
 	public:
 		ttable (unsigned char n);
 		ttable (const polynom &p);
-		bool set (std::vector<bvect32> arr);
-		bvect32 get_values();
-		uint32_t get_length ();	
+		bool set (bvect32 vect, bvect32 n);
+		bvect32 get_value(bvect32 n);
+		bvect32 get_length ();	
 	private:
 		std::vector<unsigned char> _values;
 		uint32_t _length;

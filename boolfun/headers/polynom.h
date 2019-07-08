@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 #include "GF.h"
 
 namespace bf {
@@ -11,15 +12,17 @@ class ttable;
 class polynom {
 	
 	public:
-		polynom ();
+		polynom (unsigned char n, GF * _field);
 		polynom (const ttable &t);
-		bool set ();
-		bvect32 get ();
+		void set_coeff (bvect32 n, bvect32 coeff);
+		unsigned char get_coeff (bvect32 n);
 		uint32_t get_length ();
+		GF get_field();
 			
 	private:
-		vector<unsigned char> _coeff;
-		uint32_t _length; 
+		std::vector<unsigned char> _coeff;
+		uint32_t _length;
+		GF * _field;
 };
 	
 }
