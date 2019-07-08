@@ -1,0 +1,3 @@
+language: c++
+compiler: gc++
+script: make && make test && ./bin/ivtest
