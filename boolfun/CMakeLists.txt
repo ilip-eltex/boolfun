@@ -8,14 +8,13 @@ set (HEADERS
 	headers/bitslib.h 
 	headers/GF.h 
 	headers/polynom.h 
-	headers/ttable.h 
-)
+	headers/ttable.h
+	headers/ANF.h)
 
 set (PRIVATE_HEADERS
 	src/private_headers/Field_polynom_table.h 
 	src/private_headers/GF_simple.h 
-	src/private_headers/privpolynom.h 
-)
+	src/private_headers/privpolynom.h)
 
 set (SOURCES 
 	src/GF.cpp 
@@ -23,6 +22,6 @@ set (SOURCES
 	src/main.cpp
 	src/polynom.cpp
 	src/ttable.cpp
-)
+	src/ANF.cpp)
 
 add_executable(boolfun_exe ${SOURCES})

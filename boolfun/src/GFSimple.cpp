@@ -81,7 +81,7 @@ bvect32 GFSimple::get_generating_element()
 		memset(num_to_deg, true_order, 0);
 
 		for (bvect32 j = 0; j < true_order; j++)
-			if (!num_to_deg[power(i, j)])//ща перепишем
+			if (!num_to_deg[power(i, j)])
 				num_to_deg[power(i, j)] = j;
 			else
 			{
@@ -101,8 +101,6 @@ bvect32 GFSimple::get_generating_element()
 		was = 0;
 	}
 	throw std::exception();
-
-	return 0;
 }
 
 bvect32 GFSimple::mod(bvect64 a)
