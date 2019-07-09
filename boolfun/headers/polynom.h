@@ -15,8 +15,8 @@ class ttable;
 class polynom {
 	
 	public:
-		polynom (unsigned char n, GF * _field);
-		polynom (const ttable &t);
+		polynom (GF * field);
+		polynom::polynom(const ttable &t, GF * field);
 		void set_coeff (uint32_t index, bvect32 coeff);
 		unsigned char get_coeff (uint32_t index);
 		uint32_t get_length ();
