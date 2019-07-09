@@ -6,15 +6,13 @@ namespace bf {
 		this->_values.resize(static_cast<size_t>(this->_length));
   }
 
-	bool ttable::set(bvect32 vect, bvect32 n) {
-		/*if ( arr.size() >= pow(2,n) )
-			return false; */
-		this->_values[n] = vect;
+	bool ttable::set(bvect32 vect, uint32_t index) {
+		this->_values[index] = vect;
 		return true;
 	}
 
-	bvect32 ttable::get_value(bvect32 n) {
-		return this->_values[n];
+	bvect32 ttable::get_value(uint32_t index) {
+		return this->_values[index];
 	}
 
 	ttable::ttable(const polynom& p) { 

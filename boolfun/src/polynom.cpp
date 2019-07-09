@@ -7,20 +7,20 @@ namespace bf {
 		this->_coeff.resize(static_cast<size_t>(this->_length));
 	}
 
-	void polynom::set_coeff(bvect32 n, bvect32 coeff) {
+	void polynom::set_coeff(uint32_t index, bvect32 coeff) {
 		/*if ( arr.size() >= pow(2,n) )
 			return false; */
-		this->_coeff[n] = coeff;
+		this->_coeff[index] = coeff;
 		//this->_length = pow(2,n);
 		//return true;
 	}
 
-	unsigned char polynom::get_coeff(bvect32 n) {
-		return this->_coeff[n];
+	unsigned char polynom::get_coeff(uint32_t index) {
+		return this->_coeff[index];
 	}
 
 	polynom::polynom(const ttable& t) {
-
+		
 	}
 
 	uint32_t polynom::get_length() {
