@@ -2,8 +2,9 @@
 #include <Field_polynom_table.h>
 #include <privpolynom.h>
 #include <cmath>
+#include <exception>
+#include <cstring>
 #include <stdexcept>
-
 
 using namespace bf;
 
@@ -99,7 +100,7 @@ bvect32 GFSimple::get_generating_element()
 		}
 		was = 0;
 	}
-	throw std::exception("Shit happened in get_generating_element()...");
+	throw std::exception();
 
 	return 0;
 }
