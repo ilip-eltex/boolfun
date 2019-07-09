@@ -4,6 +4,9 @@
 #include <cmath>
 #include "GF.h"
 
+// Max polynom length 2^n (n <= 32)
+// Max var quanity n (n <= 32)
+
 namespace bf {
 
 
