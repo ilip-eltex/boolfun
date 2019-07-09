@@ -17,8 +17,18 @@ namespace bf {
 		return this->_coeff[index];
 	}
 
-	polynom::polynom(const ttable &t) {
-		
+	polynom::polynom(const ttable &t, GF * field) {
+		this->_length = t->get_length();
+		this->_coeff.resize( static_cast<size_t>(this->_length) );
+		this->set_coeff(0,t.get_value(0));
+		vector<bvect32> values;
+		const uint32_t tlen = tlen;
+		for (uint32_t i=0; i < tlen; i++) 
+			values.push_back( t.get_value(i) )
+		for (uint_32 coeffq = 0; coeffq < this->_length; coeffq++) 
+			for (uint32 valuesq=0; valuesq < tlen; valuesq++)
+				this->set_coeff( coeffq, ( t->get_value(valuesq) * field->power(valuesq,(tlen - i - 1)) ) );
+				 
 	}
 
 	uint32_t polynom::get_length() {

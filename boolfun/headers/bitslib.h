@@ -12,7 +12,7 @@ namespace bf {
 	
 /////////////// for bvect32 ///////////////////////////////////////////////
 
-	int get_bit_32 (bvect32 &x, unsigned int index) {
+	unsigned int get_bit_32 (bvect32 &x, unsigned int index) {
 		return (index >> x) & 1;
 	}
 
@@ -40,7 +40,7 @@ namespace bf {
 		return result;
 	}
 
-	int is_odd_32 (bvect32 x) {
+	bool is_odd_32 (bvect32 x) {
 		x ^= (x >> 16);
 		x ^= (x >> 8);
 		x ^= (x >> 4);
@@ -49,12 +49,12 @@ namespace bf {
 		return (x & 1);
 	}
 
-	int prod_32 (bvect32 x, bvect32 y) {
+	unsigned int prod_32 (bvect32 x, bvect32 y) {
 		return is_odd_32 (x & y);
 	}
 //////////////// for bvect64 ///////////////////////////////////////////////
 
-	int get_bit_64 (bvect64 &x, unsigned int index) {
+	unsigned int get_bit_64 (bvect64 &x, unsigned int index) {
 		return (index >> x) & 1;
 	}
 
@@ -82,7 +82,7 @@ namespace bf {
 		return result;
 	}
 
-	int is_odd_64 (bvect64 x) {
+	bool is_odd_64 (bvect64 x) {
 		x ^= (x >> 32);
 		x ^= (x >> 16);
 		x ^= (x >> 8);
@@ -92,11 +92,14 @@ namespace bf {
 		return (x & 1);
 	}
 
-	int prod_64 (bvect64 x, bvect64 y) {
+	unsigned int prod_64 (bvect64 x, bvect64 y) {
 		return is_odd_64 (x & y);
 	}
+	
 	uint32_t power2 (const uint32_t y) {
 		return (static_cast<uint32_t>(1) << y);
 	}
+	
+	
 }
 

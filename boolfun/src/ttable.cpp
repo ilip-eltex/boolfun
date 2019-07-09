@@ -25,7 +25,7 @@ namespace bf {
 			result.resize(polynom_length);
 			for (uint32_t x = 0; x < polynom_length; x++) // Cycle by vectors
 				for (uint32_t i = 0; i < polynom_length; i++) // Cycle by coeffs
-						result[x] += coeff[i] * pow(x, i);
+						result[x] += coeff[i] * power(x, i);
 			this->_values = result;
 	}
 	
