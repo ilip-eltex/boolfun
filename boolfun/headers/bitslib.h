@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	TASKS
+	
+	1) Move here two typedefs from GF.h	
+*/
+
 #include <GF.h>
 
 namespace bf {
@@ -88,6 +94,9 @@ namespace bf {
 
 	int prod_64 (bvect64 x, bvect64 y) {
 		return is_odd_64 (x & y);
+	}
+	uint32_t power2 (const uint32_t y) {
+		return (static_cast<uint32_t>(1) << y);
 	}
 }
 
