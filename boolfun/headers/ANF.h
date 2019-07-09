@@ -8,24 +8,21 @@
 
 using namespace std;
 
-using namespace std;
-
 namespace bf
 {
     class ANF
     {
     private:
-        GF& field;
         vector<uint32_t> elements;
         vector<uint64_t> transformed;
         ttable& function_table;
     public:
         virtual void    getANF(ttable& table) = 0;
-        virtual string  toStr(ttable& table) = 0;
-        virtual string  toStr(bvect32) = 0;
+        virtual bvect32 getFunction() = 0;
+        virtual string  toStr() = 0;
     };
 
-    ostream& operator << (ostream& stream, ANF& anf);
+    ostream& operator<< (ostream& stream, ANF& anf);
 }
 
 
