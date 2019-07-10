@@ -112,16 +112,6 @@ namespace bf
         return dist;
     }
 
-    int scalar_product(bvect64 a, bvect64 b)
-    {
-        return is_odd_64(a & b);
-    }
-
-    int scalar_product(bvect32 a, bvect32 b)
-    {
-        return is_odd_32(a & b);
-    }
-
     ttable& get_derivative(ttable& a, bvect32 direction)
     {
         ttable& b = a;
