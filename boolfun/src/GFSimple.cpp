@@ -13,14 +13,14 @@ const int DIV = 1;
 int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
 unsigned int true_order;//порядок поля, не степень двойки, а 2^n - 1
 
-bvect32 GFSimple::sum(bvect32 a, bvect32 b)
-{
-	return (bvect32)(a ^ b);
-}
-
 bvect64 GFSimple::sum(bvect64 a, bvect64 b)
 {
 	return (bvect64)(a ^ b);
+}
+
+bvect32 GFSimple::sum(bvect32 a, bvect32 b)
+{
+    return (bvect64)(a ^ b);
 }
 
 bvect64 GFSimple::save_x64_multiply(bvect64 a, bvect64 b)
@@ -121,6 +121,16 @@ bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 
 		return mod(c);
 	}
+}
+
+bvect32 GFSimple::trace()
+{
+    bvect32 sum0 = 0;
+
+    for (bvect32 i = 0; i < order; ++i)
+        sum(sum0, power((bvect32)4, i));
+
+    return sum0;
 }
 
 //a в степени b

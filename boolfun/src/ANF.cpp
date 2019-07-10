@@ -98,7 +98,7 @@ int ANF::deg()
     for(int i = 0; i < elements.size(); ++i)
         if(maxCount < get_weight_32(elements[i]))
             maxCount = get_weight_32(elements[i]);
-        
+
     return maxCount;
 }
 
