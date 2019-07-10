@@ -6,9 +6,13 @@
 
 using namespace bf;
 
+uint64_t table_length;
+
 void ANF::getANF(ttable& table)
 {
-    vector<uint64_t> ivec(table.get_length() <= sizeof(uint64_t) ? 1 : table.get_length() / sizeof(uint64_t), 0);
+    table_length = table.get_length();
+
+    vector<uint64_t> ivec(table_length <= sizeof(uint64_t) ? 1 : table_length / sizeof(uint64_t), 0);
     uint64_t count = 0;
 
     for(int i = 0; i < ivec.size(); ++i)
@@ -20,11 +24,11 @@ void ANF::getANF(ttable& table)
         }
     }
     uint32_t blocks = 1;
-    elements.resize((unsigned long long)pow(2, table.get_length()), 0);
+    elements.resize((unsigned long long)pow(2, table_length), 0);
 
     if(ivec.size() == 1)
     {
-        for (int k = table.get_length() / 2; k >= 1; k /= 2)
+        for (int k = table_length / 2; k >= 1; k /= 2)
         {
             blocks *= 2;
             for (int i = 0; i < blocks - 1; i += 2)
@@ -32,8 +36,8 @@ void ANF::getANF(ttable& table)
                     set_bit_64(ivec[0], get_bit_64(ivec[0], i*k + j) ^ get_bit_64(ivec[0], (i+1)*k + j), i*k + j);
         }
 
-        for (int l = 0; l < table.get_length(); ++l)
-            if(ivec[0] >> (table.get_length() - 1 - l))
+        for (int l = 0; l < table_length; ++l)
+            if(ivec[0] >> (table_length - 1 - l))
                 elements[l] = l;
     }
     else
@@ -46,15 +50,14 @@ void ANF::getANF(ttable& table)
                     ivec[i*k + j] ^= ivec[(i+1)*k + j];
         }
 
-        for (int l = 0; l < table.get_length(); ++l)
+        for (int l = 0; l < table_length; ++l)
             if(ivec[l / sizeof(uint64_t)] >> (sizeof(uint64_t) - 1 - (l % sizeof(uint64_t))))
                 elements[l] = l;
     }
     transformed = ivec;
-    function_table = table;
 }
 
-bvect32 ANF::getFunction()
+vector<uint64_t> ANF::getFunction()
 {
     if(elements.empty())
         throw std::exception();
@@ -62,21 +65,14 @@ bvect32 ANF::getFunction()
     uint32_t blocks = 1;
 
     if(transformed.size() == 1)
-    {
-        for (int k = function_table.get_length() / 2; k >= 1; k /= 2)
+        for (int k = table_length / 2; k >= 1; k /= 2)
         {
             blocks *= 2;
             for (int i = 0; i < blocks - 1; i += 2)
                 for (int j = 0; j < k; ++j)
                     set_bit_64(transformed[0], get_bit_64(transformed[0], i*k + j) ^ get_bit_64(transformed[0], (i+1)*k + j), i*k + j);
         }
-
-        for (int l = 0; l < function_table.get_length(); ++l)
-            if(transformed[0] >> (function_table.get_length() - 1 - l))
-                elements[l] = l;//Not true//
-    }
     else
-    {
         for (int k = transformed.size() / 2; k >= 1; k /= 2)
         {
             blocks *= 2;
@@ -85,12 +81,7 @@ bvect32 ANF::getFunction()
                     transformed[i*k + j] ^= transformed[(i+1)*k + j];
         }
 
-        for (int l = 0; l < function_table.get_length(); ++l)
-            if(transformed[l / sizeof(uint64_t)] >> (sizeof(uint64_t) - 1 - (l % sizeof(uint64_t))))
-                elements[l] = l;//Not true//
-    }
-
-    return 0;//FIXME
+    return transformed;
 }
 
 ostream& operator<< (ostream& stream, ANF& anf)
@@ -108,9 +99,13 @@ string ANF::toStr()
         for (int i = 0; i < elements.size(); ++i)
         {
             for (int j = 0; j < sizeof(uint64_t); ++j)
-                if(get_bit_32(elements[i], j))
-                    anf += "x" + std::to_string(j);
-
+                if(elements[i])
+                {
+                    if(get_bit_32(elements[i], j))
+                        anf += "x" + std::to_string(j);
+                }else
+                    anf += "1";
+                
             if(i != elements.size() - 1)
                 anf += " + ";
         }

@@ -15,10 +15,9 @@ namespace bf
     private:
         vector<uint32_t> elements;
         vector<uint64_t> transformed;
-        ttable& function_table;
     public:
         virtual void    getANF(ttable& table) = 0;
-        virtual bvect32 getFunction() = 0;
+        virtual vector<uint64_t> getFunction() = 0;
         virtual string  toStr() = 0;
     };
 
