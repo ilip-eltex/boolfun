@@ -18,7 +18,7 @@ namespace bf
     public:
         virtual void             getANF(ttable& table) = 0;
         virtual vector<uint64_t> getFunction() = 0;
-        virtual string           toStr() = 0;
+        virtual string           to_str() = 0;
         virtual int              deg() = 0;
     };
 

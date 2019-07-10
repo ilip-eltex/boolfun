@@ -89,7 +89,7 @@ vector<uint64_t> ANF::getFunction()
 
 ostream& operator<< (ostream& stream, ANF& anf)
 {
-    return stream << anf.toStr();
+    return stream << anf.to_str();
 }
 
 int ANF::deg()
@@ -102,7 +102,7 @@ int ANF::deg()
     return maxCount;
 }
 
-string ANF::toStr()
+string ANF::to_str()
 {
     if(elements.empty())
         return NULL;

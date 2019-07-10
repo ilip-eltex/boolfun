@@ -54,6 +54,12 @@ bvect64 GFSimple::div(GFSimple* field, bvect64 a, bvect64 b, int mode)
     return result;
 }
 
+GFSimple::~GFSimple()
+{
+    free(deg_to_num);
+    free(num_to_deg);
+}
+
 //Типичный конструктор
 GFSimple::GFSimple(int order)
 {

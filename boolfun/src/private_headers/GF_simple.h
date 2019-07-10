@@ -18,5 +18,6 @@ namespace bf
 		virtual unsigned char get_order();
 		virtual bvect32 trace();
 		GFSimple(int order);
+		~GFSimple();
 	};
 }
