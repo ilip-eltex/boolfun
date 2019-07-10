@@ -28,23 +28,6 @@ namespace bf
         return sum0;
     }
 
-    unsigned int function_weight(ttable64& table)
-    {
-        uint64_t weight = 0;
-        for (bvect64 i = 0; i < table.get_length(); ++i)
-            weight += table.get_value(i);
-
-        return weight;
-    }
-
-    int is_balanced(ttable64& table)
-    {
-        if(function_weight(table) == table.get_length() / 2)
-            return 1;
-        else
-            return 0;
-    }
-
     int is_balanced(ttable& table)
     {
         if (function_weight(table) == table.get_length() / 2)
@@ -92,15 +75,6 @@ namespace bf
                 tmp = abs(b[i]);
 
         return (((unsigned int)1<<(a.get_field()->get_order())) - tmp) / 2;
-    }
-
-    unsigned int hemming_distance(ttable64& a, ttable64& b)
-    {
-        unsigned int dist = 0;
-        for (bvect64 i = 0; i < a.get_length(); ++i)
-            dist += a.get_value(i) ^ b.get_value(i);
-
-        return dist;
     }
 
     unsigned int hemming_distance(ttable& a, ttable& b)
