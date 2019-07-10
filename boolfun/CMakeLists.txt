@@ -9,6 +9,7 @@ set (HEADERS
 	headers/GF.h 
 	headers/polynom.h 
 	headers/ttable.h
+	headers/linear.h
 	headers/ANF.h)
 
 set (PRIVATE_HEADERS
@@ -22,6 +23,7 @@ set (SOURCES
 	src/main.cpp
 	src/polynom.cpp
 	src/ttable.cpp
+	src/linear.cpp
 	src/ANF.cpp)
 
 add_executable(boolfun_exe ${SOURCES})

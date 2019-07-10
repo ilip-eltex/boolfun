@@ -64,29 +64,42 @@ vector<uint64_t> ANF::getFunction()
 
     uint32_t blocks = 1;
 
-    if(transformed.size() == 1)
+    vector<uint64_t> transformed0(transformed);
+
+
+    if(transformed0.size() == 1)
         for (int k = table_length / 2; k >= 1; k /= 2)
         {
             blocks *= 2;
             for (int i = 0; i < blocks - 1; i += 2)
                 for (int j = 0; j < k; ++j)
-                    set_bit_64(transformed[0], get_bit_64(transformed[0], i*k + j) ^ get_bit_64(transformed[0], (i+1)*k + j), i*k + j);
+                    set_bit_64(transformed0[0], get_bit_64(transformed0[0], i*k + j) ^ get_bit_64(transformed0[0], (i+1)*k + j), i*k + j);
         }
     else
-        for (int k = transformed.size() / 2; k >= 1; k /= 2)
+        for (int k = transformed0.size() / 2; k >= 1; k /= 2)
         {
             blocks *= 2;
             for (int i = 0; i < blocks - 1; i += 2)
                 for (int j = 0; j < k; ++j)
-                    transformed[i*k + j] ^= transformed[(i+1)*k + j];
+                    transformed0[i*k + j] ^= transformed0[(i+1)*k + j];
         }
 
-    return transformed;
+    return transformed0;
 }
 
 ostream& operator<< (ostream& stream, ANF& anf)
 {
     return stream << anf.toStr();
+}
+
+int ANF::deg()
+{
+    unsigned int maxCount = 0;
+    for(int i = 0; i < elements.size(); ++i)
+        if(maxCount < get_weight_32(elements[i]))
+            maxCount = get_weight_32(elements[i]);
+        
+    return maxCount;
 }
 
 string ANF::toStr()
@@ -98,14 +111,14 @@ string ANF::toStr()
         string anf = "";
         for (int i = 0; i < elements.size(); ++i)
         {
-            for (int j = 0; j < sizeof(uint64_t); ++j)
-                if(elements[i])
-                {
+            if(elements[i])
+            {
+                for (int j = 0; j < sizeof(uint64_t); ++j)
                     if(get_bit_32(elements[i], j))
                         anf += "x" + std::to_string(j);
-                }else
-                    anf += "1";
-                
+            }else
+                anf += "1";
+
             if(i != elements.size() - 1)
                 anf += " + ";
         }
