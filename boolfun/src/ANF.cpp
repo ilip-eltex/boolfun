@@ -102,6 +102,11 @@ int ANF::deg()
     return maxCount;
 }
 
+void ANF::parse_ANF(string arg)
+{
+
+}
+
 string ANF::to_str()
 {
     if(elements.empty())

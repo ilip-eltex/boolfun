@@ -73,7 +73,7 @@ namespace bf {
 			x &= ~(static_cast<bvect64>(1) << index);
 	}
 
-	unsigned int get_weight_64 (bvect64 x) {
+	unsigned int get_weight_64(bvect64 x) {
 		bvect32 result = 0;
 		while (x != 0) {
 			x &= x - 1;

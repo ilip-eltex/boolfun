@@ -22,7 +22,6 @@ namespace bf
 	  virtual bvect32 multiply(bvect32, bvect32) = 0;
 	  virtual bvect32 power(bvect32, bvect32) = 0;
 	  virtual unsigned char get_order() = 0;
-      virtual bvect32 trace() = 0;
   };
 
   GF* get_field(int order);

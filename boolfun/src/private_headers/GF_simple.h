@@ -16,7 +16,6 @@ namespace bf
 		virtual bvect32 multiply(bvect32, bvect32);
 		virtual bvect32 power(bvect32, bvect32);
 		virtual unsigned char get_order();
-		virtual bvect32 trace();
 		GFSimple(int order);
 		~GFSimple();
 	};

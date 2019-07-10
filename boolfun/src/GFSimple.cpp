@@ -129,16 +129,6 @@ bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 	}
 }
 
-bvect32 GFSimple::trace()
-{
-    bvect32 sum0 = 0;
-
-    for (bvect32 i = 0; i < order; ++i)
-        sum(sum0, power((bvect32)4, i));
-
-    return sum0;
-}
-
 //a в степени b
 bvect32 GFSimple::power(bvect32 a, bvect32 b)
 {
