@@ -26,6 +26,4 @@ namespace bf
     ostream& operator<< (ostream& stream, ANF& anf);
 }
 
-
-
 #endif

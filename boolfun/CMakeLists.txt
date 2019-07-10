@@ -11,7 +11,8 @@ set (HEADERS
 	headers/ttable.h
 	headers/linear.h
 	headers/ANF.h
-	headers/boolean_utils.h)
+	headers/boolean_utils.h
+		)
 
 set (PRIVATE_HEADERS
 	src/private_headers/Field_polynom_table.h 
@@ -26,6 +27,6 @@ set (SOURCES
 	src/ttable.cpp
 	src/linear.cpp
 	src/ANF.cpp
-	src/boolean_utils.cpp)
+		)
 
 add_executable(boolfun_exe ${SOURCES})
