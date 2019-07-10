@@ -1,5 +1,4 @@
-#ifndef BOOLFUN_EXE_BOOLEAN_UTILS_H
-#define BOOLFUN_EXE_BOOLEAN_UTILS_H
+#pragma once
 
 #include "GF.h"
 #include "ttable.h"
@@ -123,10 +122,13 @@ namespace bf
         return is_odd_32(a & b);
     }
 
-    ttable* get_derivative(ttable& a, bvect32 direction)
+    ttable& get_derivative(ttable& a, bvect32 direction)
     {
+        ttable& b = a;
 
+        for (bvect32 i = 0; i < b.get_length(); ++i)
+            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+
+        return b;
     }
 }
-
-#endif
