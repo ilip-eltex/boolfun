@@ -102,9 +102,74 @@ int ANF::deg()
     return maxCount;
 }
 
+int get_token(string arg, unsigned int& index)
+{
+    while(arg[index++] != 'x')
+    {
+        if(index == arg.length())
+            return -3;
+
+        if(arg[index - 1] != ' ' && arg[index - 1] != '+' && arg[index - 1] != '1')
+            return -1;
+        else
+            if(arg[index - 1] == '+')
+                return -2;
+        else
+            if(arg[index - 1] == '1')
+                return 0;
+    }
+
+    if(!(arg[index] - '0' > 0 && arg[index] - '0' < 10))
+        return -1;
+    else
+        return arg[index] - '0';
+}
+
 void ANF::parse_ANF(string arg)
 {
+    int fill = 1;
+    int br = 0;
+    int maxDeg = 0;
+    unsigned int index = 0;
 
+    while(true)
+    {
+        if(fill)
+        {
+            elements.resize(elements.size() + 1);
+            fill = 0;
+        }
+
+        switch(get_token(arg, index))
+        {
+            case -3:
+                if(!elements.empty())
+                    throw std::invalid_argument("bad string!");
+                else
+                    br = 1;
+                break;
+            case -2:
+                fill = 1;
+                break;
+            case -1:
+                throw std::invalid_argument("bad string!");
+            case 0:
+                elements[elements.size() - 1] = 0;
+                break;
+            default:
+                if(maxDeg < get_token(arg, index))
+                    maxDeg = get_token(arg, index);
+
+                elements[elements.size() - 1] |= (unsigned int)(1 << (get_token(arg, index) - 1));
+                break;
+        }
+        if(br)
+            break;
+    }
+    transformed.resize(1 << maxDeg, 0);
+
+    for (int i = 0; i < transformed.size(); ++i)
+        transformed[elements[i]] = 1;
 }
 
 string ANF::to_str()
@@ -118,9 +183,9 @@ string ANF::to_str()
         {
             if(elements[i])
             {
-                for (int j = 0; j < sizeof(uint64_t); ++j)
+                for (int j = 0; j < sizeof(uint32_t); ++j)
                     if(get_bit_32(elements[i], j))
-                        anf += "x" + std::to_string(j);
+                        anf += "x" + std::to_string(j + 1);
             }else
                 anf += "1";
 
