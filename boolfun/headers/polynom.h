@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include "GF.h"
+#include <string>
 #include "ttable.h"
 
 // Max polynom length 2^n (n <= 32)
@@ -23,11 +24,13 @@ class polynom { // over field type
 		unsigned char get_coeff (uint32_t index);
 		uint32_t get_length ();
 		GF* get_field();
+		void set_from_string (const std::string &s); 
 			
 	private:
 		std::vector<unsigned char> _coeff;
 		uint32_t _length;
 		GF * _field;
+	
 };
 
 class polynom64 { // over field type

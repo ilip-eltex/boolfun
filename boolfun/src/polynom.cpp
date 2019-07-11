@@ -74,5 +74,9 @@ namespace bf {
 		return this->_field;
 	}
 	
+	void polynom::set_from_string (const std::string &s) {
+		
+	}
+	
 }
 
