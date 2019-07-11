@@ -1,4 +1,4 @@
-#include <GF.h>
+#include "GF.h"
 #include <GF_simple.h>
 
 namespace bf

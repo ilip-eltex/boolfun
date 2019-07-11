@@ -65,6 +65,24 @@ namespace bf
         return ivec;
     }
 
+    ttable& get_derivative(ttable& a, bvect32 direction)
+    {
+        ttable& b = a;
+
+        for (bvect32 i = 0; i < b.get_length(); ++i)
+            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+
+        return b;
+    }
+
+    int is_SAC(ttable& a)
+    {
+        for (int i = 0; i < a.get_field()->get_order(); ++i)
+        {
+            if(get_derivative(a, 1 << i))
+        }
+    }
+
     int index_nonlinearity(ttable& a)
     {
         vector<int> b = walsh_hadamard_spec(a);
@@ -86,13 +104,5 @@ namespace bf
         return dist;
     }
 
-    ttable& get_derivative(ttable& a, bvect32 direction)
-    {
-        ttable& b = a;
 
-        for (bvect32 i = 0; i < b.get_length(); ++i)
-            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
-
-        return b;
-    }
 }
