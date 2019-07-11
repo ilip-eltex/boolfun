@@ -16,15 +16,14 @@ namespace bf
         vector<uint32_t> elements;
         vector<uint64_t> transformed;
     public:
-        virtual void             getANF(ttable& table) = 0;
-        virtual vector<uint64_t> getFunction() = 0;
-        virtual string           toStr() = 0;
-        virtual int              deg() = 0;
+        virtual void             getANF(ttable& table);
+        virtual vector<uint64_t> getFunction();
+        virtual string           to_str();
+        virtual int              deg();
+        virtual void             parse_ANF(string arg);
     };
 
     ostream& operator<< (ostream& stream, ANF& anf);
 }
-
-
 
 #endif
