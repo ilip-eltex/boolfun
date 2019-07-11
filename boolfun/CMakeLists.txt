@@ -12,6 +12,7 @@ set (HEADERS
 	headers/ttable.h
 	headers/linear.h
 	headers/ANF.h
+	headers/ios.h
 		)
 
 set (PRIVATE_HEADERS
@@ -27,6 +28,7 @@ set (SOURCES
 	src/ttable.cpp
 	src/linear.cpp
 	src/ANF.cpp
+	src/ios.cpp
 		)
 
 add_executable(boolfun_exe ${HEADERS} ${PRIVATE_HEADERS} ${SOURCES})
