@@ -1,5 +1,7 @@
 #pragma once
-#include <GF.h>
+
+#include "GF.h"
+#include "bitslib.h"
 
 namespace bf 
 {
@@ -46,7 +48,7 @@ namespace bf
 
 		bvect32 result = 0;
 		for (int i = 0; i < 4; i++)
-			set_bit_32(&result, table[deg][i], 1);
+			set_bit_32(result, table[deg][i], 1);
 
 		return result |= 1;
 	}

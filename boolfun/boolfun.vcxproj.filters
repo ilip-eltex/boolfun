@@ -14,14 +14,17 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Private Headers">
-      <UniqueIdentifier>{25e9b033-3b1b-4438-a7a0-96f45841fc14}</UniqueIdentifier>
+      <UniqueIdentifier>{ee3bffe1-dc89-436c-a011-5942c1b76ae2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\GFSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GF.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\polynom.cpp">
@@ -30,37 +33,5 @@
     <ClCompile Include="src\ttable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\bitslib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\private_headers\GF_simple.h">
-      <Filter>Private Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\private_headers\Polynom.h">
-      <Filter>Private Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\private_headers\Binary.h">
-      <Filter>Private Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\private_headers\Field_polynom_table.h">
-      <Filter>Private Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\polynom.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ttable.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bitslib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\polynom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\ttable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

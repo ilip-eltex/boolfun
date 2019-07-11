@@ -3,6 +3,14 @@ bits-lib/*.layout
 bits-lib/*.exe
 bits-lib/*.o
 bits-lib/*.win
+CMakeFiles
+.idea
+*.cbp
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+stale_outputs_checked
+*.exe
 Debug
 .vs
 boolfun.vcxproj.user
