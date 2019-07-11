@@ -52,6 +52,12 @@ namespace bf {
 	unsigned int prod_32 (bvect32 x, bvect32 y) {
 		return is_odd_32 (x & y);
 	}
+	
+	unsigned int ham_distance_32 (bvect32 v1, bvect32 v2) {
+		return get_weigth_32 (v1 ^ v2);
+	}
+	
+	
 //////////////// for bvect64 ///////////////////////////////////////////////
 
 	unsigned int get_bit_64 (bvect64 &x, unsigned int index) {
@@ -100,6 +106,9 @@ namespace bf {
 		return (static_cast<uint32_t>(1) << y);
 	}
 	
+	unsigned int ham_distance_64 (bvect64 v1, bvect64 v2) {
+		return get_weigth_64 (v1 ^ v2);
+	}
 	
 }
 
