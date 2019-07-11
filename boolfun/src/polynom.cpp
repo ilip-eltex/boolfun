@@ -74,14 +74,70 @@ namespace bf {
 		return this->_field;
 	}
 	
-	void polynom::set_from_string (const std::string &s) { // s must be whitespace-trimmed, low-cased and a[0] == a number
-		std::string in = s;
-		lower_case(in);
-		in = trim(in);
-		vector<string> words = get_words(s);
+	bool polynom::set_from_string (const std::string &s) { // s must be low-cased and a[0] == %number%
+		std::string in = s, s1;
+		in = trim_all(in);
+		stringstream ss;			
+		char c;
+		ss.clear();
+		ss << in;
+		std::vector<string> words;
 		
-		for (uint32_t i=1; i<words.size(); i++) {
-			
+		while ( getline(ss,s1,'+') ) // get words between '+'
+			words.push_back(s1);
+		
+		ss.clear();
+		
+		// Begin checking control (first) word {n:}
+		ss << words[0];
+		uint32_t t; //temp
+		
+		ss >> t; // read first word from stream
+		
+		
+		if (t == 0)
+			return false;
+		
+		std::vector<uint32_t> coeffs( static_cast<size_t> t );
+		for (uint32_t i=0; i<coeffs.size(); i++)
+			coeffs[i] = 0;
+		std::string tstr = words[0]; // temp string; get first word	
+		t = 0; // set vector<uint32_t> begin counter value
+		if ( tstr[tstr.length()-1] != ':' ) { // if wrote {n:C1x} in first word
+			ss >> c; //skip ':'
+			ss >> t;
+			coeffs[0] = t;
+			t = 1; // set begin counter to second element due to first word wrote wrong
+		}
+		
+		
+		
+		for (uint32_t i=t; i<words.size(); i++) {
+			uint32_t degree=0;
+			ss.clear();
+			tstr = words[i];
+			ss << tstr;
+			t = str2int (tstr);
+			if (t == 0) // if no coeff
+				t = 1; // coeff == 1
+			ss >> c;
+			if (c != 'x') {
+				if (t == 1)
+					return false;
+				coeff[0] ^= t;
+				continue;
+			}
+			while (ss >> c) 
+				if (c == '^') {
+					ss >> tstr;
+					if (tstr == "0") {
+						degree = 0;
+						break;
+					}
+					degree = str2int(tstr);
+					break;
+			}
+			coeff[degree] ^= t; 
 		}
 		
 	
