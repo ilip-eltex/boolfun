@@ -74,8 +74,17 @@ namespace bf {
 		return this->_field;
 	}
 	
-	void polynom::set_from_string (const std::string &s) {
+	void polynom::set_from_string (const std::string &s) { // s must be whitespace-trimmed, low-cased and a[0] == a number
+		std::string in = s;
+		lower_case(in);
+		in = trim(in);
+		vector<string> words = get_words(s);
 		
+		for (uint32_t i=1; i<words.size(); i++) {
+			
+		}
+		
+	
 	}
 	
 }

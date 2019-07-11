@@ -3,7 +3,7 @@
 /*
 	TASKS
 	
-	1) Move here two typedefs from GF.h
+	1) Move here two typedefs from GF.h	
 */
 
 #include <GF.h>

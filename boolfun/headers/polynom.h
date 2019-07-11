@@ -1,10 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <cmath>
+//#include <cmath>
 #include "GF.h"
 #include <string>
 #include "ttable.h"
+#include "ios.h"
+#include <iostream>
 
 // Max polynom length 2^n (n <= 32)
 // Max var quanity n (n <= 32)
