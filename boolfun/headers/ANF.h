@@ -1,5 +1,4 @@
-#ifndef BOOLFUN_EXE_ANF_H
-#define BOOLFUN_EXE_ANF_H
+#pragma once
 
 #include "GF.h"
 #include <string>
@@ -25,5 +24,3 @@ namespace bf
 
     ostream& operator<< (ostream& stream, ANF& anf);
 }
-
-#endif

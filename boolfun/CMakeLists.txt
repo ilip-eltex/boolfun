@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.5)
 
 project (boolfun_exe)
 
-include_directories (headers src/private_headers)
+include_directories (headers src src/private_headers)
 
 set (HEADERS
 	headers/bitslib.h
@@ -17,8 +17,8 @@ set (HEADERS
 
 set (PRIVATE_HEADERS
 	src/private_headers/Field_polynom_table.h 
-	src/private_headers/GF_simple.h 
-	src/private_headers/privpolynom.h)
+	src/private_headers/GF_simple.h
+        )
 
 set (SOURCES 
 	src/GF.cpp 
