@@ -1,5 +1,5 @@
-language: c++
-compiler: g++
+language: c
+compiler: gcc
 script: cd boolfun/test/ && make tests
 branches:
         only:
