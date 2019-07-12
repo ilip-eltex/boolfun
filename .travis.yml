@@ -9,6 +9,6 @@ deploy:
       branch: test
   # deploy master to production
   - provider: script
-    script: make 
+    script: cd boolfun/ && cmake . && cmake --build
     on:
       branch: master
