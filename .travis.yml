@@ -1,6 +1,6 @@
 language: c++
 compiler: g++
-script: cd boolfun/test/ && make tests
+script: cd boolfun/test/ && make && ./tests
 branches:
         only:
                 - test
