@@ -1,3 +1,6 @@
 language: c++
 compiler: g++
-script: boolfun/test/make tests && ./boolfun/test/tests
+script: boolfun/test/make tests #&& ./boolfun/test/tests
+branches:
+        only:
+                - test

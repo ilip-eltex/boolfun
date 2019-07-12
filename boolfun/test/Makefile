@@ -1,7 +1,7 @@
-CC = g++
-CFLAGS = -std=c++11
+#CC = g++
+#CFLAGS = -std=c++11
 
-OBJ = $(CC) -c $< -o $@ $(CFLAGS)
+#OBJ = $(CC) -c $< -o $@ $(CFLAGS)
 #MKDIR_BUILD_SRC = mkdir -p build/src
 
 #.PHONY: clean test
@@ -15,19 +15,19 @@ OBJ = $(CC) -c $< -o $@ $(CFLAGS)
 
 tests: main_test.o GF.o ios.o linear.o
 	#mkdir -p bin
-	$(CC) $(CFLAGS) $^ -o $@
+	g++ main_test.o GF.o ios.o linear.o -o test
 
 main_test.o: main_test.cpp
-	$(OBJ)
+	g++ main_test.cpp 
 	
 GF.o:   GF.cpp                                                                                                                 
-	$(OBJ)
+	g++ GF.cpp
 
 ios.o:	ios.cpp
-	$(OBJ)
+	g++ ios.cpp
 
 linear.o: linear.cpp
-	$(OBJ)
+	g++ linear.cpp
 
 
 #clean:
