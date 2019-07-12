@@ -16,25 +16,25 @@ namespace bf
 
     unsigned int get_bit_32(bvect32 &x, unsigned int index)
     {
-        return (index >> x) & 1;
+        return (index >> x) & (unsigned)1;
     }
 
     void set_bit1_32(bvect32 &x, unsigned int index)
     {
-        x |= (1 << index);
+        x |= ((unsigned)1 << index);
     }
 
     void set_bit0_32(bvect32 &x, unsigned int index)
     {
-        x &= ~(1 << index);
+        x &= ~((unsigned)1 << index);
     }
 
     void set_bit_32(bvect32 &x, unsigned int value, unsigned int index)
     {
         if (value)
-            x |= 1 << index;
+            x |= (unsigned)1 << index;
         else
-            x &= ~(1 << index);
+            x &= ~((unsigned)1 << index);
     }
 
     unsigned int get_weight_32(bvect32 x)
@@ -50,12 +50,12 @@ namespace bf
 
     bool is_odd_32(bvect32 x)
     {
-        x ^= (x >> 16);
-        x ^= (x >> 8);
-        x ^= (x >> 4);
-        x ^= (x >> 2);
-        x ^= (x >> 1);
-        return (x & 1);
+        x ^= (x >> (unsigned)16);
+        x ^= (x >> (unsigned)8);
+        x ^= (x >> (unsigned)4);
+        x ^= (x >> (unsigned)2);
+        x ^= (x >> (unsigned)1);
+        return (x & (unsigned)1);
     }
 
     int scalar_product(bvect32 a, bvect32 b)
@@ -66,7 +66,7 @@ namespace bf
     unsigned char deg(bvect32 a)
     {
         for (int i = 31; i >= 0; --i)
-            if ((a >> i) & 1)
+            if ((a >> (unsigned)i) & (unsigned)1)
                 return (unsigned char) i;
         return 0;
     }
@@ -75,7 +75,7 @@ namespace bf
 
     unsigned int get_bit_64(bvect64 &x, unsigned int index)
     {
-        return (index >> x) & 1;
+        return (index >> x) & (unsigned)1;
     }
 
     void set_bit1_64(bvect64 &x, unsigned int index)
@@ -109,13 +109,13 @@ namespace bf
 
     bool is_odd_64(bvect64 x)
     {
-        x ^= (x >> 32);
-        x ^= (x >> 16);
-        x ^= (x >> 8);
-        x ^= (x >> 4);
-        x ^= (x >> 2);
-        x ^= (x >> 1);
-        return (x & 1);
+        x ^= (x >> (unsigned)32);
+        x ^= (x >> (unsigned)16);
+        x ^= (x >> (unsigned)8);
+        x ^= (x >> (unsigned)4);
+        x ^= (x >> (unsigned)2);
+        x ^= (x >> (unsigned)1);
+        return (x & (unsigned)1);
     }
 
     int scalar_product(bvect64 a, bvect64 b)
@@ -131,7 +131,7 @@ namespace bf
     unsigned char deg(bvect64 a)
     {
         for (int i = 63; i >= 0; --i)
-            if ((a >> i) & 1)
+            if ((a >> (unsigned)i) & (unsigned)1)
                 return (unsigned char) i;
         return 0;
     }
