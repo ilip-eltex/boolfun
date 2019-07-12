@@ -1,10 +1,10 @@
+#include <bitslib.h>
 #include "polynom.h"
 #include "ios.h"
 #include "ttable.h"
 
 namespace bf
 {
-
     polynom::polynom(GF *field)
     {
         this->_length = power2(static_cast<uint32_t>(field->get_order()));

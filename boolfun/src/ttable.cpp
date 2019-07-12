@@ -1,9 +1,10 @@
+#include <bitslib.h>
 #include "ttable.h"
 
 using namespace std;
+
 namespace bf
 {
-
     ttable::ttable(GF *field)
     {
         this->_length = power2(static_cast<uint32_t>(field->get_order()));

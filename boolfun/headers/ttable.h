@@ -1,10 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <cmath>
-#include "GF.h"
 #include "polynom.h"
-#include "bitslib.h"
 
 // Max table length 2^n (n <= 32)
 // Max var quanity n (n <= 32)

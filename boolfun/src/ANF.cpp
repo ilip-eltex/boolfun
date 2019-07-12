@@ -2,10 +2,10 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include "bitslib.h"
 
 namespace bf
 {
-
     uint64_t table_length;
 
     void ANF::getANF(ttable& table)

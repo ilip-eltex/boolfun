@@ -29,6 +29,8 @@ set(SOURCES
         src/linear.cpp
         src/ANF.cpp
         src/ios.cpp
-        src/bitslib.cpp)
+        src/bitslib.cpp
+        src/boolean_utils.cpp
+        )
 
 add_executable(boolfun_exe ${HEADERS} ${PRIVATE_HEADERS} ${SOURCES})
