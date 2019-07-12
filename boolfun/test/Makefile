@@ -8,20 +8,25 @@ OBJ = $(CC) -c $< -o $@ $(CFLAGS)
 
 #default: bin/iv.exe
 
-test: test/
 
 #bin/iv.exe: build/src/main.o build/src/strings.o build/src/units.o build/src/ivlib.o
 #	mkdir -p bin
 #	$(CC) $(CFLAGS) $^ -o $@
 
-tests: main_test.o GF.o
+tests: main_test.o GF.o ios.o linear.o
 	#mkdir -p bin
 	$(CC) $(CFLAGS) $^ -o $@
 
-main_test.o: main_test.c
+main_test.o: main_test.cpp
 	$(OBJ)
 	
 GF.o:   GF.cpp                                                                                                                 
+	$(OBJ)
+
+ios.o:	ios.cpp
+	$(OBJ)
+
+linear.o: linear.cpp
 	$(OBJ)
 
 
