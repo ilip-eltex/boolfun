@@ -1,3 +1,3 @@
 language: c++
 compiler: g++
-script: boolfun/test/make && boolfun/test/make test && ./boolfun/test/tests
+script: boolfun/test/make tests && ./boolfun/test/tests
