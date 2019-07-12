@@ -20,15 +20,17 @@ namespace bf
     public:
         ttable(GF *field);
         ttable(polynom &p, GF *field);
-        ttable(std::vector<bvect32> &vect);
+        ttable(vector<bvect64> &vect);
         bool set(bvect32 vect, uint32_t index);
         bvect32 get_value(uint32_t index);
         bvect32 get_length();
         GF *get_field();
-
+        int get_output_length();//FIXME release
+        int get_input_length();//FIXME release
+        int is_NM_function();//FIXME release
     private:
-        std::vector<unsigned char> _values; // Values mb 0 or 1
-        uint32_t _length; // <= 2^n
+        std::vector<bvect32> _values; // Values mb 0 or 1
+        uint64_t _length; // <= 2^n
         GF *_field;
     };
 

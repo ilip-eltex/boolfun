@@ -5,6 +5,7 @@
 
 namespace bf
 {
+    //FIXME release NM functions
     polynom::polynom(GF *field)
     {
         this->_length = power2(static_cast<uint32_t>(field->get_order()));
@@ -16,11 +17,11 @@ namespace bf
         this->_coeff[index] = coeff;
     }
 
-    unsigned char polynom::get_coeff(uint32_t index)
+    bvect32 polynom::get_coeff(uint32_t index)
     {
         return this->_coeff[index];
     }
-
+    //FIXME make check on condition when in NM function N less than M
     polynom::polynom(ttable &t, GF *field)
     {
         this->_length = t.get_length();
@@ -36,7 +37,6 @@ namespace bf
             for (uint32_t valuesq = 0; valuesq < tlen; valuesq++)
                 this->set_coeff(coeffq,
                                 (field->multiply(t.get_value(valuesq), field->power(valuesq, (tlen - valuesq - 1)))));
-
     }
 
     uint32_t polynom::get_length()
@@ -61,7 +61,7 @@ namespace bf
         this->_coeff[index] = coeff;
     }
 
-    unsigned char polynom64::get_coeff(uint64_t index)
+    bvect64 polynom64::get_coeff(uint64_t index)
     {
         return this->_coeff[index];
     }

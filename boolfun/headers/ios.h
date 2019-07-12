@@ -12,4 +12,5 @@ namespace bf
     int str2int(string s);
     string int2str(int x);
     string trim_all(string s);
+
 }
