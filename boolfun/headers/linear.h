@@ -1,6 +1,4 @@
 #pragma once
-
-#include "GF.h"
 #include "ttable.h"
 
 namespace bf
