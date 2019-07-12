@@ -13,12 +13,15 @@
 #	mkdir -p bin
 #	$(CC) $(CFLAGS) $^ -o $@
 
-tests: main_test.o #GF.o ios.o linear.o
+tests: main_test.o sandbox.o
 	#mkdir -p bin
-	gcc main_test.o -o tests#GF.o ios.o linear.o -o test
+	g++ main_test.o sandbox.o -o tests#GF.o ios.o linear.o -o test
 
-main_test.o: main_test.c
-	gcc main_test.c 
+main_test.o: main_test.cpp
+	g++ main_test.cpp
+
+sandbox.o: sandbox.cpp
+	g++ sandbox.cpp
 	
 #GF.o:   GF.cpp                                                                                                                 
 #	gcc GF.cpp
