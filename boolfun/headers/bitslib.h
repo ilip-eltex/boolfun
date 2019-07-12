@@ -62,10 +62,14 @@ namespace bf
     {
         return is_odd_32(a & b);
     }
-    
-   unsigned int ham_distance_32 (bvect32 v1, bvect32 v2) {
-		return get_weigth_32 (v1 ^ v2);
-	}
+
+    unsigned char deg(bvect32 a)
+    {
+        for (int i = 31; i >= 0; --i)
+            if ((a >> i) & 1)
+                return (unsigned char) i;
+        return 0;
+    }
 	
 //////////////// for bvect64 ///////////////////////////////////////////////
 
@@ -123,9 +127,13 @@ namespace bf
     {
         return (static_cast<uint32_t>(1) << y);
     }
-    
-     unsigned int ham_distance_64 (bvect64 v1, bvect64 v2) {
-		return get_weigth_64 (v1 ^ v2);
-	}
+
+    unsigned char deg(bvect64 a)
+    {
+        for (int i = 63; i >= 0; --i)
+            if ((a >> i) & 1)
+                return (unsigned char) i;
+        return 0;
+    }
 }
 

@@ -9,7 +9,7 @@ using namespace std;
 
 namespace bf
 {
-    unsigned int function_weight(ttable &table)
+    unsigned int get_function_weight(ttable &table)
     {
         uint64_t weight = 0;
         for (bvect32 i = 0; i < table.get_length(); ++i)
@@ -18,7 +18,7 @@ namespace bf
         return weight;
     }
 
-    bvect32 trace(GF *field)
+    bvect32 get_trace(GF *field)
     {
         bvect32 sum0 = 0;
 
@@ -30,13 +30,13 @@ namespace bf
 
     int is_balanced(ttable &table)
     {
-        if (function_weight(table) == table.get_length() / 2)
+        if (get_function_weight(table) == table.get_length() / 2)
             return 1;
         else
             return 0;
     }
 
-    vector<int> walsh_hadamard_spec(ttable &a)
+    vector<int> get_walsh_hadamard_spec(ttable &a)
     {
         vector<int> ivec(a.get_length());
 
@@ -75,15 +75,51 @@ namespace bf
         return b;
     }
 
-    int is_SAC(ttable &a)
+    void get_GAC_characteristics(ttable& a, unsigned long* sigma, unsigned int* delta)
     {
-        for (unsigned int i = 0; i < a.get_field()->get_order(); ++i)
-            if (!is_balanced(get_derivative(a, (unsigned)1 << i)))
-                return 0;
-        return 1;
+        if(!sigma && !delta)
+            return;
+
+        vector<int> spector(get_walsh_hadamard_spec(a));
+
+        for(int l = 0; l < spector.size(); ++l)
+            spector[l] *= spector[l];
+
+        int blocks = 1;
+        int tmp;
+
+        for (int k = spector.size() / 2; k >= 1; k /= 2)
+        {
+            blocks *= 2;
+            for (int i = 0; i < blocks - 1; i += 2)
+                for (int j = 0; j < k; ++j)
+                {
+                    tmp = spector[i * k + j];
+                    spector[i * k + j] += spector[(i + 1) * k + j];
+                    spector[(i + 1) * k + j] = tmp - spector[(i + 1) * k + j];
+                }
+        }
+
+        for(int l = 0; l < spector.size(); ++l)
+            spector[l] /= a.get_length();
+
+        if(sigma)
+            for(int l = 0; l < spector.size(); ++l)
+                (*sigma) += spector[l] * spector[l];
+
+        if(delta)
+        {
+            tmp = spector[0];
+
+            for(int l = 0; l < spector.size(); ++l)
+                if(tmp < spector[l])
+                    tmp = spector[l];
+
+            (*delta) = tmp;
+        }
     }
 
-    int vector_permutation(ttable &a, int no_ones, int no_zeroes, unsigned int accum)
+    int get_vector_permutation(ttable &a, int no_ones, int no_zeroes, unsigned int accum)
     {
         if(no_ones == 0)
         {
@@ -102,22 +138,30 @@ namespace bf
             return is_balanced(get_derivative(a, accum));
         }
 
-        return vector_permutation(a, no_ones - 1, no_zeroes, (accum << (unsigned)1) | (unsigned)1) &&
-               vector_permutation(a, no_ones, no_zeroes - 1,  accum << (unsigned)1);
+        return get_vector_permutation(a, no_ones - 1, no_zeroes, (accum << (unsigned) 1) | (unsigned) 1) &&
+               get_vector_permutation(a, no_ones, no_zeroes - 1, accum << (unsigned) 1);
     }
 
     int is_PC(ttable &a, int k)
     {
         for (int i = 1; i <= k; ++i)
-            if(!vector_permutation(a, i, a.get_field()->get_order() - i, 0))
+            if(!get_vector_permutation(a, i, a.get_field()->get_order() - i, 0))
                 return 0;
 
         return 1;
     }
 
-    int index_nonlinearity(ttable &a)
+    int is_SAC(ttable &a)
     {
-        vector<int> b = walsh_hadamard_spec(a);
+        for (unsigned int i = 0; i < a.get_field()->get_order(); ++i)
+            if (!is_balanced(get_derivative(a, (unsigned)1 << i)))
+                return 0;
+        return 1;
+    }
+
+    int get_index_nonlinearity(ttable &a)
+    {
+        vector<int> b = get_walsh_hadamard_spec(a);
 
         int tmp = abs(b[0]);
         for (int i = 0; i < b.size(); ++i)
@@ -127,7 +171,7 @@ namespace bf
         return (((unsigned int) 1 << (a.get_field()->get_order())) - tmp) / 2;
     }
 
-    unsigned int hemming_distance(ttable &a, ttable &b)
+    unsigned int get_hemming_distance(ttable &a, ttable &b)
     {
         unsigned int dist = 0;
         for (bvect32 i = 0; i < a.get_length(); ++i)
@@ -135,6 +179,4 @@ namespace bf
 
         return dist;
     }
-
-
 }

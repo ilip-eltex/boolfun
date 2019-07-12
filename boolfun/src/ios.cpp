@@ -58,6 +58,16 @@ namespace bf {
 			result.push_back(s1);
 		return result;
 	}
+	
+	std::string trim_all (std::string s) {
+	std::string result = "";
+	for (int i=0; i<s.length(); i++) {
+		if (s[i] == ' ')
+			continue;
+		result += s[i];
+	}
+	return result;
+} 
 
 }
 

@@ -8,51 +8,8 @@
 
 using namespace bf;
 
-const int MOD = 0;
-const int DIV = 1;
 int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
-unsigned int true_order;//порядок поля, не степень двойки, а 2^n - 1
-
-bvect64 GFSimple::sum(bvect64 a, bvect64 b)
-{
-	return (bvect64)(a ^ b);
-}
-
-bvect32 GFSimple::sum(bvect32 a, bvect32 b)
-{
-    return (bvect64)(a ^ b);
-}
-
-bvect64 GFSimple::save_x64_multiply(bvect64 a, bvect64 b)
-{
-	bvect64 c = 0;
-
-	for (int i = 0; i < 32; ++i)
-		sum(c, (bvect64)a << ((i * (b >> i) % 2)));
-
-	return mod(c);
-}
-
- //Происходит деление a на b в поле field. Здесь режимы
- //                                                    0 - найти MOD
- //                                                    1 - найти DIV
-bvect64 GFSimple::div(GFSimple* field, bvect64 a, bvect64 b, int mode)
-{
-  unsigned char c;
-  bvect64 result = 0;
-  bvect64 a0 = a;
-
-  while (deg(a0) >= deg(b))
-  {
-    c = deg(a0) - deg(b);
-    set_bit_64(result, c, 1);
-    a0 = field->sum(a0, field->save_x64_multiply(b, result));
-  }
-  if (mode == MOD)
-    return a0;
-  else
-    return result;
-}
+unsigned int true_order;//порядок поля, не степень двойки, а 2^n
 
 GFSimple::~GFSimple()
 {
@@ -66,11 +23,52 @@ GFSimple::GFSimple(int order)
 	if (order > 31 || order < 2)
 		throw std::invalid_argument("Wrong order!\n");
 
-	true_order = (bvect32)pow(2, order) - 1;
+	true_order = (bvect32)pow(2, order);
 
 	this->gen_el = get_generating_element();
 	this->order = order;
 	this->field_polynom = get_polynom_from_table(order);
+}
+
+bvect64 GFSimple::sum(bvect64 a, bvect64 b)
+{
+    return (bvect64)(a ^ b);
+}
+
+bvect32 GFSimple::sum(bvect32 a, bvect32 b)
+{
+    return (bvect64)(a ^ b);
+}
+
+bvect64 GFSimple::save_x64_multiply(bvect64 a, bvect64 b)
+{
+    bvect64 c = 0;
+
+    for (int i = 0; i < 32; ++i)
+        sum(c, (bvect64)a << ((i * ((b >> (unsigned)i) & (unsigned)1))));
+
+    return mod(c);
+}
+
+//Происходит деление a на b в поле field. Здесь режимы
+//                                                    0 - найти MOD
+//                                                    1 - найти DIV
+bvect64 GFSimple::div(GFSimple* field, bvect64 a, bvect64 b, int mode)
+{
+    unsigned char c;
+    bvect64 result = 0;
+    bvect64 a0 = a;
+
+    while (deg(a0) >= deg(b))
+    {
+        c = deg(a0) - deg(b);
+        set_bit_64(result, c, 1);
+        a0 = field->sum(a0, field->save_x64_multiply(b, result));
+    }
+    if (mode == 0)
+        return a0;
+    else
+        return result;
 }
 
 //Ищем порождающий элемент
@@ -84,7 +82,7 @@ bvect32 GFSimple::get_generating_element()
 
 	for (bvect32 i = 1; i < true_order; i++)
 	{
-		memset(num_to_deg, true_order, 0);
+		memset(num_to_deg, 0, true_order);
 
 		for (bvect32 j = 0; j < true_order; j++)
 			if (!num_to_deg[power(i, j)])
@@ -111,19 +109,19 @@ bvect32 GFSimple::get_generating_element()
 
 bvect32 GFSimple::mod(bvect64 a)
 {
-	return (bvect32)div(this, a, field_polynom, MOD);
+	return (bvect32)div(this, a, field_polynom, 0);
 }
 
 bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
 {
 	if(gen_el_found)//Если таблица доступна
-		return deg_to_num[(num_to_deg[a] + num_to_deg[b]) % true_order];
+		return deg_to_num[(num_to_deg[a] + num_to_deg[b]) % (true_order - 1)];
 	else
 	{
 		bvect64 c = 0;
 
 		for (int i = 0; i < 32; ++i)
-			sum(c, (bvect64)a << ((i * (b >> i) % 2)));
+			sum(c, (bvect64)a << ((i * ((b >> (unsigned)i) & (unsigned)1))));
 
 		return mod(c);
 	}
