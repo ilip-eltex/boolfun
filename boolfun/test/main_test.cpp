@@ -1,8 +1,8 @@
-#include <iostream>
+#include <bits/stdc++.h>
+#include <stdint.h>
 #include "bitslib.h"
 #include "sandbox.h"
-#include <cstdint>
-#include <vector>
+
 
 using namespace bf;
 int main () {
