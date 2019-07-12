@@ -13,21 +13,21 @@
 #	mkdir -p bin
 #	$(CC) $(CFLAGS) $^ -o $@
 
-tests: main_test.o GF.o ios.o linear.o
+tests: main_test.o #GF.o ios.o linear.o
 	#mkdir -p bin
-	g++ main_test.o GF.o ios.o linear.o -o test
+	gcc main_test.o #GF.o ios.o linear.o -o test
 
 main_test.o: main_test.cpp
-	g++ main_test.cpp 
+	gcc main_test.cpp 
 	
-GF.o:   GF.cpp                                                                                                                 
-	g++ GF.cpp
+#GF.o:   GF.cpp                                                                                                                 
+#	gcc GF.cpp
 
-ios.o:	ios.cpp
-	g++ ios.cpp
+#ios.o:	ios.cpp
+#	gcc ios.cpp
 
-linear.o: linear.cpp
-	g++ linear.cpp
+#linear.o: linear.cpp
+#	gcc linear.cpp
 
 
 #clean:
