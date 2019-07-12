@@ -3,42 +3,40 @@
 
 using namespace std;
 
-namespace bf
+namespace bf //FIXME release NM functions!!!
 {
+    int is_NM_function = 0;
+
     ttable::ttable(GF *field)
     {
-        this->_length = power2(static_cast<uint32_t>(field->get_order()));
+        this->_length = power2(static_cast<uint64_t>(field->get_order()));
         this->_values.resize(static_cast<size_t>(this->_length));
     }
 
-    ttable::ttable(polynom &p, GF *field)
+    ttable::ttable(polynom &p, GF *field)//FIXME release NM functions!!!
     {
-        vector<unsigned char> coeff;
+        vector<bvect32> coeff;
         const uint32_t polynom_length = p.get_length(); // aka x-quanity aka coeff-quanity
         for (bvect32 i = 0; i < polynom_length; i++)
             coeff.push_back(p.get_coeff(i));
-        vector<unsigned char> result;
-        result.resize(polynom_length);
+        _values.resize(polynom_length);
 
         for (uint32_t x = 0; x < polynom_length; x++) // Cycle by vectors
             for (uint32_t i = 0; i < polynom_length; i++) // Cycle by coeffs
-                result[x] += field->multiply(coeff[i], field->power(x, i));
-        this->_values = result;
+                _values[x] += field->multiply(coeff[i], field->power(x, i));
     }
 
-    ttable::ttable(vector<bvect32> &vect)
+    ttable::ttable(vector<bvect64> &vect)//FIXME release NM functions!!!
     {
         if (vect.size() == 1)
-        {
             return;
-        }
-        this->_length = vect.size() * 32;
+
+        this->_length = vect.size() * 64;
         this->_values.resize(static_cast<size_t>(this->_length));
 
-        for (uint32_t i = 0; i < vect.size(); i++)
-            for (uint32_t j = 31; j <= 0; j--)
-                this->_values.push_back(static_cast<unsigned char>(get_bit_32(vect[i], j)));
-
+        for (uint64_t i = 0; i < vect.size(); i++)
+            for (uint64_t j = 63; j <= 0; j--)
+                this->_values.push_back(static_cast<bvect32>(get_bit_64(vect[i], j)));
     }
 
     GF *ttable::get_field()

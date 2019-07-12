@@ -1,9 +1,22 @@
 #include "boolean_utils.h"
+#include <iostream>
+#include "GF.h"
+#include "GF_simple.h"
+
+using namespace std;
 
 namespace bf
 {
+    void check_is_boolean_function(ttable& table)
+    {
+        if(table.is_NM_function())
+            throw std::invalid_argument("Unsupported NM functions!!!");
+    }
+
     unsigned int get_function_weight(ttable &table)
     {
+        check_is_boolean_function(table);
+
         uint64_t weight = 0;
         for (bvect32 i = 0; i < table.get_length(); ++i)
             weight += table.get_value(i);
@@ -11,7 +24,7 @@ namespace bf
         return weight;
     }
 
-    bvect32 get_trace(GF &field)
+    bvect32 get_trace(GF& field)
     {
         bvect32 sum0 = 0;
 
@@ -23,14 +36,33 @@ namespace bf
 
     int is_balanced(ttable &table)
     {
-        if (get_function_weight(table) == table.get_length() / 2)
+        if(!table.is_NM_function())
+        {
+            if (get_function_weight(table) == table.get_length() / 2)
+                return 1;
+            else
+                return 0;
+        }else
+        {
+            uint64_t weight = 0;
+            for (unsigned int j = 0; j < table.get_output_length(); ++j)
+            {
+                for (bvect32 i = 0; i < table.get_length(); ++i)
+                    weight += (table.get_value(i) >> j) & (unsigned)1;
+
+                if(weight != table.get_length() / 2)
+                    return 0;
+
+                weight = 0;
+            }
             return 1;
-        else
-            return 0;
+        }
     }
 
     vector<int> get_walsh_hadamard_spec(ttable &a)
     {
+        check_is_boolean_function(a);
+
         vector<int> ivec(a.get_length());
 
         for (int i = 0; i < ivec.size(); ++i)
@@ -62,14 +94,25 @@ namespace bf
     {
         ttable &b = a;
 
-        for (bvect32 i = 0; i < b.get_length(); ++i)
-            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+        if(!a.is_NM_function())
+            for (bvect32 i = 0; i < b.get_length(); ++i)
+                b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+        else
+        {
+            auto fieldM = (GFSimple*)get_field(a.get_output_length());
+            for(bvect32 i = 0; i < b.get_length(); ++i)
+                b.set(fieldM->sum(b.get_value(a.get_field()->sum(i, direction)), b.get_value(i)), i);
+
+            delete(fieldM);
+        }
 
         return b;
     }
 
     void get_GAC_characteristics(ttable& a, unsigned long* sigma, unsigned int* delta)
     {
+        check_is_boolean_function(a);
+
         if(!sigma && !delta)
             return;
 
@@ -154,6 +197,8 @@ namespace bf
 
     int get_index_nonlinearity(ttable &a)
     {
+        check_is_boolean_function(a);
+
         vector<int> b = get_walsh_hadamard_spec(a);
 
         int tmp = abs(b[0]);
@@ -166,6 +211,8 @@ namespace bf
 
     unsigned int get_hemming_distance(ttable &a, ttable &b)
     {
+        check_is_boolean_function(a);
+
         unsigned int dist = 0;
         for (bvect32 i = 0; i < a.get_length(); ++i)
             dist += a.get_value(i) ^ b.get_value(i);
