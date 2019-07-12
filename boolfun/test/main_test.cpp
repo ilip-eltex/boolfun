@@ -15,7 +15,7 @@ class test {
 			std::string _name;
 };
 
-bool compare_vals (uint64_t a1, uint64_t a2, size_t size);
+//bool compare_vals (uint64_t a1, uint64_t a2, size_t size);
 void print_test (std::vector<test> &t, unsigned int index);
 
 using namespace bf;
@@ -58,11 +58,11 @@ int main () {
 
 /////////SOURCE
 
-	bool compare_vals (auto a1, auto a2, size_t size) {
+	/*bool compare_vals (auto a1, auto a2, size_t size) {
 		char x[size] = static_cast<char*>(&a1);
 		char y[size] = static_cast<char*>(&a2);
 		return !(strcmp(a1,a2));
-	}
+	} */
 	
 	
 	bool test::result () {
