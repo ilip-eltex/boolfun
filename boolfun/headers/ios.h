@@ -1,7 +1,15 @@
 #include <string>
 #include <sstream>
 
-std::string trim (std:: string s);
-std::string trim_left (std::string s);
-std::string trim_right (std::string s);
-void lower_case (std::string &s);
+using namespace std;
+
+namespace bf
+{
+    string trim(string s);
+    string trim_left(string s);
+    string trim_right(string s);
+    void lower_case(string &s);
+    int str2int(string s);
+    string int2str(int x);
+    string trim_all(string s);
+}
