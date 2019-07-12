@@ -104,11 +104,11 @@ namespace bf {
 		std::string tstr = words[0]; // temp string; get first word	
 		t = 0; // set vector<uint32_t> begin counter value
 		//if ( tstr[tstr.length()-1] != ':' ) { // if wrote {n:C1x} in first word
-			ss >> c; //skip ':'
-			ss >> t;
-			coeffs[0] = t;
+		ss >> c; //skip ':'
+		ss >> t;
+		coeffs[0] = t;
 			t = 1; // set begin counter to second element due to first word wrote wrong
-		}
+	}
 		
 		
 		
