@@ -1,6 +1,5 @@
 #include "GF_simple.h"
 #include "Field_polynom_table.h"
-#include "privpolynom.h"
 #include <cmath>
 #include <exception>
 #include <cstring>

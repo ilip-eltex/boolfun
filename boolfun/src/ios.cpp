@@ -1,3 +1,9 @@
+#include "ios.h"
+#include <string>
+#include <vector>
+
+using namespace std;
+
 namespace bf {
 
 	std::string trim_left (std::string s) {
@@ -50,7 +56,7 @@ namespace bf {
 	
 	std::vector<string> get_words (const std::string s) {
 		std::vector<string> result;
-		sstringstream ss;
+		stringstream ss;
 		ss.clear();
 		ss << s;
 		std::string s1;

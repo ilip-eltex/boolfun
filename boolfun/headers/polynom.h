@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-//#include <cmath>
 #include "GF.h"
 #include <string>
 #include "ttable.h"
@@ -21,7 +20,7 @@ class polynom { // over field type
 	
 	public:
 		polynom (GF * field);
-		polynom::polynom(const ttable &t, GF * field);
+		polynom(ttable &t, GF *field);
 		void set_coeff (uint32_t index, bvect32 coeff);
 		unsigned char get_coeff (uint32_t index);
 		uint32_t get_length ();
@@ -39,7 +38,7 @@ class polynom64 { // over field type
 	
 	public:
 		polynom64 (GF * field);
-		polynom64::polynom64(const ttable &t, GF * field);
+        polynom64(ttable &t, GF *field);
 		void set_coeff (uint64_t index, bvect64 coeff);
 		unsigned char get_coeff (uint64_t index);
 		uint64_t get_length ();
