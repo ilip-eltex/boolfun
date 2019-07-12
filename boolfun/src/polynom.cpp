@@ -112,7 +112,7 @@ namespace bf
             return false;
 
         std::vector<uint32_t> coeffs(static_cast<size_t> t );
-        for (uint32_t i = 0; i < coeffs.size(); i++)
+        for(uint32_t i = 0; i < coeffs.size(); i++)
             coeffs[i] = 0;
         std::string tstr = words[0]; // temp string; get first word
         t = 0; // set vector<uint32_t> begin counter value
@@ -124,48 +124,36 @@ namespace bf
     }
 
 
-    for (
-    uint32_t i = t;
-    i<words.
+    for(uint32_t i = t;i<words.size();i++)
+    {
+        uint32_t degree = 0;
+        ss.clear();
 
-    size();
-
-    i++)
-{
-    uint32_t degree = 0;
-    ss.
-
-    clear();
-
-    tstr = words[i];
-    ss <<
-    tstr;
-    t = str2int(tstr);
-    if (t == 0) // if no coeff
-    t = 1; // coeff == 1
-    ss >>
-    c;
+        tstr = words[i];
+        ss << tstr;
+        t = str2int(tstr);
+        if (t == 0) // if no coeff
+            t = 1; // coeff == 1
+        ss >> c;
     if (c != 'x')
-{
-    if (t == 1)
-    return false;
-    coeff[0] ^=
-    t;
-    continue;
-}
-while (ss >> c)
-if (c == '^') {
-ss >>
-tstr;
-if (tstr == "0") {
-degree = 0;
-break;
-}
-degree = str2int(tstr);
-break;
-}
-coeff[degree] ^=
-t;
+    {
+        if (t == 1)
+        return false;
+        coeff[0] ^= t;
+        continue;
+    }
+    while (ss >> c)
+        if (c == '^')
+        {
+            ss >> tstr;
+            if (tstr == "0") {
+                degree = 0;
+                break;
+            }
+            degree = str2int(tstr);
+            break;
+        }
+        coeff[degree] ^= t;
 }
 
 
