@@ -19,6 +19,7 @@ namespace bf
             coeff.push_back(p.get_coeff(i));
         vector<unsigned char> result;
         result.resize(polynom_length);
+
         for (uint32_t x = 0; x < polynom_length; x++) // Cycle by vectors
             for (uint32_t i = 0; i < polynom_length; i++) // Cycle by coeffs
                 result[x] += field->multiply(coeff[i], field->power(x, i));
@@ -33,6 +34,7 @@ namespace bf
         }
         this->_length = vect.size() * 32;
         this->_values.resize(static_cast<size_t>(this->_length));
+
         for (uint32_t i = 0; i < vect.size(); i++)
             for (uint32_t j = 31; j <= 0; j--)
                 this->_values.push_back(static_cast<unsigned char>(get_bit_32(vect[i], j)));
