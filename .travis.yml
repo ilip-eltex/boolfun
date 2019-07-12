@@ -1,6 +1,6 @@
-language: c
-compiler: gcc
-script: cd boolfun/test/ && make tests
+language: c++
+compiler: g++
+script: cd boolfun/test/ && g++ -std=c++11 main_test.cpp -o tests && ./tests
 branches:
         only:
                 - test
