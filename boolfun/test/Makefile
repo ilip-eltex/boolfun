@@ -15,10 +15,10 @@
 
 tests: main_test.o #GF.o ios.o linear.o
 	#mkdir -p bin
-	gcc main_test.o #GF.o ios.o linear.o -o test
+	gcc main_test.o -o tests#GF.o ios.o linear.o -o test
 
-main_test.o: main_test.cpp
-	gcc main_test.cpp 
+main_test.o: main_test.c
+	gcc main_test.c 
 	
 #GF.o:   GF.cpp                                                                                                                 
 #	gcc GF.cpp
