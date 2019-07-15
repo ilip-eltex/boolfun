@@ -1,4 +1,4 @@
-#include <bitslib.h>
+#include "bitslib.h"
 #include "polynom.h"
 #include "ios.h"
 #include "ttable.h"

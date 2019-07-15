@@ -1,9 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "GF.h"
 #include <string>
 #include <iostream>
+
+#include "bitslib.h"
+#include "GF.h"
 
 // Max polynom length 2^n (n <= 32)
 // Max var quanity n (n <= 32)

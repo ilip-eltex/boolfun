@@ -1,4 +1,4 @@
-#include <bitslib.h>
+#include "bitslib.h"
 #include "ttable.h"
 
 using namespace std;

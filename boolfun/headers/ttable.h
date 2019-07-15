@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+
+#include "bitslib.h"
 #include "polynom.h"
 #include "bitslib.h"
 
@@ -26,9 +28,9 @@ namespace bf {
 			bvect32 get_value(uint32_t index);
 			bvect32 get_length();
 			GF *get_field();
-			int get_output_length(); // get _m
-			int get_input_length(); // get _n
-			int is_NM_function(); //FIXME release
+			int get_output_length() { return 0; } // get _m
+			int get_input_length() { return 0; } // get _n
+			int is_NM_function() { return 0; } //FIXME release
 		private:
 			std::vector<bvect32> _values; // Values mb 0 or 1
 			uint64_t _length; // <= 2^n
@@ -36,8 +38,5 @@ namespace bf {
 			int _n; // input
 			int _m; // output
 	};
-
-
-
 }
 
