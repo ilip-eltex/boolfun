@@ -12,11 +12,12 @@ namespace bf
     class ANF
     {
     private:
+        vector<uint32_t> coeff;
         vector<uint32_t> elements;
-        vector<uint64_t> transformed;
+        vector<vector<uint64_t>> transformed;
     public:
         virtual void             getANF(ttable& table);
-        virtual vector<uint64_t> getFunction();
+        virtual vector<vector<uint64_t>> getFunction();
         virtual string           to_str();
         virtual int              deg();
         virtual void             parse_ANF(string arg);

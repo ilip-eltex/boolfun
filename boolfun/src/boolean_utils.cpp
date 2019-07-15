@@ -13,6 +13,8 @@ namespace bf
             throw std::invalid_argument("Unsupported NM functions!!!");
     }
 
+    //diff равномерность
+
     unsigned int get_function_weight(ttable &table)
     {
         check_is_boolean_function(table);
@@ -94,17 +96,8 @@ namespace bf
     {
         ttable &b = a;
 
-        if(!a.is_NM_function())
-            for (bvect32 i = 0; i < b.get_length(); ++i)
-                b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
-        else
-        {
-            auto fieldM = (GFSimple*)get_field(a.get_output_length());
-            for(bvect32 i = 0; i < b.get_length(); ++i)
-                b.set(fieldM->sum(b.get_value(a.get_field()->sum(i, direction)), b.get_value(i)), i);
-
-            delete(fieldM);
-        }
+        for (bvect32 i = 0; i < b.get_length(); ++i)
+            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
 
         return b;
     }
