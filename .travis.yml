@@ -2,7 +2,7 @@ language: c++
 compiler: g++
 deploy:
   # deploy develop to the staging environment
-  - provider: script
+    provider: script
     script: cd boolfun/test/ && g++ -std=c++11 main_test.cpp -o tests && ./test
     on:
       branch: develop
