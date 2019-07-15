@@ -8,6 +8,6 @@ fi
 if [ "$TRAVIS_BRANCH" = "master" ]; then
   cd boolfun/ 
   cmake .  
-  cmake --build
+  cmake --build .
 fi
 
