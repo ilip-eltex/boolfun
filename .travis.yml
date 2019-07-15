@@ -1,4 +1,5 @@
 language: c++
+compiler: g++
 deploy:
   # deploy develop to the staging environment
   - provider: script
