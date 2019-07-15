@@ -36,7 +36,7 @@ namespace bf
     void lower_case(string &s)
     {
         for (unsigned int i = 0; i < s.length(); i++)
-            if ((s[i] >= 'A') and (s[i] <= 'Z'))
+            if ((s[i] >= 'A') && (s[i] <= 'Z'))
                 s[i] = 'a' + (s[i] - 'A');
     }
 
