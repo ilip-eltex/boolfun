@@ -1,12 +1,7 @@
 language: c++
 compiler: g++
-deploy:
-  # deploy develop to the staging environment
-    provider: script
-    script: cd boolfun/test/ && g++ -std=c++11 main_test.cpp -o tests && ./test
-    on:
-      branch: develop
-    - provider: script
-    script: exit
-    on:
-      branch: master
+master:
+        script: cd boolfun/ && cmake . && cmake --build
+test:
+        script: cd boolfun/test/ && g++ -std=c++11 main_test.cpp -o tests && ./tests
+
