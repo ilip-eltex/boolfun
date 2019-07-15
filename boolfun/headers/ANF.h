@@ -1,9 +1,11 @@
 #pragma once
 
+#include "bitslib.h"
 #include "GF.h"
-#include <string>
 #include "ttable.h"
+
 #include <vector>
+#include <string>
 
 using namespace std;
 

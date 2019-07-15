@@ -1,8 +1,9 @@
-#include "ANF.h"
 #include <vector>
 #include <cmath>
 #include <iostream>
+
 #include "bitslib.h"
+#include "ANF.h"
 
 namespace bf
 {

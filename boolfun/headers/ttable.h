@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+
+#include "bitslib.h"
 #include "polynom.h"
 
 // Max table length 2^n (n <= 32)
@@ -25,9 +27,9 @@ namespace bf
         bvect32 get_value(uint32_t index);
         bvect32 get_length();
         GF *get_field();
-        int get_output_length();//FIXME release
-        int get_input_length();//FIXME release
-        int is_NM_function();//FIXME release
+        int get_output_length() { return _length; } //FIXME release
+        int get_input_length() { return _length; } //FIXME release
+        int is_NM_function() { return 0; }//FIXME release
     private:
         std::vector<bvect32> _values; // Values mb 0 or 1
         uint64_t _length; // <= 2^n
