@@ -1,11 +1,3 @@
 language: c++
-compiller: g++
-deploy:
-  - provider: script
-    script: test_production.sh
-    on:
-      branch: test
-  - provider: script
-    script: master_production.sh
-    on:
-      branch: master
+compiler: g++
+script: bash test.sh
