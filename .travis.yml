@@ -1,6 +1,6 @@
-language: c++
 deploy:
   - provider: script
+    language: c++
     script: test_production.sh
     on:
       branch: test
