@@ -1,7 +1,3 @@
 language: c++
 compiler: g++
-master:
-        script: cd boolfun/ && cmake . && cmake --build
-test:
-        script: cd boolfun/test/ && g++ -std=c++11 main_test.cpp -o tests && ./tests
-
+script: test.sh
