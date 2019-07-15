@@ -1,3 +1,5 @@
+language: c++
+compiller: g++
 deploy:
   - provider: script
     script: test_production.sh
