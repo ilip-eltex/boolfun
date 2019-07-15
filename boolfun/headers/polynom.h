@@ -47,5 +47,7 @@ namespace bf
         std::vector<bvect64> _coeff;
         uint64_t _length;
         GF *_field;
+        int _n;
+        int _m;
     };
 }
