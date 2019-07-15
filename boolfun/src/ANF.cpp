@@ -94,7 +94,7 @@ namespace bf
             throw std::exception();
 
         uint32_t blocks = 1;
-        if (transformed.size() > 1)
+        if (transformed.size() == 1)
         {
             vector<uint64_t> transformed0(transformed[0]);
 
@@ -146,6 +146,7 @@ namespace bf
                             for (int j = 0; j < k; ++j)
                                 transformed0[i0][i0 * k + j] ^= transformed0[i0][(i0 + 1) * k + j];
                     }
+                blocks = 1;
             }
             return transformed0;
         }
@@ -171,7 +172,7 @@ namespace bf
         return maxCount;
     }
 
-    /*int get_token(string arg, unsigned int &index)
+    /*int get_token(string arg, unsigned int &index) //FIXME coming soon
     {
         while (arg[index++] != 'x')
         {
