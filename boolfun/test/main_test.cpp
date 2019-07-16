@@ -74,7 +74,7 @@ int main () {
 		if (tests[i].result() == false)
 			quit = true;
 	}
-	if (quit) return 1;
+	if (quit) return 1; kkkkkkkkkkkkkkkkkkkkkkk
 	return 0;
 }
 
