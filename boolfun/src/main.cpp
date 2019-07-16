@@ -9,7 +9,7 @@ int main()
     for (int i = 2; i < 16; ++i)
     {
         GF* a = get_field(i);
-        cout << i;
+        cout << i << endl;
     }
 
 

@@ -1,4 +1,3 @@
-#include <cmath>
 #include <exception>
 #include <cstring>
 #include <stdexcept>
@@ -16,7 +15,7 @@ namespace bf
         if (order > 31 || order < 2)
             throw std::invalid_argument("Wrong order!\n");
 
-        true_order = (bvect32)pow(2, order);
+        true_order = (bvect32)((unsigned)1 << (unsigned)order);
 
         this->order = order;
         this->field_polynom = get_polynom_from_table(order);
@@ -73,7 +72,7 @@ namespace bf
     {
         if(gen_el_found)
             return gen_el;
-        
+
         //генерируем одновременно таблицы степеней и чисел
         deg_to_num.resize(true_order);
         num_to_deg.resize(true_order);
@@ -139,8 +138,6 @@ namespace bf
         bvect32 c = a;
         for (size_t i = 1; i < b; i++)
             c = multiply(c, a);
-
-        //std::cout << c<< std::endl;
 
         return c;
     }
