@@ -70,9 +70,12 @@ int main () {
 	tests.push_back(temp); 
 	
 	for (int i=0; i<tests.size(); i++) {
-		print_test(tests,i);
-		if (tests[i].result() == false)
+		if (tests[i].result() == false) {
 			quit = true;
+			cout << 1 << '\n';
+		}
+		print_test(tests,i);
+		
 	}
 	if (quit) return 1; 
 	return 0;
