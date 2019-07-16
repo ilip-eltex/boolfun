@@ -6,8 +6,6 @@
 // Max table length 2^n (n <= 32)
 // Max var quanity n (n <= 32)
 
-using namespace std;
-
 namespace bf {
 	class polynom;
 

@@ -49,7 +49,7 @@ namespace bf {
 		return this->_values[index];
 	}
 
-	vector<bvec32> ttable::get_all() {
+	vector<bvect32> ttable::get_all() {
 		return (this->_values);
 	}
 
@@ -58,7 +58,7 @@ namespace bf {
 	}
 
 	int ttable::is_NM_function () {
-		return (this->_m > 1)
+		return (this->_m > 1);
 	}
 
 	int ttable::get_input_length() {
@@ -66,7 +66,7 @@ namespace bf {
 	}
 
 	int ttable::get_output_length() {
-		return (this->_m)
+		return (this->_m);
 	}
 
 }
