@@ -52,7 +52,7 @@ int main () {
 	tests.push_back(temp);
 	
 	//get_weight_32
-	result32 = get_weight_32 (0);
+	result32 = get_weight_32 (15);
 	temp.set("get_weight_32 (15)", result32 == 4);
 	tests.push_back(temp);
 	
