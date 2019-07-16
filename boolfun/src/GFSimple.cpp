@@ -2,7 +2,6 @@
 #include <exception>
 #include <cstring>
 #include <stdexcept>
-#include <iostream>
 
 #include "GF_simple.h"
 #include "Field_polynom_table.h"
@@ -18,11 +17,9 @@ namespace bf
             throw std::invalid_argument("Wrong order!\n");
 
         true_order = (bvect32)pow(2, order);
-        //std::cout << gen_el_found << std::endl;
 
         this->order = order;
         this->field_polynom = get_polynom_from_table(order);
-        //std::cout << this->field_polynom << std::endl;
         this->gen_el = get_generating_element();
     }
 
@@ -36,21 +33,10 @@ namespace bf
         return (bvect64)(a ^ b);
     }
 
-    bvect64 GFSimple::save_x64_multiply(bvect64 a, bvect64 b)
-    {
-        bvect64 c = 0;
-
-        for (unsigned int i = 0; i < 64; ++i)
-            if((b >> i) & (unsigned)1)
-                c = sum(c, (bvect64)a << i);
-
-        return c;
-    }
-
     //Происходит деление a на b в поле field. Здесь режимы
     //                                                    0 - найти MOD
     //                                                    1 - найти DIV
-    bvect64 GFSimple::div(GFSimple* field, bvect64 a, bvect64 b, int mode)
+    bvect64 GFSimple::div(bvect64 a, bvect64 b, int mode)
     {
         unsigned char c;
         bvect64 result = 0;
@@ -58,10 +44,9 @@ namespace bf
 
         while (deg(a0) >= deg(b))
         {
-            //std::cout << (int)deg(a0) << ' ' << (int)deg(b) << std::endl;
             c = deg(a0) - deg(b);
             set_bit_64(result, 1, c);
-            a0 = field->sum(a0, b << c);
+            a0 = sum(a0, b << c);
         }
         if (mode == 0)
             return a0;
@@ -84,7 +69,6 @@ namespace bf
 
             for (bvect32 j = 0; j < true_order; j++)
             {
-                //std::cout << i << " " << j << " " << power(i, j) << std::endl;
                 if (!num_to_deg[power(i, j)])
                     num_to_deg[power(i, j)] = j;
                 else
@@ -93,11 +77,9 @@ namespace bf
                     break;
                 }
             }
-            //std::cout << "------" << std::endl;
 
             if (!was)
             {
-                std::cout << " - " << i << std::endl;
                 for (bvect32 k = 0; k < true_order; k++)
                     deg_to_num[num_to_deg[k]] = k;
 
@@ -112,7 +94,7 @@ namespace bf
 
     bvect32 GFSimple::mod(bvect64 a)
     {
-        return (bvect32)div(this, a, (bvect64)field_polynom, 0);
+        return (bvect32)div(a, (bvect64)field_polynom, 0);
     }
 
     bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
@@ -126,8 +108,6 @@ namespace bf
             for (unsigned int i = 0; i < 32; ++i)
                 if((b >> i) & (unsigned)1)
                     c = sum(c, (bvect64)a << i);
-
-            //std::cout << "awd" << c << std::endl;
 
             return mod(c);
         }
