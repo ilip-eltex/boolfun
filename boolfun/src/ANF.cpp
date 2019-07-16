@@ -241,6 +241,11 @@ namespace bf
             transformed[elements[i]] = 1;
     }*/
 
+    // Temporary!!!!!!!!!!!!!
+    void ANF::parse_ANF(string arg)
+    {
+    }
+
     string ANF::to_str()
     {
         if (elements.empty())
