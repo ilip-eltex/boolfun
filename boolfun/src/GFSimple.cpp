@@ -38,25 +38,42 @@ namespace bf
     //                                                    1 - найти DIV
     bvect64 GFSimple::div(bvect64 a, bvect64 b, int mode)
     {
-        unsigned char c;
-        bvect64 result = 0;
-        bvect64 a0 = a;
-
-        while (deg(a0) >= deg(b))
+        if(b == field_polynom)
         {
-            c = deg(a0) - deg(b);
-            set_bit_64(result, 1, c);
-            a0 = sum(a0, b << c);
+            unsigned char c;
+            bvect64 result = 0;
+            bvect64 a0 = a;
+
+            while (deg(a0) >= deg(b))
+            {
+                c = deg(a0) - deg(b);
+                set_bit_64(result, 1, c);
+                a0 = sum(a0, b << c);
+            }
+            if (mode == 0)
+                return a0;
+            else
+                return result;
+        }else
+        {
+            if(mode == 0)
+                return 0;
+            else
+            {
+                if(num_to_deg[a] - num_to_deg[b] < 0)
+                    return deg_to_num[true_order - 1 + (num_to_deg[a] - num_to_deg[b])];
+                else
+                    return deg_to_num[num_to_deg[a] - num_to_deg[b]];
+            }
         }
-        if (mode == 0)
-            return a0;
-        else
-            return result;
     }
 
     //»щем порождающий элемент
     bvect32 GFSimple::get_generating_element()
     {
+        if(gen_el_found)
+            return gen_el;
+        
         //генерируем одновременно таблицы степеней и чисел
         deg_to_num.resize(true_order);
         num_to_deg.resize(true_order);
