@@ -9,9 +9,6 @@
 
 namespace bf
 {
-    int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
-    unsigned int true_order;//порядок поля, не степень двойки, а 2^n
-
     GFSimple::~GFSimple() = default;
 
     //Типичный конструктор
@@ -21,14 +18,12 @@ namespace bf
             throw std::invalid_argument("Wrong order!\n");
 
         true_order = (bvect32)pow(2, order);
-
-
+        //std::cout << gen_el_found << std::endl;
 
         this->order = order;
         this->field_polynom = get_polynom_from_table(order);
-        std::cout << this->field_polynom << std::endl;
+        //std::cout << this->field_polynom << std::endl;
         this->gen_el = get_generating_element();
-
     }
 
     bvect64 GFSimple::sum(bvect64 a, bvect64 b)
@@ -87,8 +82,9 @@ namespace bf
         {
             memset(num_to_deg.data(), 0, true_order * sizeof(bvect32));
 
-            std::cout << i << std::endl;
             for (bvect32 j = 0; j < true_order; j++)
+            {
+                //std::cout << i << " " << j << " " << power(i, j) << std::endl;
                 if (!num_to_deg[power(i, j)])
                     num_to_deg[power(i, j)] = j;
                 else
@@ -96,9 +92,12 @@ namespace bf
                     was = 1;
                     break;
                 }
+            }
+            //std::cout << "------" << std::endl;
 
             if (!was)
             {
+                std::cout << " - " << i << std::endl;
                 for (bvect32 k = 0; k < true_order; k++)
                     deg_to_num[num_to_deg[k]] = k;
 
@@ -128,6 +127,8 @@ namespace bf
                 if((b >> i) & (unsigned)1)
                     c = sum(c, (bvect64)a << i);
 
+            //std::cout << "awd" << c << std::endl;
+
             return mod(c);
         }
     }
@@ -135,9 +136,14 @@ namespace bf
     //a в степени b
     bvect32 GFSimple::power(bvect32 a, bvect32 b)
     {
+        if(b == 0)
+            return 1;
+
         bvect32 c = a;
         for (size_t i = 1; i < b; i++)
             c = multiply(c, a);
+
+        //std::cout << c<< std::endl;
 
         return c;
     }

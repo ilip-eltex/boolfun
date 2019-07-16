@@ -8,6 +8,8 @@ namespace bf
   class GF
   {
   protected:
+      int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
+      unsigned int true_order;//порядок поля, не степень двойки, а 2^n
 	  bvect32 field_polynom;
 	  bvect32 gen_el;
 	  std::vector<bvect32> num_to_deg;//Массив отображения число - степень попрождающего элемента
