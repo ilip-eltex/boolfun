@@ -1,8 +1,12 @@
 #pragma once
-#include <GF.h>
+
+#include <cstdint>
 
 namespace bf
 {
+    typedef uint32_t bvect32;
+    typedef uint64_t bvect64;
+
     unsigned int get_bit_32(bvect32, unsigned int);
     void set_bit1_32(bvect32&, unsigned int);
     void set_bit0_32(bvect32&, unsigned int);

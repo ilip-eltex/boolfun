@@ -6,7 +6,7 @@ namespace bf
     GF *get_field(int order)
     {
         if (order > 31 || order < 2)
-            return NULL;
+            return nullptr;
         GF *field = new GFSimple(order);
         return field;
     }

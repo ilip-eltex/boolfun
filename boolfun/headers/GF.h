@@ -1,12 +1,9 @@
 #pragma once
 
-#include <cstdint>
+#include "bitslib.h"
 
 namespace bf
 {
-  typedef uint32_t bvect32;
-  typedef uint64_t bvect64;
-
   class GF
   {
   protected:

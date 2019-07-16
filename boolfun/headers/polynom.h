@@ -1,9 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "GF.h"
 #include <string>
 #include <iostream>
+
+#include "bitslib.h"
+#include "GF.h"
 
 // Max polynom length 2^n (n <= 32)
 // Max var quanity n (n <= 32)
@@ -47,5 +49,7 @@ namespace bf
         std::vector<bvect64> _coeff;
         uint64_t _length;
         GF *_field;
+        int _n;
+        int _m;
     };
 }

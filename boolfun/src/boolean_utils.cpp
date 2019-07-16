@@ -1,5 +1,7 @@
-#include "boolean_utils.h"
 #include <iostream>
+
+#include "boolean_utils.h"
+#include "bitslib.h"
 #include "GF.h"
 #include "GF_simple.h"
 
