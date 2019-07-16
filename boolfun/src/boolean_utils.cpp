@@ -70,27 +70,27 @@ namespace bf
 
         vector<vector<int>> ivec(a.get_output_length());
 
-        for (int i = 0; i < ivec.size(); ++i)
+        for (auto el : ivec)
         {
-            ivec[i].resize(a.get_length());
+            el.resize(a.get_length());
 
-            for (int l = 0; l < ivec[i].size(); ++l)
+            for (int l = 0; l < el.size(); ++l)
             {
                 if (!a.get_value(l))
-                    ivec[i][l] = 1;
+                    el[l] = 1;
                 else
-                    ivec[i][l] = -1;
+                    el[l] = -1;
             }
 
-            for (int k = ivec[i].size() / 2; k >= 1; k /= 2)
+            for (int k = el.size() / 2; k >= 1; k /= 2)
             {
                 blocks *= 2;
                 for (int u = 0; u < blocks - 1; u += 2)
                     for (int j = 0; j < k; ++j)
                     {
-                        tmp = ivec[i][u * k + j];
-                        ivec[i][u * k + j] += ivec[i][(u + 1) * k + j];
-                        ivec[i][(u + 1) * k + j] = tmp - ivec[i][(u + 1) * k + j];
+                        tmp = el[u * k + j];
+                        el[u * k + j] += el[(u + 1) * k + j];
+                        el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
                     }
             }
             blocks = 1;
@@ -121,37 +121,37 @@ namespace bf
         int blocks = 1;
         int tmp;
 
-        for (int i = 0; i < spector.size(); ++i)
+        for (auto el : spector)
         {
-            for (int l = 0; l < spector[i].size(); ++l)
-                spector[i][l] *= spector[i][l];
+            for (auto el1 : el)
+                el1 *= el1;
 
-            for (int k = spector[i].size() / 2; k >= 1; k /= 2)
+            for (int k = el.size() / 2; k >= 1; k /= 2)
             {
                 blocks *= 2;
                 for (int u = 0; u < blocks - 1; u += 2)
                     for (int j = 0; j < k; ++j)
                     {
-                        tmp = spector[i][u * k + j];
-                        spector[i][u * k + j] += spector[i][(u + 1) * k + j];
-                        spector[i][(u + 1) * k + j] = tmp - spector[i][(u + 1) * k + j];
+                        tmp = el[u * k + j];
+                        el[u * k + j] += el[(u + 1) * k + j];
+                        el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
                     }
             }
 
-            for (int l = 0; l < spector[i].size(); ++l)
-                spector[i][l] /= a.get_length();
+            for (auto el1 : el)
+                el1 /= a.get_length();
 
             if (sigma)
-                for (int l = 0; l < spector[i].size(); ++l)
-                    (*sigma) += spector[i][l] * spector[i][l];
+                for (auto el1 : el)
+                    (*sigma) += el1 * el1;
 
             if (delta)
             {
-                tmp = spector[i][0];
+                tmp = el[0];
 
-                for (int l = 0; l < spector[i].size(); ++l)
-                    if (tmp < spector[i][l])
-                        tmp = spector[i][l];
+                for (auto el1 : el)
+                    if (tmp < el1)
+                        tmp = el1;
 
                 if ((*delta) < tmp)
                     (*delta) = tmp;
@@ -211,10 +211,10 @@ namespace bf
         vector<vector<int>> b = get_walsh_hadamard_spec(a);
         int tmp = abs(b[0][0]);
 
-        for (int j = 0; j < b.size(); ++j)
-            for (int i = 0; i < b[j].size(); ++i)
-                if (tmp < abs(b[j][i]))
-                    tmp = abs(b[j][i]);
+        for (auto el : b)
+            for (auto el1 : el)
+                if (tmp < abs(el1))
+                    tmp = abs(el1);
 
         return (((unsigned) 1 << (unsigned) (a.get_input_length())) - tmp) / 2;
     }

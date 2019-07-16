@@ -16,12 +16,12 @@ namespace bf
         vector<uint64_t> ivec(table_length <= sizeof(uint64_t) ? 1 : table_length / sizeof(uint64_t), 0);
         uint64_t count = 0;
 
-        for (int i = 0; i < ivec.size(); ++i)
+        for (auto a : ivec)
         {
             for (int j = 0; j < sizeof(uint64_t) * 8; ++j)
             {
-                ivec[i] |= (table.get_value(count++) >> bit_vector) & (unsigned) 1;
-                ivec[i] <<= (unsigned) 1;
+                a |= (table.get_value(count++) >> bit_vector) & (unsigned) 1;
+                a <<= (unsigned) 1;
             }
         }
         uint32_t blocks = 1;
@@ -135,9 +135,9 @@ namespace bf
 
         unsigned int maxCount = 0;
 
-        for (int i = 0; i < elements.size(); ++i)
-            if (maxCount < get_weight_32(elements[i]))
-                maxCount = get_weight_32(elements[i]);
+        for (auto a : elements)
+            if (maxCount < get_weight_32(a))
+                maxCount = get_weight_32(a);
 
         return maxCount;
     }
@@ -247,8 +247,8 @@ namespace bf
                             if (!coeff[lastX])
                             {
                                 elements[lastX] = 0;
-                                for (int j = 0; j < transformed.size(); ++j)
-                                    transformed[j][lastX] = 0;
+                                for (auto a : transformed)
+                                    a[lastX] = 0;
 
                                 writeElem = 0;
                                 lastX = 0;

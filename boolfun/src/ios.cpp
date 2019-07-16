@@ -9,8 +9,8 @@ namespace bf
 {
     string trim_left(string s)
     {
-        if (s == "") return s;
-        string result = "";
+        if (s.empty()) return s;
+        string result;
         int i;
         for (i = 0; s[i] == ' '; ++i);
         for (i = i; i < s.length(); ++i)
@@ -20,8 +20,8 @@ namespace bf
 
     string trim_right(string s)
     {
-        if (s == "") return s;
-        string result = "";
+        if (s.empty()) return s;
+        string result;
         int j;
         for (j = s.length() - 1; s[j - 1] == ' '; --j);
         for (int i = 0; i < j; ++i)
@@ -75,7 +75,7 @@ namespace bf
 //s
     string trim_all(string s)
     {
-        string result = "";
+        string result;
         for (int i = 0; i < s.length(); i++)
         {
             if (s[i] == ' ')
