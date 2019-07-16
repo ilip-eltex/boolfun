@@ -74,12 +74,12 @@ int main () {
 		if (not tests[i].result())
 			std::cout << 1 << std::endl;
 	for (int i=0; i<tests.size(); i++) {
-		//if ( not tests[i].result() ) 			
-			//quit = true;
+		if ( not tests[i].result() ) 			
+			quit = true;
 		print_test(tests,i);
 		
 	}
-	//if (quit) return 1; 
+	if (quit) return 1; 
 	return 0;
 }
 
