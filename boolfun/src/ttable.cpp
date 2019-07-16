@@ -4,24 +4,24 @@
 using namespace std;
 
 namespace bf { //FIXME release NM functions!!!
-	
-  //FIXME release NM functions!!!
-  int ttable::is_NM_function () {
-    return 0;
+
+	//FIXME release NM functions!!!
+	int ttable::is_NM_function () {
+		return 0;
 	}
 
-  //FIXME release NM functions!!!
-  int ttable::get_input_length() {
-    return 0;
-  }
+	//FIXME release NM functions!!!
+	int ttable::get_input_length() {
+		return 0;
+	}
 
-  //FIXME release NM functions!!!
-  int ttable::get_output_length() {
-    return 0;
-  }
-  
-  ttable::ttable(polynom &p) {
-    auto field = p.get_field();
+	//FIXME release NM functions!!!
+	int ttable::get_output_length() {
+		return 0;
+	}
+
+	ttable::ttable(polynom &p) {
+		auto field = p.get_field();
 		vector<bvect32> coeff;
 		const uint32_t polynom_length = p.get_length(); // aka x-quanity aka coeff-quanity
 		for (bvect32 i = 0; i < polynom_length; i++)
@@ -33,24 +33,24 @@ namespace bf { //FIXME release NM functions!!!
 				_values[x] += field->multiply(coeff[i], field->power(x, i));
 	}
 
-	ttable::ttable (vector< vector<bvect64> > anf_db) { 
-		
-    vector<bvect32> values;
-		values.resize (power2(field->get_order());
-		               for (uint64_t i=0; i < values.size(); i++)
-		               values[i] = 0;
+	ttable::ttable (vector< vector<bvect64> > anf_db) {
+
+		vector<bvect32> values;
+		values.resize (anf_db[0].size());
+		for (uint64_t i=0; i < values.size(); i++)
+		values[i] = 0;
 		               uint64_t current_value=0;
 		for (uint64_t i=0; i<anf_db.size(); i++) { // container for (containers for bits in values vector
 			current_value = 0;
 			for (uint64_t j=0; j<anf_db[i].size(); j++) { // anf_db[j] - container for bit number j in values vector
 					for (int k=0; k<63; k++) {
-						uint32_t temp = this->_values[current_value]
-						                set_bit_32(temp, get_bit_32(anf_db[i][j],k),j);
+						uint32_t temp = this->_values[current_value];
+						set_bit_32(temp, get_bit_32(anf_db[i][j],k),j);
 						this->_values[current_value++] = temp;
 					}
 				}
 			}
-    
+
 	}
 
 	ttable::ttable (vector<bvect32> values) {
