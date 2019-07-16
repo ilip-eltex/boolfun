@@ -13,8 +13,8 @@ namespace bf {
 		public:
 			
 			ttable(polynom &p);
-			ttable(vector< vector<bvect64> > anf_db);
-			ttable (vector<bvect32> values);
+			ttable(std::vector< std::vector<bvect64> > anf_db);
+			ttable (std::vector<bvect32> values);
 			
 			void set(bvect32 vect, uint32_t index);
 			
