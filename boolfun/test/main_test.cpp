@@ -56,7 +56,7 @@ int main () {
 	tests.push_back(temp);
 	
 	// is_odd_32 
-	result32 = 10;
+	result32 = 9;
 	temp.set("is_odd_32 (10)", is_odd_32(result32) == true);
 	
 	// scalar_product 10 5 = 0
@@ -65,7 +65,7 @@ int main () {
 	 tests.push_back(temp);
 	 
 	// deg_32 (2048) 
-	temp_char = deg_32(2049);
+	temp_char = deg_32(2048);
 	temp.set("deg_32 (2048)", temp_char == 11);
 	tests.push_back(temp); 
 	
