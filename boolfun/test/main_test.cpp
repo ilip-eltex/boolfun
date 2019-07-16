@@ -2,7 +2,8 @@
 #include <stdint.h>
 #include <cstdlib>
 #include "bitslib.h"
-
+#include "ttable.h"
+#include "polynom.h"
 //#include "sandbox.h"
 
 class test {
@@ -78,7 +79,8 @@ int main () {
 	temp.set("deg_32(2048) =11", temp_char == 11);
 	tests.push_back(temp); 
 	
-	
+	//
+	bf::GF *field = bf::get_field(6);
 	
 	for (int i=0; i<tests.size(); i++) {
 		if ( not tests[i].result() ) 			
@@ -89,7 +91,7 @@ int main () {
 	if (quit) return 1; 
 	return 0;
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 /////////SOURCE
 
 	/*bool compare_vals (auto a1, auto a2, size_t size) {
