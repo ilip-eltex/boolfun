@@ -3,22 +3,7 @@
 
 using namespace std;
 
-namespace bf { //FIXME release NM functions!!!
-
-	//FIXME release NM functions!!!
-	int ttable::is_NM_function () {
-		return 0;
-	}
-
-	//FIXME release NM functions!!!
-	int ttable::get_input_length() {
-		return 0;
-	}
-
-	//FIXME release NM functions!!!
-	int ttable::get_output_length() {
-		return 0;
-	}
+namespace bf {
 
 	ttable::ttable (polynom &p) {
 		auto field = p.get_field();
@@ -34,22 +19,21 @@ namespace bf { //FIXME release NM functions!!!
 	}
 
 	ttable::ttable (vector< vector<bvect64> > anf_db) {
-
 		vector<bvect32> values;
 		values.resize (anf_db[0].size());
 		for (uint64_t i=0; i < values.size(); i++)
-		values[i] = 0;
-		               uint64_t current_value=0;
+			values[i] = 0;
+		uint64_t current_value=0;
 		for (uint64_t i=0; i<anf_db.size(); i++) { // container for (containers for bits in values vector
 			current_value = 0;
 			for (uint64_t j=0; j<anf_db[i].size(); j++) { // anf_db[j] - container for bit number j in values vector
-					for (int k=0; k<63; k++) {
-						uint32_t temp = this->_values[current_value];
-						set_bit_32(temp, get_bit_32(anf_db[i][j],k),j);
-						this->_values[current_value++] = temp;
-					}
+				for (int k=0; k<63; k++) {
+					uint32_t temp = this->_values[current_value];
+					set_bit_32(temp, get_bit_32(anf_db[i][j],k),j);
+					this->_values[current_value++] = temp;
 				}
 			}
+		}
 
 	}
 
@@ -65,8 +49,25 @@ namespace bf { //FIXME release NM functions!!!
 		return this->_values[index];
 	}
 
+	vector<bvec32> ttable::get_all() {
+		return (this->_values);
+	}
+
 	uint64_t ttable::get_length() {
 		return this->_length;
 	}
-//s
+
+	int ttable::is_NM_function () {
+		return (this->_m > 1)
+	}
+
+	int ttable::get_input_length() {
+		return (this->_n);
+	}
+
+	int ttable::get_output_length() {
+		return (this->_m)
+	}
+
 }
+

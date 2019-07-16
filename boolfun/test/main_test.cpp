@@ -79,6 +79,7 @@ int main () {
 	tests.push_back(temp); 
 	
 	
+	
 	for (int i=0; i<tests.size(); i++) {
 		if ( not tests[i].result() ) 			
 			quit = true;

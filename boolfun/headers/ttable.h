@@ -12,7 +12,6 @@ namespace bf {
 	class polynom;
 
 	class ttable {
-			//in field type
 		public:
 			
 			ttable(polynom &p);
@@ -32,6 +31,9 @@ namespace bf {
 		private:
 			std::vector<bvect32> _values;
 			uint64_t _length;
+			unsigned int _n;
+			unsigned int _m;
+			
 	};
 
 }
