@@ -1,9 +1,13 @@
 #!/bin/bash
 if [ "$TRAVIS_BRANCH" = "test" ]; then 
-	bash test_branch.sh
+	cd boolfun/test 
+	g++ -std=c++11 main_test.cpp -o tests
+	exit '.tests'	
 fi
 #####
 if [ "$TRAVIS_BRANCH" = "master" ]; then
-	bash master_branch.sh
+	cd boolfun/ 
+	cmake .  
+	cmake --build .
 fi
 
