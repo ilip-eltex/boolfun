@@ -158,31 +158,35 @@ namespace bf
 
         if (arg[index] - '0' > 0 && arg[index] - '0' < 10)
         {
-            unsigned int a = arg[index++] - '0';
-            while (!(arg[index] - '0' > 0 && arg[index] - '0' < 10) && index < arg.length())
-            {
-                a = a * 10 + arg[index] - '0';
-                index++;
-            }
+            unsigned int a = arg[index] - '0';
+            index++;
+            while (arg[index] - '0' > 0 && arg[index] - '0' < 10 && index++ < arg.length())
+                a = a * 10 + (arg[index - 1] - '0');
+
             elem = a;
             if (index <= arg.length() && (arg[index] == ' ' || arg[index] == '+'))
                 return 0;
             else if (index < arg.length() && arg[index] == 'x')
                 return 1;
             else
+            {
+                cout << arg[index] << endl;
                 return -1;
+            }
         } else
         {
-            if (index == arg.size() - 1)
+            if (index == arg.length() - 1)
+            {
+                cout << "dadw" << endl;
                 return -1;
+            }
             else
             {
-                unsigned int a = arg[index++] - '0';
-                while (!(arg[index] - '0' > 0 && arg[index] - '0' < 10) && index < arg.length())
-                {
-                    a = a * 10 + arg[index] - '0';
-                    index++;
-                }
+                unsigned int a = arg[index + 1] - '0';
+                index+=2;
+                while (arg[index] - '0' > 0 && arg[index] - '0' < 10 && index++ < arg.length())
+                    a = a * 10 + (arg[index - 1] - '0');
+
                 elem = a;
 
                 return 2;
@@ -203,6 +207,7 @@ namespace bf
 
         while (true)
         {
+            cout << "da";
             if (fill)
             {
                 elements.resize(elements.size() + 1);
@@ -213,7 +218,7 @@ namespace bf
             {
                 case -3:
                     if (!elements.empty())
-                        throw std::invalid_argument("bad string!");
+                        throw std::invalid_argument("bad string!0");
                     else
                         if(!writeElem)
                         {
@@ -224,7 +229,7 @@ namespace bf
                     fill = 1;
 
                     if(!writeElem)
-                        throw std::invalid_argument("bad string!");
+                        throw std::invalid_argument("bad string!1");
 
                     if(!lastCoeff)
                         lastCoeff = 1;
@@ -256,7 +261,7 @@ namespace bf
                     lastCoeff = 0;
                     break;
                 case -1:
-                    throw std::invalid_argument("bad string!");
+                    throw std::invalid_argument("bad string!2");
                 case 0:
                     if (elements.empty())
                         elements.resize(1);
@@ -274,10 +279,10 @@ namespace bf
 
                         if (elem != 1)
                         {
-                            if(transformed.size() < bf::deg(elem))
+                            if(transformed.size() < deg_32(elem))
                             {
                                 int size = transformed.size();
-                                transformed.resize(bf::deg(elem));
+                                transformed.resize(deg_32(elem));
                                 for (int i = size + 1; i < transformed.size(); ++i)
                                     transformed[i].resize(1 << maxDeg);
                             }

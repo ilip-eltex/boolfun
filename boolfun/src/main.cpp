@@ -1,17 +1,14 @@
 #include <iostream>
-#include "GF.h"
+#include "ANF.h"
 
 using namespace std;
 using namespace bf;
 
 int main()
 {
-    for (int i = 2; i < 16; ++i)
-    {
-        GF* a = get_field(i);
-        cout << i << endl;
-    }
-
+    ANF anf;
+    anf.parse_ANF("x0x1x3x4 + x3x1 + 1");
+    cout << anf;
 
     return 0;
 }

@@ -99,12 +99,12 @@ namespace bf
         return ivec;
     }
 
-    ttable *get_derivative(ttable &a, bvect32 direction)
+    ttable get_derivative(ttable &a, bvect32 direction)
     {
-        auto *b = new ttable(a);
+        auto b = ttable(a);
 
-        for (bvect32 i = 0; i < b->get_length(); ++i)
-            b->set(b->get_value(i) ^ b->get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+        for (bvect32 i = 0; i < b.get_length(); ++i)
+            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
 
         return b;
     }
@@ -168,7 +168,8 @@ namespace bf
             for (int i = 0; i < no_zeroes; i++)
                 accum <<= (unsigned) 1;
 
-            return is_balanced(*get_derivative(a, accum));
+            auto table = get_derivative(a, accum);
+            return is_balanced(table);
         } else if (no_zeroes == 0)
         {
             for (int j = 0; j < no_ones; j++)
@@ -176,8 +177,8 @@ namespace bf
                 accum <<= (unsigned) 1;
                 accum |= (unsigned) 1;
             }
-
-            return is_balanced(*get_derivative(a, accum));
+            auto table = get_derivative(a, accum);
+            return is_balanced(table);
         }
 
         return get_vector_permutation(a, no_ones - 1, no_zeroes, (accum << (unsigned) 1) | (unsigned) 1) &&
@@ -196,8 +197,12 @@ namespace bf
     int is_SAC(ttable &a)
     {
         for (unsigned int i = 0; i < a.get_input_length(); ++i)
-            if (!is_balanced(*get_derivative(a, (unsigned) 1 << i)))
+        {
+            auto table = get_derivative(a, (unsigned) 1 << i);
+            if (!is_balanced(table))
                 return 0;
+        }
+
         return 1;
     }
 

@@ -13,7 +13,7 @@ namespace bf
     bvect32 get_trace(GF&);
     int is_balanced(ttable&);
     vector<vector<int>> get_walsh_hadamard_spec(ttable&);
-    ttable *get_derivative(ttable&, bvect32);
+    ttable get_derivative(ttable&, bvect32);
     void get_GAC_characteristics(ttable&, unsigned long*, unsigned int*);
     int is_PC(ttable&, int);
     int is_SAC(ttable&);
