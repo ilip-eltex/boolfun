@@ -65,7 +65,7 @@ int main () {
 	 tests.push_back(temp);
 	 
 	// deg_32 (2048) 
-	temp_char = deg(2048);
+	temp_char = deg_32(2048);
 	temp.set("deg_32 (2048)", temp_char == 11);
 	tests.push_back(temp); 
 	
