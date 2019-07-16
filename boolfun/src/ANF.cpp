@@ -1,9 +1,8 @@
+#include "ANF.h"
 #include <vector>
 #include <cmath>
 #include <iostream>
-
 #include "bitslib.h"
-#include "ANF.h"
 
 namespace bf
 {
@@ -302,11 +301,6 @@ namespace bf
             if (br)
                 break;
         }
-    }
-
-    // Temporary!!!!!!!!!!!!!
-    void ANF::parse_ANF(string arg)
-    {
     }
 
     string ANF::to_str()
