@@ -72,7 +72,7 @@ int main () {
 	
 	for (int i=0; i<tests.size(); i++) 
 		if (not tests[i].result())
-			std::cout << 1 << endl;
+			std::cout << 1 << std::endl;
 	for (int i=0; i<tests.size(); i++) {
 		//if ( not tests[i].result() ) 			
 			//quit = true;
