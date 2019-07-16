@@ -70,13 +70,16 @@ int main () {
 	temp.set("deg_32 (2048)", temp_char == 11);
 	tests.push_back(temp); 
 	
+	for (int i=0; i<tests.size(); i++) 
+		if (not tests[i].result())
+			std::cout << 1 << endl;
 	for (int i=0; i<tests.size(); i++) {
-		if (tests[i].result() == false) 			
-			quit = true;
+		//if ( not tests[i].result() ) 			
+			//quit = true;
 		print_test(tests,i);
 		
 	}
-	if (quit) system("exit 1"); 
+	//if (quit) return 1; 
 	return 0;
 }
 
