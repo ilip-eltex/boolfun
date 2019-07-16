@@ -67,7 +67,7 @@ namespace bf {
 
 		if (t == 0)
 			return false;
-
+		this->_n = t;
 		std::vector<uint32_t> coeffs(static_cast<size_t>(t));
 		for (uint32_t i = 0; i < coeffs.size(); i++)
 			coeffs[i] = 0;
@@ -109,6 +109,7 @@ namespace bf {
 				}
 			coeffs[degree] ^= t;
 		}
-		return false;//FIXME blet
+		this->_coeff = coeffs;
+		return true;		
 	}
 }

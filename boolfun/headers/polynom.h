@@ -32,6 +32,8 @@ namespace bf {
 			std::vector<bvect32> _coeff;
 			uint32_t 			 _length;
 			GF 					 *_field;
+			unsigned int _n;
+			unsigned int _m;
 
 	};
 

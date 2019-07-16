@@ -33,7 +33,6 @@ namespace bf {
 			uint64_t _length;
 			unsigned int _n;
 			unsigned int _m;
-			
 	};
 
 }
