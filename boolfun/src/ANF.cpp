@@ -1,8 +1,8 @@
-#include "ANF.h"
 #include <vector>
 #include <cmath>
 #include <iostream>
 #include "bitslib.h"
+#include "ANF.h"
 
 namespace bf
 {
@@ -290,6 +290,7 @@ namespace bf
                         maxDeg = elem;
                         for (int i = 0; i < transformed.size(); ++i)
                             transformed[i].resize(1 << maxDeg, 0);
+
                         coeff.resize(1 << maxDeg);
                     }
 
