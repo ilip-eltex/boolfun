@@ -1,6 +1,7 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <ctype.h>
 #include "ANF.h"
 
 namespace bf
@@ -106,7 +107,8 @@ namespace bf
                     for (int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for (int j = 0; j < k; ++j)
                             set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], i0 * k + j) ^
-                                                           get_bit_64(transformed0[i][0], (i0 + 1) * k + j), i0 * k + j);
+                                                           get_bit_64(transformed0[i][0], (i0 + 1) * k + j),
+                                       i0 * k + j);
                 }
             else
                 for (int k = transformed0[i].size() / 2; k >= 1; k /= 2)
@@ -142,50 +144,55 @@ namespace bf
 
     int get_token(string arg, unsigned int &index, uint32_t &elem)
     {
-        while (arg[index] != 'x' && !(arg[index] - '0' > 0 && arg[index] - '0' < 10))
+        while (arg[index] != 'x' && !isdigit(arg[index]))
         {
             if (index == arg.length())
                 return -3;
 
-            if (arg[index] != ' ' && arg[index] != '+' && !(arg[index] - '0' > 0 && arg[index] - '0' < 10))
+            if (arg[index] != ' ' && arg[index] != '+' && !isdigit(arg[index]))
                 return -1;
             else if (arg[index] == '+')
+            {
+                index++;
                 return -2;
+            }
 
             index++;
         }
-        cout << arg[index];
 
-        if (arg[index] - '0' > 0 && arg[index] - '0' < 10)
+        int exp = 1;
+
+        if (isdigit(arg[index]))
         {
+            exp = 10;
             unsigned int a = arg[index] - '0';
             index++;
-            while (arg[index] - '0' > 0 && arg[index] - '0' < 10 && index++ < arg.length())
-                a = a * 10 + (arg[index - 1] - '0');
+            while (isdigit(arg[index]) && index < arg.length())
+            {
+                a = a * exp + (arg[index++] - '0');
+                exp *= 10;
+            }
 
             elem = a;
-            if (index <= arg.length() && (arg[index] == ' ' || arg[index] == '+'))
+            if (index == arg.length() || (index < arg.length() && (arg[index] == ' ' || arg[index] == '+')))
                 return 0;
             else if (index < arg.length() && arg[index] == 'x')
                 return 1;
             else
-            {
-                cout << arg[index] << endl;
                 return -1;
-            }
         } else
         {
             if (index == arg.length() - 1)
-            {
-                cout << "dadw" << endl;
                 return -1;
-            }
             else
             {
-                unsigned int a = arg[index + 1] - '0';
-                index+=2;
-                while (arg[index] - '0' > 0 && arg[index] - '0' < 10 && index++ < arg.length())
-                    a = a * 10 + (arg[index - 1] - '0');
+                unsigned int a = 0;
+                index++;
+                while (isdigit(arg[index]) && index < arg.length())
+                {
+                    a = a * exp + (arg[index++] - '0');
+                    exp *= 10;
+                }
 
                 elem = a;
 
@@ -196,7 +203,6 @@ namespace bf
 
     void ANF::parse_ANF(string arg)
     {
-        int fill = 1;
         int br = 0;
         int maxDeg = 0;
         unsigned int index = 0;
@@ -207,54 +213,71 @@ namespace bf
 
         while (true)
         {
-            cout << "da";
-            if (fill)
-            {
-                elements.resize(elements.size() + 1);
-                fill = 0;
-            }
-
             switch (get_token(arg, index, elem))
             {
                 case -3:
-                    if (!elements.empty())
+                    if (elements.empty())
                         throw std::invalid_argument("bad string!0");
-                    else
-                        if(!writeElem)
-                        {
-                            br = 1;
-                            break;
-                        }
+                    else if (!writeElem)
+                    {
+                        br = 1;
+                        break;
+                    }
                 case -2:
-                    fill = 1;
-
-                    if(!writeElem)
+                    if (!writeElem)
                         throw std::invalid_argument("bad string!1");
 
-                    if(!lastCoeff)
+                    if (!lastCoeff)
                         lastCoeff = 1;
 
-                    if(elements.size() <= lastX)
-                        elements.resize(lastX + 1);
-
-                    if(!elements[lastX])
-                        elements[lastX] = lastX;
-                    else
+                    if (lastX)
                     {
-                        coeff[lastX] ^= lastCoeff;
-                        if(!coeff[lastX])
+                        if (elements.size() <= lastX)
+                            elements.resize(lastX + 1);
+
+                        if (!elements[lastX])
                         {
-                            elements[lastX] = 0;
+                            elements[lastX] = lastX;
+                            coeff[lastX] = lastCoeff;
+                        } else
+                        {
+                            coeff[lastX] ^= lastCoeff;
+                            lastCoeff = coeff[lastX];
+
+                            if (!coeff[lastX])
+                            {
+                                elements[lastX] = 0;
+                                for (int j = 0; j < transformed.size(); ++j)
+                                    transformed[j][lastX] = 0;
+
+                                writeElem = 0;
+                                lastX = 0;
+                                lastCoeff = 0;
+                                break;
+                            }
+                        }
+
+                        for (int j = 0; j < transformed.size(); ++j)
+                            transformed[j][lastX] |= lastCoeff >> (unsigned) (transformed.size() - 1 - j);
+                    } else
+                    {
+                        if (coeff[0])
+                        {
+                            coeff[0] ^= lastCoeff;
+                            if (!coeff[0])
+                            {
+                                writeElem = 0;
+                                lastCoeff = 0;
+                                break;
+                            }
+                        } else
+                        {
                             for (int j = 0; j < transformed.size(); ++j)
-                                transformed[j][lastX] = 0;
-                            break;
+                                transformed[j][0] |= lastCoeff >> (unsigned) (transformed.size() - 1 - j);
+
+                            coeff[0] = lastCoeff;
                         }
                     }
-
-                    for (int j = 0; j < transformed.size(); ++j)
-                        transformed[j][lastX] |= lastCoeff >> (unsigned)(transformed.size() - 1 - j);
-
-                    coeff[lastX] = lastCoeff;
 
                     writeElem = 0;
                     lastX = 0;
@@ -268,8 +291,10 @@ namespace bf
                     if (coeff.empty())
                         coeff.resize(1);
 
-                    elements[0] = 0;
-                    coeff[0] = elem;
+                    writeElem = 1;
+
+                    lastCoeff = elem;
+                    lastX = 0;
                     break;
                 case 1://coeff of x
                     if (elem)
@@ -279,29 +304,34 @@ namespace bf
 
                         if (elem != 1)
                         {
-                            if(transformed.size() < deg_32(elem))
+                            if (transformed.size() < deg_32(elem))
                             {
                                 int size = transformed.size();
                                 transformed.resize(deg_32(elem));
                                 for (int i = size + 1; i < transformed.size(); ++i)
-                                    transformed[i].resize(1 << maxDeg);
+                                    transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
                             }
                         }
                     }
                     break;
                 case 2://x index
-                    if(maxDeg < elem)
+                    if (elem == 0)
+                        throw std::invalid_argument("Zero index!");
+
+
+                    if (maxDeg < elem)
                     {
                         maxDeg = elem;
                         for (int i = 0; i < transformed.size(); ++i)
-                            transformed[i].resize(1 << maxDeg, 0);
+                            transformed[i].resize((unsigned) 1 << (unsigned) maxDeg, 0);
 
-                        coeff.resize(1 << maxDeg);
+                        coeff.resize((unsigned) 1 << (unsigned) maxDeg);
                     }
 
                     writeElem = 1;
 
-                    lastX |= (unsigned int) ((unsigned)1 << (elem - 1));
+                    lastX |= (unsigned int) ((unsigned) 1 << (elem - 1));
+
                     break;
             }
             if (br)
@@ -312,26 +342,25 @@ namespace bf
     string ANF::to_str()
     {
         if (elements.empty())
-            return NULL;
+            return nullptr;
         else
         {
-            string anf = "";
+            string anf;
+            //cout << elements.size() << endl;
             for (int i = 0; i < elements.size(); ++i)
             {
                 if (elements[i])
                 {
-                    if (!coeff.empty())
+                    if (!coeff.empty() && coeff[i] != 1)
                         anf += std::to_string(coeff[i]);
 
-                    for (int j = 0; j < sizeof(uint32_t); ++j)
+                    for (int j = 0; j < sizeof(uint32_t) * 8; ++j)
                         if (get_bit_32(elements[i], j))
                             anf += "x" + std::to_string(j + 1);
-                } else if (i == 0 && transformed.size() == 1)
-                    anf += "1";
-                else if (i == 0 && transformed.size() > 1)
+                } else if (!i && coeff[0])
                     anf += std::to_string(coeff[0]);
 
-                if (i != elements.size() - 1)
+                if ((elements[i] || (!i && coeff[0])) && i != elements.size() - 1)
                     anf += " + ";
             }
             return anf;

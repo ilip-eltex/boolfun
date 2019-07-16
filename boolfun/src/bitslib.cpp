@@ -7,25 +7,25 @@ namespace bf
 
     unsigned int get_bit_32(bvect32 x, unsigned int index)
     {
-        return (index >> x) & (unsigned)1;
+        return (x >> index) & (unsigned) 1;
     }
 
     void set_bit1_32(bvect32 &x, unsigned int index)
     {
-        x |= ((unsigned)1 << index);
+        x |= ((unsigned) 1 << index);
     }
 
     void set_bit0_32(bvect32 &x, unsigned int index)
     {
-        x &= ~((unsigned)1 << index);
+        x &= ~((unsigned) 1 << index);
     }
 
     void set_bit_32(bvect32 &x, unsigned int value, unsigned int index)
     {
         if (value)
-            x |= (unsigned)1 << index;
+            x |= (unsigned) 1 << index;
         else
-            x &= ~((unsigned)1 << index);
+            x &= ~((unsigned) 1 << index);
     }
 
     unsigned int get_weight_32(bvect32 x)
@@ -41,12 +41,12 @@ namespace bf
 
     bool is_odd_32(bvect32 x)
     {
-        x ^= (x >> (unsigned)16);
-        x ^= (x >> (unsigned)8);
-        x ^= (x >> (unsigned)4);
-        x ^= (x >> (unsigned)2);
-        x ^= (x >> (unsigned)1);
-        return (x & (unsigned)1);
+        x ^= (x >> (unsigned) 16);
+        x ^= (x >> (unsigned) 8);
+        x ^= (x >> (unsigned) 4);
+        x ^= (x >> (unsigned) 2);
+        x ^= (x >> (unsigned) 1);
+        return (x & (unsigned) 1);
     }
 
     bvect32 scalar_product_32(bvect32 a, bvect32 b)
@@ -57,24 +57,25 @@ namespace bf
     unsigned char deg_32(bvect32 a)
     {
         for (int i = 31; i >= 0; --i)
-            if ((a >> (unsigned)i) & (unsigned)1)
+            if ((a >> (unsigned) i) & (unsigned) 1)
                 return (unsigned char) i;
         return 0;
     }
-    
-    unsigned int vect_len_32 (bvect32 x) {
-    	if (x == 0)
-    		return 0;
-    	for (int i=31; i>0; i++)
-    		if (get_bit_32(x,i) == 1)
-    			return 1;
-	}
+
+    unsigned int vect_len_32(bvect32 x)
+    {
+        if (x == 0)
+            return 0;
+        for (int i = 31; i > 0; i++)
+            if (get_bit_32(x, i) == 1)
+                return 1;
+    }
 
 //////////////// for bvect64 ///////////////////////////////////////////////
 
     unsigned int get_bit_64(bvect64 x, unsigned int index)
     {
-        return (index >> x) & (unsigned)1;
+        return (x >> index) & (unsigned) 1;
     }
 
     void set_bit1_64(bvect64 &x, unsigned int index)
@@ -113,15 +114,14 @@ namespace bf
 
     bool is_odd_64(bvect64 x)
     {
-        x ^= (x >> (unsigned)32);
-        x ^= (x >> (unsigned)16);
-        x ^= (x >> (unsigned)8);
-        x ^= (x >> (unsigned)4);
-        x ^= (x >> (unsigned)2);
-        x ^= (x >> (unsigned)1);
-        return (x & (unsigned)1);
+        x ^= (x >> (unsigned) 32);
+        x ^= (x >> (unsigned) 16);
+        x ^= (x >> (unsigned) 8);
+        x ^= (x >> (unsigned) 4);
+        x ^= (x >> (unsigned) 2);
+        x ^= (x >> (unsigned) 1);
+        return (x & (unsigned) 1);
     }
-
 
     uint32_t power2(uint32_t y)
     {
@@ -131,16 +131,17 @@ namespace bf
     unsigned char deg_64(bvect64 a)
     {
         for (int i = 63; i >= 0; --i)
-            if ((a >> (unsigned)i) & (unsigned)1)
+            if ((a >> (unsigned) i) & (unsigned) 1)
                 return (unsigned char) i;
         return 0;
     }
-    
-    unsigned int vect_len_64 (bvect64 x) {
-    	if (x == 0)
-    		return 0;
-    	for (int i=63; i>0; i++)
-    		if (get_bit_64(x,i) == 1)
-    			return 1;
-	}
+
+    unsigned int vect_len_64(bvect64 x)
+    {
+        if (x == 0)
+            return 0;
+        for (int i = 63; i > 0; i++)
+            if (get_bit_64(x, i) == 1)
+                return 1;
+    }
 }

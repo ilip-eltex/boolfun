@@ -216,7 +216,7 @@ namespace bf
                 if (tmp < abs(b[j][i]))
                     tmp = abs(b[j][i]);
 
-        return (((unsigned)1 << (unsigned)(a.get_input_length())) - tmp) / 2;
+        return (((unsigned) 1 << (unsigned) (a.get_input_length())) - tmp) / 2;
     }
 
     unsigned int get_hemming_distance(ttable &a, ttable &b)

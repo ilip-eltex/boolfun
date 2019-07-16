@@ -16,6 +16,7 @@ namespace bf
 	bvect32 scalar_product_32(bvect32 a, bvect32 b);
 	unsigned char deg_32(bvect32 a);
 	unsigned int vect_len_32 (bvect32 x);
+
 	///// uint64_t /////////////////////////////////
 	unsigned int get_bit_64(bvect64 x, unsigned int index);
 	void set_bit1_64(bvect64 &x, unsigned int index);
