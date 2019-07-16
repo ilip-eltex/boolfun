@@ -2,7 +2,8 @@
 if [ "$TRAVIS_BRANCH" = "test" ]; then 
 	cd boolfun/test 
 	g++ -std=c++11 main_test.cpp -o tests
-	exit `./tests`	
+	./tests
+
 fi
 #####
 if [ "$TRAVIS_BRANCH" = "master" ]; then
