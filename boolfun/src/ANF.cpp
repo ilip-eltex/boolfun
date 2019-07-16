@@ -58,7 +58,7 @@ namespace bf
         transformed0 = ivec;
     }
 
-    void ANF::getANF(ttable &table)
+    void ANF::getANF(ttable &table)//FIXME чекай индексы
     {
         if (!table.is_NM_function())
         {
@@ -94,62 +94,32 @@ namespace bf
             throw std::exception();
 
         uint32_t blocks = 1;
-        if (transformed.size() == 1)
-        {
-            vector<uint64_t> transformed0(transformed[0]);
+        vector<vector<uint64_t>> transformed0(transformed.size());
 
-            if (transformed0.size() == 1)
+        for (int i = 0; i < transformed.size(); ++i)
+        {
+            transformed0[i] = transformed[i];
+
+            if (transformed0[i].size() == 1)
                 for (int k = table_length / 2; k >= 1; k /= 2)
                 {
                     blocks *= 2;
-                    for (int i = 0; i < blocks - 1; i += 2)
+                    for (int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for (int j = 0; j < k; ++j)
-                            set_bit_64(transformed0[0], get_bit_64(transformed0[0], i * k + j) ^
-                                                        get_bit_64(transformed0[0], (i + 1) * k + j), i * k + j);
+                            set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], i0 * k + j) ^
+                                                           get_bit_64(transformed0[i][0], (i0 + 1) * k + j), i0 * k + j);
                 }
             else
-                for (int k = transformed0.size() / 2; k >= 1; k /= 2)
+                for (int k = transformed0[i].size() / 2; k >= 1; k /= 2)
                 {
                     blocks *= 2;
-                    for (int i = 0; i < blocks - 1; i += 2)
+                    for (int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for (int j = 0; j < k; ++j)
-                            transformed0[i * k + j] ^= transformed0[(i + 1) * k + j];
+                            transformed0[i0][i0 * k + j] ^= transformed0[i0][(i0 + 1) * k + j];
                 }
-
-            vector<vector<uint64_t>> answer(1);
-            answer[0] = transformed0;
-
-            return answer;
-        } else
-        {
-            vector<vector<uint64_t>> transformed0(transformed.size());
-
-            for (int i = 0; i < transformed.size(); ++i)
-            {
-                transformed0[i] = transformed[i];
-
-                if (transformed0[i].size() == 1)
-                    for (int k = table_length / 2; k >= 1; k /= 2)
-                    {
-                        blocks *= 2;
-                        for (int i0 = 0; i0 < blocks - 1; i0 += 2)
-                            for (int j = 0; j < k; ++j)
-                                set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], i0 * k + j) ^
-                                                               get_bit_64(transformed0[i][0], (i0 + 1) * k + j),
-                                           i0 * k + j);
-                    }
-                else
-                    for (int k = transformed0[i].size() / 2; k >= 1; k /= 2)
-                    {
-                        blocks *= 2;
-                        for (int i0 = 0; i0 < blocks - 1; i0 += 2)
-                            for (int j = 0; j < k; ++j)
-                                transformed0[i0][i0 * k + j] ^= transformed0[i0][(i0 + 1) * k + j];
-                    }
-                blocks = 1;
-            }
-            return transformed0;
+            blocks = 1;
         }
+        return transformed0;
     }
 
     ostream &operator<<(ostream &stream, ANF &anf)
@@ -168,29 +138,56 @@ namespace bf
             if (maxCount < get_weight_32(elements[i]))
                 maxCount = get_weight_32(elements[i]);
 
-
         return maxCount;
     }
 
-    /*int get_token(string arg, unsigned int &index) //FIXME coming soon
+    int get_token(string arg, unsigned int &index, uint32_t &elem)
     {
-        while (arg[index++] != 'x')
+        while (arg[index] != 'x' && !(arg[index] - '0' > 0 && arg[index] - '0' < 10))
         {
             if (index == arg.length())
                 return -3;
 
-            if (arg[index - 1] != ' ' && arg[index - 1] != '+' && arg[index - 1] != '1')
+            if (arg[index] != ' ' && arg[index] != '+' && !(arg[index] - '0' > 0 && arg[index] - '0' < 10))
                 return -1;
-            else if (arg[index - 1] == '+')
+            else if (arg[index] == '+')
                 return -2;
-            else if (arg[index - 1] == '1')
-                return 0;
+
+            index++;
         }
 
-        if (!(arg[index] - '0' > 0 && arg[index] - '0' < 10))
-            return -1;
-        else
-            return arg[index] - '0';
+        if (arg[index] - '0' > 0 && arg[index] - '0' < 10)
+        {
+            unsigned int a = arg[index++] - '0';
+            while (!(arg[index] - '0' > 0 && arg[index] - '0' < 10) && index < arg.length())
+            {
+                a = a * 10 + arg[index] - '0';
+                index++;
+            }
+            elem = a;
+            if (index <= arg.length() && (arg[index] == ' ' || arg[index] == '+'))
+                return 0;
+            else if (index < arg.length() && arg[index] == 'x')
+                return 1;
+            else
+                return -1;
+        } else
+        {
+            if (index == arg.size() - 1)
+                return -1;
+            else
+            {
+                unsigned int a = arg[index++] - '0';
+                while (!(arg[index] - '0' > 0 && arg[index] - '0' < 10) && index < arg.length())
+                {
+                    a = a * 10 + arg[index] - '0';
+                    index++;
+                }
+                elem = a;
+
+                return 2;
+            }
+        }
     }
 
     void ANF::parse_ANF(string arg)
@@ -199,6 +196,10 @@ namespace bf
         int br = 0;
         int maxDeg = 0;
         unsigned int index = 0;
+        unsigned int lastCoeff = 0;
+        unsigned int lastX = 0;
+        int writeElem = 0;
+        uint32_t elem;
 
         while (true)
         {
@@ -208,37 +209,99 @@ namespace bf
                 fill = 0;
             }
 
-            switch (get_token(arg, index))
+            switch (get_token(arg, index, elem))
             {
                 case -3:
                     if (!elements.empty())
                         throw std::invalid_argument("bad string!");
                     else
-                        br = 1;
-                    break;
+                        if(!writeElem)
+                        {
+                            br = 1;
+                            break;
+                        }
                 case -2:
                     fill = 1;
+
+                    if(!writeElem)
+                        throw std::invalid_argument("bad string!");
+
+                    if(!lastCoeff)
+                        lastCoeff = 1;
+
+                    if(elements.size() <= lastX)
+                        elements.resize(lastX + 1);
+
+                    if(!elements[lastX])
+                        elements[lastX] = lastX;
+                    else
+                    {
+                        coeff[lastX] ^= lastCoeff;
+                        if(!coeff[lastX])
+                        {
+                            elements[lastX] = 0;
+                            for (int j = 0; j < transformed.size(); ++j)
+                                transformed[j][lastX] = 0;
+                            break;
+                        }
+                    }
+
+                    for (int j = 0; j < transformed.size(); ++j)
+                        transformed[j][lastX] |= lastCoeff >> (unsigned)(transformed.size() - 1 - j);
+
+                    coeff[lastX] = lastCoeff;
+
+                    writeElem = 0;
+                    lastX = 0;
+                    lastCoeff = 0;
                     break;
                 case -1:
                     throw std::invalid_argument("bad string!");
                 case 0:
-                    elements[elements.size() - 1] = 0;
-                    break;
-                default:
-                    if (maxDeg < get_token(arg, index))
-                        maxDeg = get_token(arg, index);
+                    if (elements.empty())
+                        elements.resize(1);
+                    if (coeff.empty())
+                        coeff.resize(1);
 
-                    elements[elements.size() - 1] |= (unsigned int) (1 << (get_token(arg, index) - 1));
+                    elements[0] = 0;
+                    coeff[0] = elem;
+                    break;
+                case 1://coeff of x
+                    if (elem)
+                    {
+                        lastCoeff = elem;
+                        writeElem = 1;
+
+                        if (elem != 1)
+                        {
+                            if(transformed.size() < bf::deg(elem))
+                            {
+                                int size = transformed.size();
+                                transformed.resize(bf::deg(elem));
+                                for (int i = size + 1; i < transformed.size(); ++i)
+                                    transformed[i].resize(1 << maxDeg);
+                            }
+                        }
+                    }
+                    break;
+                case 2://x index
+                    if(maxDeg < elem)
+                    {
+                        maxDeg = elem;
+                        for (int i = 0; i < transformed.size(); ++i)
+                            transformed[i].resize(1 << maxDeg, 0);
+                        coeff.resize(1 << maxDeg);
+                    }
+
+                    writeElem = 1;
+
+                    lastX |= (unsigned int) ((unsigned)1 << (elem - 1));
                     break;
             }
             if (br)
                 break;
         }
-        transformed.resize(1 << maxDeg, 0);
-
-        for (int i = 0; i < transformed.size(); ++i)
-            transformed[elements[i]] = 1;
-    }*/
+    }
 
     string ANF::to_str()
     {
@@ -251,15 +314,16 @@ namespace bf
             {
                 if (elements[i])
                 {
-                    if(!coeff.empty())
+                    if (!coeff.empty())
                         anf += std::to_string(coeff[i]);
 
                     for (int j = 0; j < sizeof(uint32_t); ++j)
                         if (get_bit_32(elements[i], j))
                             anf += "x" + std::to_string(j + 1);
-                } else
-                    if(i == 0)
-                        anf += "1";
+                } else if (i == 0 && transformed.size() == 1)
+                    anf += "1";
+                else if (i == 0 && transformed.size() > 1)
+                    anf += std::to_string(coeff[0]);
 
                 if (i != elements.size() - 1)
                     anf += " + ";
