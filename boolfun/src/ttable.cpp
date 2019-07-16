@@ -5,12 +5,23 @@ using namespace std;
 
 namespace bf { //FIXME release NM functions!!!
 	
-	int ttable::is_NM_function () {
-
+  //FIXME release NM functions!!!
+  int ttable::is_NM_function () {
+    return 0;
 	}
 
+  //FIXME release NM functions!!!
+  int ttable::get_input_length() {
+    return 0;
+  }
 
-	ttable::ttable(polynom &p) {
+  //FIXME release NM functions!!!
+  int ttable::get_output_length() {
+    return 0;
+  }
+  
+  ttable::ttable(polynom &p) {
+    auto field = p.get_field();
 		vector<bvect32> coeff;
 		const uint32_t polynom_length = p.get_length(); // aka x-quanity aka coeff-quanity
 		for (bvect32 i = 0; i < polynom_length; i++)
@@ -23,7 +34,8 @@ namespace bf { //FIXME release NM functions!!!
 	}
 
 	ttable::ttable (vector< vector<bvect64> > anf_db) { 
-		vector<bvect32> values;
+		/*
+    vector<bvect32> values;
 		values.resize (power2(field->get_order());
 		               for (uint64_t i=0; i < values.size(); i++)
 		               values[i] = 0;
@@ -38,6 +50,7 @@ namespace bf { //FIXME release NM functions!!!
 					}
 				}
 			}
+    */
 	}
 
 	ttable::ttable (vector<bvect32>) {
@@ -48,7 +61,7 @@ namespace bf { //FIXME release NM functions!!!
 		this->_values[index] = vect;
 	}
 
-	bvect ttable::get_value (uint32_t index) {
+	bvect32 ttable::get_value (uint32_t index) {
 		return this->_values[index];
 	}
 

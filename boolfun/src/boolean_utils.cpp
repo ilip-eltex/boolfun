@@ -187,7 +187,7 @@ namespace bf
     int is_PC(ttable &a, int k)
     {
         for (int i = 1; i <= k; ++i)
-            if (!get_vector_permutation(a, i, a.get_field()->get_order() - i, 0))
+            if (!get_vector_permutation(a, i, a.get_input_length() - i, 0))
                 return 0;
 
         return 1;
@@ -195,7 +195,7 @@ namespace bf
 
     int is_SAC(ttable &a)
     {
-        for (unsigned int i = 0; i < a.get_field()->get_order(); ++i)
+        for (unsigned int i = 0; i < a.get_input_length(); ++i)
             if (!is_balanced(get_derivative(a, (unsigned) 1 << i)))
                 return 0;
         return 1;
@@ -211,7 +211,7 @@ namespace bf
                 if (tmp < abs(b[j][i]))
                     tmp = abs(b[j][i]);
 
-        return (((unsigned int) 1 << (a.get_field()->get_order())) - tmp) / 2;
+        return (((unsigned int) 1 << (a.get_input_length())) - tmp) / 2;
     }
 
     unsigned int get_hemming_distance(ttable &a, ttable &b)
