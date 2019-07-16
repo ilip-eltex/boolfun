@@ -61,7 +61,7 @@ namespace bf { //FIXME release NM functions!!!
 namespace bf //FIXME release NM functions!!!
 {
     int ttable::is_NM_function () {
-    	
+
 	}
 
     /*ttable::ttable(GF *field)

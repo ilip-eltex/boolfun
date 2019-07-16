@@ -12,11 +12,7 @@ namespace bf
     int gen_el_found = 0;//в один момент используем умножение без таблицы, поэтому нужно знать, когда можно использовать таблицу
     unsigned int true_order;//порядок поля, не степень двойки, а 2^n
 
-    GFSimple::~GFSimple()
-    {
-        free(deg_to_num);
-        free(num_to_deg);
-    }
+    GFSimple::~GFSimple() = default;
 
     //Типичный конструктор
     GFSimple::GFSimple(int order)
@@ -26,9 +22,13 @@ namespace bf
 
         true_order = (bvect32)pow(2, order);
 
+
+
         this->order = order;
         this->field_polynom = get_polynom_from_table(order);
+        std::cout << this->field_polynom << std::endl;
         this->gen_el = get_generating_element();
+
     }
 
     bvect64 GFSimple::sum(bvect64 a, bvect64 b)
@@ -45,10 +45,11 @@ namespace bf
     {
         bvect64 c = 0;
 
-        for (int i = 0; i < 32; ++i)
-            sum(c, (bvect64)a << ((i * ((b >> (unsigned)i) & (unsigned)1))));
+        for (unsigned int i = 0; i < 64; ++i)
+            if((b >> i) & (unsigned)1)
+                c = sum(c, (bvect64)a << i);
 
-        return mod(c);
+        return c;
     }
 
     //Происходит деление a на b в поле field. Здесь режимы
@@ -62,9 +63,10 @@ namespace bf
 
         while (deg(a0) >= deg(b))
         {
+            //std::cout << (int)deg(a0) << ' ' << (int)deg(b) << std::endl;
             c = deg(a0) - deg(b);
-            set_bit_64(result, c, 1);
-            a0 = field->sum(a0, field->save_x64_multiply(b, result));
+            set_bit_64(result, 1, c);
+            a0 = field->sum(a0, b << c);
         }
         if (mode == 0)
             return a0;
@@ -76,15 +78,16 @@ namespace bf
     bvect32 GFSimple::get_generating_element()
     {
         //генерируем одновременно таблицы степеней и чисел
-        deg_to_num = (bvect32*)malloc(true_order * sizeof(bvect32));
-        num_to_deg = (bvect32*)malloc(true_order * sizeof(bvect32));
+        deg_to_num.resize(true_order);
+        num_to_deg.resize(true_order);
 
         int was = 0;
 
         for (bvect32 i = 1; i < true_order; i++)
         {
-            memset(num_to_deg, 0, true_order * sizeof(bvect32));
+            memset(num_to_deg.data(), 0, true_order * sizeof(bvect32));
 
+            std::cout << i << std::endl;
             for (bvect32 j = 0; j < true_order; j++)
                 if (!num_to_deg[power(i, j)])
                     num_to_deg[power(i, j)] = j;
@@ -105,13 +108,12 @@ namespace bf
             }
             was = 0;
         }
-        std::cout << "lol";
+        throw std::exception();
     }
 
     bvect32 GFSimple::mod(bvect64 a)
     {
-        std::cout << (bvect32)(this->field_polynom) << std::endl;
-        return (bvect32)div(this, a, field_polynom, 0);
+        return (bvect32)div(this, a, (bvect64)field_polynom, 0);
     }
 
     bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
@@ -123,8 +125,8 @@ namespace bf
             bvect64 c = 0;
 
             for (unsigned int i = 0; i < 32; ++i)
-                if((b >> (unsigned)i) & (unsigned)1)
-                    sum(c, (bvect64)a << i);
+                if((b >> i) & (unsigned)1)
+                    c = sum(c, (bvect64)a << i);
 
             return mod(c);
         }
