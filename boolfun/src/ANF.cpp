@@ -1,7 +1,6 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
-#include "bitslib.h"
 #include "ANF.h"
 
 namespace bf
@@ -155,6 +154,7 @@ namespace bf
 
             index++;
         }
+        cout << arg[index];
 
         if (arg[index] - '0' > 0 && arg[index] - '0' < 10)
         {

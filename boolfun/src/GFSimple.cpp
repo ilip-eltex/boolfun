@@ -43,9 +43,9 @@ namespace bf
             bvect64 result = 0;
             bvect64 a0 = a;
 
-            while (deg(a0) >= deg(b))
+            while (deg_64(a0) >= deg_64(b))
             {
-                c = deg(a0) - deg(b);
+                c = deg_64(a0) - deg_64(b);
                 set_bit_64(result, 1, c);
                 a0 = sum(a0, b << c);
             }

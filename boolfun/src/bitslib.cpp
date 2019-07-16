@@ -54,7 +54,7 @@ namespace bf
         return is_odd_32(a & b);
     }
 
-    unsigned char deg_32(bvect64 a)
+    unsigned char deg_32(bvect32 a)
     {
         for (int i = 31; i >= 0; --i)
             if ((a >> (unsigned)i) & (unsigned)1)
