@@ -20,7 +20,7 @@ namespace bf { //FIXME release NM functions!!!
 		return 0;
 	}
 
-	ttable::ttable(polynom &p) {
+	ttable::ttable (polynom &p) {
 		auto field = p.get_field();
 		vector<bvect32> coeff;
 		const uint32_t polynom_length = p.get_length(); // aka x-quanity aka coeff-quanity
