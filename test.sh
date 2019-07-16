@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$TRAVIS_BRANCH" = "test" ]; then 
-   exit cd boolfun/test && g++ -std=c++11 main_test.cpp -o tests && ./tests
+	exit $(cd boolfun/test && g++ -std=c++11 main_test.cpp -o tests && ./tests)
 fi
 #####
 if [ "$TRAVIS_BRANCH" = "master" ]; then
