@@ -72,7 +72,7 @@ namespace bf
             result.push_back(s1);
         return result;
     }
-
+//s
     string trim_all(string s)
     {
         string result = "";

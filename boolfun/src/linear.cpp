@@ -61,5 +61,5 @@ namespace bf
         bvect32 b;
         return is_linear(t, b);
     }
-
+//s
 }
