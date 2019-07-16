@@ -12,10 +12,9 @@ namespace bf
     unsigned int get_function_weight(ttable&);
     bvect32 get_trace(GF&);
     int is_balanced(ttable&);
-    vector<int> get_walsh_hadamard_spec(ttable&);
+    vector<vector<int>> get_walsh_hadamard_spec(ttable&);
     ttable &get_derivative(ttable&, bvect32);
     void get_GAC_characteristics(ttable&, unsigned long*, unsigned int*);
-    int get_vector_permutation(ttable&, int, int, unsigned int);
     int is_PC(ttable&, int);
     int is_SAC(ttable&);
     int get_index_nonlinearity(ttable&);

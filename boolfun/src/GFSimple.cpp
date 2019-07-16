@@ -1,9 +1,11 @@
-#include "GF_simple.h"
-#include "Field_polynom_table.h"
 #include <cmath>
 #include <exception>
 #include <cstring>
 #include <stdexcept>
+#include <iostream>
+
+#include "GF_simple.h"
+#include "Field_polynom_table.h"
 
 namespace bf
 {
@@ -24,9 +26,9 @@ namespace bf
 
         true_order = (bvect32)pow(2, order);
 
-        this->gen_el = get_generating_element();
         this->order = order;
         this->field_polynom = get_polynom_from_table(order);
+        this->gen_el = get_generating_element();
     }
 
     bvect64 GFSimple::sum(bvect64 a, bvect64 b)
@@ -81,7 +83,7 @@ namespace bf
 
         for (bvect32 i = 1; i < true_order; i++)
         {
-            memset(num_to_deg, 0, true_order);
+            memset(num_to_deg, 0, true_order * sizeof(bvect32));
 
             for (bvect32 j = 0; j < true_order; j++)
                 if (!num_to_deg[power(i, j)])
@@ -103,11 +105,12 @@ namespace bf
             }
             was = 0;
         }
-        throw std::exception();
+        std::cout << "lol";
     }
 
     bvect32 GFSimple::mod(bvect64 a)
     {
+        std::cout << (bvect32)(this->field_polynom) << std::endl;
         return (bvect32)div(this, a, field_polynom, 0);
     }
 
@@ -119,8 +122,9 @@ namespace bf
         {
             bvect64 c = 0;
 
-            for (int i = 0; i < 32; ++i)
-                sum(c, (bvect64)a << ((i * ((b >> (unsigned)i) & (unsigned)1))));
+            for (unsigned int i = 0; i < 32; ++i)
+                if((b >> (unsigned)i) & (unsigned)1)
+                    sum(c, (bvect64)a << i);
 
             return mod(c);
         }
@@ -131,7 +135,7 @@ namespace bf
     {
         bvect32 c = a;
         for (size_t i = 1; i < b; i++)
-            multiply(c, a);
+            c = multiply(c, a);
 
         return c;
     }

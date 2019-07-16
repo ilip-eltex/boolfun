@@ -4,6 +4,8 @@ project(boolfun_exe)
 
 include_directories(headers src src/private_headers)
 
+SET(CMAKE_CXX_FLAGS "-std=c++11")
+
 set(HEADERS
         headers/bitslib.h
         headers/boolean_utils.h

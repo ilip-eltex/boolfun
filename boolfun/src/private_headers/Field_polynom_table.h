@@ -48,7 +48,7 @@ namespace bf
 
 		bvect32 result = 0;
 		for (int i = 0; i < 4; i++)
-			set_bit_32(result, table[deg][i], 1);
+			set_bit_32(result, 1, table[deg][i]);
 
 		return result |= (unsigned)1;
 	}
