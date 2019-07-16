@@ -27,6 +27,7 @@ int main () {
 	uint32_t result32=0;
 	uint64_t result64=0;
 	unsigned char temp_char='\0';
+	std::cout << "\n########################\n\n";
 	
 	// get_bit_32 
 	result32 = get_bit_32 ( static_cast<uint32_t>(0) , static_cast<unsigned int>(0) );
@@ -81,8 +82,8 @@ int main () {
 		if ( not tests[i].result() ) 			
 			quit = true;
 		print_test(tests,i);
-		
 	}
+	std::cout << "\n########################\n\n";
 	if (quit) return 1; 
 	return 0;
 }
@@ -109,17 +110,17 @@ int main () {
 			<< '#'
 			<< index+1
 			<< ' '
-			<< t[index].name() 
-			<< ' ';
+			<< t[index].name();
 		std::string temp = t[index].name();
+		std::cout << ' ';
 		if (temp.size() < 27) {
 			for (int i=0; i < (27-temp.size()); i++)
-				std::cout << ' ';	
+				std::cout << '-';	
 		}
-		std::cout << "  "; 
+		std::cout << '>'; 
 		if (t[index].result())	
-			std::cout << "~DONE\n";  
-		else std::cout << "~FAIL\n";
+			std::cout << " DONE\n";  
+		else std::cout << " FAIL\n";
 	}
 	
 	void test::set (std::string name, bool result) {
