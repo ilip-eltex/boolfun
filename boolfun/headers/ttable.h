@@ -8,46 +8,31 @@
 
 using namespace std;
 
-namespace bf
-{
+namespace bf {
+	class polynom;
 
-    class polynom;
-
-    class polynom64;
-
-    class ttable
-    { //in field type
-    public:
-        ttable(GF *field);
-        ttable(polynom &p, GF *field);
-        ttable(vector<bvect64> &vect);
-        bool set(bvect32 vect, uint32_t index);
-        bvect32 get_value(uint32_t index);
-        bvect32 get_length();
-        GF *get_field();
-        int get_output_length();//FIXME release
-        int get_input_length();//FIXME release
-        int is_NM_function();//FIXME release
-    private:
-        std::vector<bvect32> _values; // Values mb 0 or 1
-        uint64_t _length; // <= 2^n
-        GF *_field;
-    };
-
-/*class ttable64 { //in field type
-	public:
-		ttable64 (GF * field);
-		ttable64 (polynom& p, GF * field);
-		ttable(vector<bvect32> &vect);
-		void set (unsigned char vect, uint64_t index);
-		unsigned char get_value(uint64_t index);
-		bvect64 get_length ();
-		GF * get_field ();	
-	private:
-		std::vector<unsigned char> _values; // Values mb 0 or 1
-		uint64_t _length; // <= 2^n
-		GF * _field;
-};*/
+	class ttable {
+			//in field type
+		public:
+			
+			ttable(polynom &p);
+			ttable(vector< vector<bvect64> > anf_db);
+			ttable (vector<bvect32> values);
+			
+			void set(bvect32 vect, uint32_t index);
+			
+			bvect32 get_value(uint32_t index);
+			std::vector<bvect32> get_all ()
+			uint64_t get_length();
+			
+			int get_output_length();
+			int get_input_length();
+			int is_NM_function();
+			
+		private:
+			std::vector<bvect32> _values;
+			uint64_t _length;
+	};
 
 }
 

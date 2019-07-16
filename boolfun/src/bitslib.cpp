@@ -61,6 +61,14 @@ namespace bf
                 return (unsigned char) i;
         return 0;
     }
+    
+    unsigned int vect_len_32 (bvect32 x) {
+    	if (x == 0)
+    		return 0;
+    	for (int i=31; i>0; i++)
+    		if (get_bit_32(x,i) == 1)
+    			return 1;
+	}
 
 //////////////// for bvect64 ///////////////////////////////////////////////
 
@@ -127,4 +135,12 @@ namespace bf
                 return (unsigned char) i;
         return 0;
     }
+    
+    unsigned int vect_len_64 (bvect64 x) {
+    	if (x == 0)
+    		return 0;
+    	for (int i=63; i>0; i++)
+    		if (get_bit_64(x,i) == 1)
+    			return 1;
+	}
 }

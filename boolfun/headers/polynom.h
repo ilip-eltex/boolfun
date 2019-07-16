@@ -11,7 +11,6 @@
 namespace bf
 {
     class ttable;
-    class ttable64;
 
     class polynom
     { // over field type
@@ -32,20 +31,4 @@ namespace bf
 
     };
 
-    class polynom64
-    { // over field type
-
-    public:
-        polynom64(GF *field);
-        polynom64(ttable &t, GF *field);
-        void set_coeff(uint64_t index, bvect64 coeff);
-        bvect64 get_coeff(uint64_t index);
-        uint64_t get_length();
-        GF *get_field();
-
-    private:
-        std::vector<bvect64> _coeff;
-        uint64_t _length;
-        GF *_field;
-    };
 }
