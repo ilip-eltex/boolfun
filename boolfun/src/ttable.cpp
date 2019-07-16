@@ -34,7 +34,7 @@ namespace bf { //FIXME release NM functions!!!
 	}
 
 	ttable::ttable (vector< vector<bvect64> > anf_db) { 
-		/*
+		
     vector<bvect32> values;
 		values.resize (power2(field->get_order());
 		               for (uint64_t i=0; i < values.size(); i++)
@@ -50,11 +50,11 @@ namespace bf { //FIXME release NM functions!!!
 					}
 				}
 			}
-    */
+    
 	}
 
-	ttable::ttable (vector<bvect32>) {
-//s
+	ttable::ttable (vector<bvect32> values) {
+		this->_values = values;
 	}
 
 	void ttable::set(bvect32 vect, uint32_t index) {

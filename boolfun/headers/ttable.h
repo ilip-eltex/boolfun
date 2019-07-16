@@ -22,7 +22,7 @@ namespace bf {
 			void set(bvect32 vect, uint32_t index);
 			
 			bvect32 get_value(uint32_t index);
-      std::vector<bvect32> get_all();
+      		std::vector<bvect32> get_all();
 			uint64_t get_length();
 			
 			int get_output_length();
