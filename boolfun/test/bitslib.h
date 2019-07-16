@@ -51,12 +51,12 @@ namespace bf
         return (x & (unsigned)1);
     }
 
-    bvect32 scalar_product(bvect32 a, bvect32 b)
+    bvect32 scalar_product_32(bvect32 a, bvect32 b)
     {
         return is_odd_32(a & b);
     }
 
-    unsigned char deg(bvect32 a)
+    unsigned char deg(bvect32 a) // degree
     {
         for (int i = 31; i >= 0; --i)
             if ((a >> (unsigned)i) & (unsigned)1)
@@ -112,7 +112,7 @@ namespace bf
         x ^= (x >> (unsigned)1);
         return (x & (unsigned)1);
     }
-	bvect64 scalar_product(bvect64 a, bvect64 b)
+	bvect64 scalar_product_64(bvect64 a, bvect64 b)
     {
         return is_odd_64(a & b);
     }

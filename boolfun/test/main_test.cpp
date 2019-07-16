@@ -23,29 +23,51 @@ int main () {
 	std::vector<test> tests;
 	test temp;
 	bool quit = false;
+	uint32_t result32=0;
+	uint64_t result64=0;
+	unsigned char temp_char='\0';
 	
 	// get_bit_32 
-	uint32_t result32 = get_bit_32 ( static_cast<uint32_t>(0) , static_cast<unsigned int>(0) );
-	temp.set ("get_bit_32", result32 == 0);
+	result32 = get_bit_32 ( static_cast<uint32_t>(0) , static_cast<unsigned int>(0) );
+	temp.set ("get_bit_32 (0,0)", result32 == 0);
 	tests.push_back(temp);
 	
 	// set_bit_32
 	result32 = 0;
 	set_bit_32 (result32,1,10);
-	temp.set("set_bit_32", result32 == 1024 );
+	temp.set("set_bit_32 (0,1,10)", result32 == 1024 );
 	tests.push_back(temp);
 	
 	// set_bit1_32
 	result32 = 0;
 	set_bit1_32 (result32,10);
-	temp.set("set_bit1_32", result32 == 1024);
+	temp.set("set_bit1_32 (0,10)", result32 == 1024);
 	tests.push_back(temp);
 	
 	//set_bit0_32
 	result32 = 1023;
 	set_bit0_32 (result32,9);
-	temp.set("set_bit0_32", result32 == 511);
+	temp.set("set_bit0_32 (1023,9)", result32 == 511);
 	tests.push_back(temp);
+	
+	//get_weight_32
+	result32 = get_weight_32 (15);
+	temp.set("get_weight_32 (15)", result32 == 4);
+	tests.push_back(temp);
+	
+	// is_odd_32 
+	result32 = 10;
+	temp.set("is_odd_32 (10)", is_odd_32(result32) == true);
+	
+	// scalar_product 10 5 = 0
+	 result32 = scalar_product_32(10,5);
+	 temp.set("scalar_product_32 (10,5)", result32 == 0);
+	 tests.push_back(temp);
+	 
+	// deg_32 (2048) 
+	temp_char = deg(2048);
+	temp.set("deg_32 (2048)", temp_char == 11);
+	tests.push_back(temp); 
 	
 	for (int i=0; i<tests.size(); i++) {
 		print_test(tests,i);
