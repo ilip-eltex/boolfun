@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <stdint.h>
+#include <cstdlib>
 #include "bitslib.h"
 //#include "sandbox.h"
 
@@ -70,14 +71,12 @@ int main () {
 	tests.push_back(temp); 
 	
 	for (int i=0; i<tests.size(); i++) {
-		if (tests[i].result() == false) {
+		if (tests[i].result() == false) 			
 			quit = true;
-			cout << 1 << '\n';
-		}
 		print_test(tests,i);
 		
 	}
-	if (quit) return 1; 
+	if (quit) system("exit 1"); 
 	return 0;
 }
 
