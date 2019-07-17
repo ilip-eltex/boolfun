@@ -89,7 +89,7 @@ namespace bf
                     for (int j = 0; j < k; ++j)
                     {
                         tmp = el[u * k + j];
-                        el[u * k + j] += el[(u + 1) * k + j];
+                        el[u * k + j] += el[(u + 1) * k + j];//FIXME
                         el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
                     }
             }
@@ -133,7 +133,7 @@ namespace bf
                     for (int j = 0; j < k; ++j)
                     {
                         tmp = el[u * k + j];
-                        el[u * k + j] += el[(u + 1) * k + j];
+                        el[u * k + j] += el[(u + 1) * k + j];//FIXME
                         el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
                     }
             }

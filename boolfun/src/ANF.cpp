@@ -34,8 +34,8 @@ namespace bf
                 blocks *= 2;
                 for(int i = 0; i < blocks - 1; i += 2)
                     for(int j = 0; j < k; ++j)
-                        set_bit_64(ivec[0], get_bit_64(ivec[0], i * k + j) ^ get_bit_64(ivec[0], (i + 1) * k + j),
-                                   i * k + j);
+                        set_bit_64(ivec[0], get_bit_64(ivec[0], (i + 1) * k + j) ^ get_bit_64(ivec[0], i * k + j),
+                                   (i + 1) * k + j);
             }
 
             for(int l = 0; l < table_length; ++l)
@@ -48,7 +48,7 @@ namespace bf
                 blocks *= 2;
                 for(int i = 0; i < blocks - 1; i += 2)
                     for(int j = 0; j < k; ++j)
-                        ivec[i * k + j] ^= ivec[(i + 1) * k + j];
+                        ivec[(i + 1) * k + j] ^= ivec[i * k + j];
             }
 
             for(int l = 0; l < table_length; ++l)
@@ -106,9 +106,9 @@ namespace bf
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for(int j = 0; j < k; ++j)
-                            set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], i0 * k + j) ^
-                                                           get_bit_64(transformed0[i][0], (i0 + 1) * k + j),
-                                       i0 * k + j);
+                            set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], (i0 + 1) * k + j) ^
+                                                           get_bit_64(transformed0[i][0], i0 * k + j),
+                                       (i0 + 1) * k + j);
                 }
             else
                 for(int k = transformed0[i].size() / 2; k > 1; k /= 2)
@@ -116,17 +116,11 @@ namespace bf
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for(int j = 0; j < k; ++j)
-                        {
-                            cout << i0 * k + j << " " << (i0 + 1) * k + j << endl;
-                            cout << transformed[i].size() << " " << k << endl;
-                            cout << "-------------\n";
-                            transformed0[i][i0 * k + j] ^= transformed0[i][(i0 + 1) * k + j];
-                        }
+                            transformed0[i][(i0 + 1) * k + j] ^= transformed0[i][i0 * k + j];
                 }
             blocks = 1;
 
         }
-        cout << "lol\n";
         return transformed0;
     }
 
