@@ -14,7 +14,7 @@ namespace bf {
 			
 			ttable(polynom &p, unsigned int n);
 			ttable(std::vector< std::vector<bvect64> > anf_db);
-			ttable (std::vector<bvect32> values);
+			ttable (std::vector<bvect32> values, unsigned int n);
 			
 			void set(bvect32 vect, uint32_t index);
 			
@@ -22,8 +22,8 @@ namespace bf {
       		std::vector<bvect32> get_all();
 			uint64_t get_length();
 			
-			int get_output_length();
-			int get_input_length();
+			unsigned int get_output_length();
+			unsigned int get_input_length();
 			int is_NM_function();
 			
 		private:

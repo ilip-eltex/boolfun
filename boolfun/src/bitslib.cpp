@@ -122,7 +122,7 @@ namespace bf
 
     unsigned char deg_64(bvect64 a)
     {
-        if (x == 0)
+        if (a == 0)
             return 0;
 		for (int i = 63; i >= 0; --i)
             if ((a >> (unsigned) i) & (unsigned) 1)

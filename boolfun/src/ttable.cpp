@@ -6,7 +6,7 @@ using namespace std;
 namespace bf
 {
 
-    ttable::ttable(polynom &p)
+    ttable::ttable(polynom &p, unsigned int n)
     {
         auto field = p.get_field();
         this->_n = p.get_input_length();
