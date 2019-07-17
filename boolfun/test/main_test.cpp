@@ -2,8 +2,10 @@
 #include <stdint.h>
 #include <cstdlib>
 #include "bitslib.h"
-#include "ttable.h"
-#include "polynom.h"
+#include "ios.h"
+#include <cstdint>
+//#include "ttable.h"
+//#include "polynom.h"
 //#include "sandbox.h"
 
 class test {
@@ -20,6 +22,7 @@ class test {
 
 //bool compare_vals (uint64_t a1, uint64_t a2, size_t size);
 void print_test (std::vector<test> &t, unsigned int index);
+std::vector<uint32_t> set_from_string(const std::string &s);
 
 using namespace bf;
 int main () {
@@ -79,8 +82,21 @@ int main () {
 	temp.set("deg_32(2048) =11", temp_char == 11);
 	tests.push_back(temp); 
 	
-	//
-	bf::GF *field = bf::get_field(6);
+	// set_from_string ("4: 10x^2 + 5x^29")
+	bool b;
+	std:vector<uint32_t> result_vect = set_from_string("4: 10x^2 + 66x^29");
+	for (int i=0; i<result_vect.size(); i++)
+		std::cout << result_vect[i] << ' ';
+	std::cout << "\n\n\n";
+	if (result_vect[2] == 0)
+		b = false;
+	else
+		b = result_vect[2]==10 and result_vect[29]==5;
+	temp.set("set_from_string('4: 11x^2 + 6x^29')", b);
+	tests.push_back(temp);
+	
+	// 
+	//bf::GF *field = bf::get_field(6);
 	
 	for (int i=0; i<tests.size(); i++) {
 		if ( not tests[i].result() ) 			
@@ -132,12 +148,14 @@ int main () {
 		this->_result = result;
 	}
 	
-	bool set_from_string(const std::string &s) {
+	std::vector<uint32_t> set_from_string(const std::string &s) {
 		// s must be low-cased and a[0] == %number%
 		std::string in = s, s1;
 		in = trim_all(in);
-		stringstream ss;
+		stringstream ss, ss1;
+		ss1 << s;
 		char c;
+		const std::vector<uint32_t> FAIL (0); 
 		ss.clear();
 		ss << in;
 		std::vector<string> words;
@@ -155,9 +173,20 @@ int main () {
 
 
 		if (t == 0)
-			return false;
-		this->_n = t;
-		std::vector<uint32_t> coeffs(static_cast<size_t>(t));
+			return FAIL; // n
+		std::cout << '=' << t << std::endl;
+		//this->_n = t;
+		int max_degree=-1, tempd;
+		for (uint32_t i=0; i<s.size(); i++) {
+			if (s[i] == '^') {
+				ss >> tempd;
+				if (tempd > max_degree)
+					max_degree = tempd;
+			}
+		}
+		cout << max_degree << '\n';
+		std::vector<uint32_t> coeffs;
+		coeffs.resize( static_cast<size_t>(max_degree) );
 		for (uint32_t i = 0; i < coeffs.size(); i++)
 			coeffs[i] = 0;
 		std::string tstr = words[0]; // temp string; get first word
@@ -181,7 +210,7 @@ int main () {
 			ss >> c;
 			if (c != 'x') {
 				if (t == 1)
-					return false;
+					return FAIL;
 				coeffs[0] ^= t;
 				continue;
 			}
@@ -196,8 +225,8 @@ int main () {
 					degree = str2int(tstr);
 					break;
 				}
-			coeffs[degree] ^= t;
+			coeffs[degree-1] ^= t;
 		}
-		this->_coeff = coeffs;
-		return true;		
+		//this->_coeff = coeffs;
+		return coeffs;		
 	}

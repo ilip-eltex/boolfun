@@ -1,4 +1,6 @@
-#include "bitslib.h"
+#define bvect32 uint32_t
+#define bvect64 uint64_t
+#include <cstdint>
 
 namespace bf
 {
@@ -98,13 +100,7 @@ namespace bf
         }
         return result;
     }
-
-    bvect64 scalar_product_64(bvect64 a, bvect64 b)
-    {
-        return is_odd_64(a & b);
-    }
-
-    bool is_odd_64(bvect64 x)
+	bool is_odd_64(bvect64 x)
     {
         x ^= (x >> (unsigned) 32);
         x ^= (x >> (unsigned) 16);
@@ -114,6 +110,12 @@ namespace bf
         x ^= (x >> (unsigned) 1);
         return (x & (unsigned) 1);
     }
+    bvect64 scalar_product_64(bvect64 a, bvect64 b)
+    {
+        return is_odd_64(a & b);
+    }
+
+    
 
     uint32_t power2(uint32_t y)
     {
