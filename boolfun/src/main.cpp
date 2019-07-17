@@ -6,12 +6,13 @@ using namespace bf;
 
 int main()
 {
-    vector<bvect32> values;
-    ttable table();
-
-
     ANF anf;
-    anf.parse_ANF("21x2x1x3x4 + 5x8x6x4 + 2x8x6x4 + x3x1 + 67 + 32 + 64");
+    anf.parse_ANF("x1x2x3 + x2x3 + x1 + 1");
+    cout << anf << endl;
+
+    ttable table(anf.getFunction());
+    cout << "iam ok!" << endl;
+    anf.getANF(table);
     cout << anf;
 
     return 0;

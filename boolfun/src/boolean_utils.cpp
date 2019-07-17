@@ -82,7 +82,7 @@ namespace bf
                     el[l] = -1;
             }
 
-            for (int k = el.size() / 2; k >= 1; k /= 2)
+            for (int k = el.size() / 2; k > 1; k /= 2)
             {
                 blocks *= 2;
                 for (int u = 0; u < blocks - 1; u += 2)
@@ -126,7 +126,7 @@ namespace bf
             for (auto el1 : el)
                 el1 *= el1;
 
-            for (int k = el.size() / 2; k >= 1; k /= 2)
+            for (int k = el.size() / 2; k > 1; k /= 2)
             {
                 blocks *= 2;
                 for (int u = 0; u < blocks - 1; u += 2)

@@ -101,7 +101,7 @@ namespace bf
             transformed0[i] = transformed[i];
 
             if(transformed0[i].size() == 1)
-                for(int k = table_length / 2; k >= 1; k /= 2)
+                for(int k = table_length / 2; k > 1; k /= 2)
                 {
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
@@ -111,15 +111,22 @@ namespace bf
                                        i0 * k + j);
                 }
             else
-                for(int k = transformed0[i].size() / 2; k >= 1; k /= 2)
+                for(int k = transformed0[i].size() / 2; k > 1; k /= 2)
                 {
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
                         for(int j = 0; j < k; ++j)
-                            transformed0[i0][i0 * k + j] ^= transformed0[i0][(i0 + 1) * k + j];
+                        {
+                            cout << i0 * k + j << " " << (i0 + 1) * k + j << endl;
+                            cout << transformed[i].size() << " " << k << endl;
+                            cout << "-------------\n";
+                            transformed0[i][i0 * k + j] ^= transformed0[i][(i0 + 1) * k + j];
+                        }
                 }
             blocks = 1;
+
         }
+        cout << "lol\n";
         return transformed0;
     }
 
@@ -210,6 +217,7 @@ namespace bf
         unsigned int lastX = 0;
         int writeElem = 0;
         uint32_t elem;
+        transformed.resize(1);
 
         while(true)
         {
