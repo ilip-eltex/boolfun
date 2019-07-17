@@ -12,7 +12,7 @@ namespace bf {
 	class ttable {
 		public:
 			
-			ttable(polynom &p);
+			ttable(polynom &p, unsigned int n);
 			ttable(std::vector< std::vector<bvect64> > anf_db);
 			ttable (std::vector<bvect32> values);
 			

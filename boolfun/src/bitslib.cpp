@@ -55,7 +55,7 @@ namespace bf
 
     unsigned char deg_32(bvect32 a)
     {
-        if (x == 0)
+        if (a == 0)
             return 0;
 		for (int i = 31; i >= 0; --i)
             if ((a >> (unsigned) i) & (unsigned) 1)
