@@ -10,3 +10,4 @@ Debug
 .vs
 boolfun.vcxproj.user
 boolfun/src/*2019*
+boolfun/headers/*2019*
