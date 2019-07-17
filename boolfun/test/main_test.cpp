@@ -83,7 +83,7 @@ int main () {
 	tests.push_back(temp); 
 	
 	// set_from_string ("4: 10x^2 + 5x^29")
-	bool b;
+/*	bool b;
 	std:vector<uint32_t> result_vect = set_from_string("4: 10x^2 + 66x^29");
 	for (int i=0; i<result_vect.size(); i++)
 		std::cout << result_vect[i] << ' ';
@@ -93,8 +93,38 @@ int main () {
 	else
 		b = result_vect[2]==10 and result_vect[29]==5;
 	temp.set("set_from_string('4: 11x^2 + 6x^29')", b);
+	tests.push_back(temp); */
+	
+	// trim (" b ")
+	temp.set("trim(' b ')", trim(" b ") == "b");
 	tests.push_back(temp);
 	
+	// trim_left ("    b") 
+	temp.set("trim('  b')", "b" == trim_left("   b"));
+	tests.push_back(temp);
+	
+	// trim_rigth ("b     ")
+	temp.set("trim_rigth('b   ')", "b" == trim_right("b    "));
+	tests.push_back(temp);
+	
+	// lower_case
+	string tempstr = "QwERtyuIo";
+	lower_case(tempstr);
+	temp.set("lower_case('QwERtyuIo')", "qwertyuio" == tempstr );
+	tests.push_back(temp);
+	
+	// str2int
+	temp.set("str2int('1256')", 1256 == str2int("1256"));
+	tests.push_back(temp);
+	
+	// int2str
+	temp.set("int2str(1256)", 1256 == str2int("1256") );
+	tests.push_back(temp);
+	
+	// trim_all
+	temp.set("trim_all('a b c d e ')", "abcde" == trim_all("a  b  cd e   ") );
+	tests.push_back(temp);
+		
 	// 
 	//bf::GF *field = bf::get_field(6);
 	
