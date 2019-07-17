@@ -15,9 +15,9 @@ namespace bf
 	bool is_odd_32(bvect32 x);
 	bvect32 scalar_product_32(bvect32 a, bvect32 b);
 	unsigned char deg_32(bvect32 a);
-	unsigned int vect_len_32 (bvect32 x);
 
 	///// uint64_t /////////////////////////////////
+	
 	unsigned int get_bit_64(bvect64 x, unsigned int index);
 	void set_bit1_64(bvect64 &x, unsigned int index);
 	void set_bit0_64(bvect64 &x, unsigned int index);
@@ -27,6 +27,5 @@ namespace bf
 	bool is_odd_64(bvect64 x);
 	uint32_t power2(uint32_t y);
 	unsigned char deg_64(bvect64 a);
-	unsigned int vect_len_64 (bvect64 x);
 }
 

@@ -49,6 +49,13 @@ namespace bf
     {
         return this->_field;
     }
+    
+    unsigned int polynom::get_input_length () {
+    	return this->_n;
+	}
+    unsigned int polynom::get_output_length () {
+    	return this->_m;
+	}
 
     bool polynom::set_from_string(const std::string &s)
     {
