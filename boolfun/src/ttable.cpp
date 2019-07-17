@@ -21,7 +21,7 @@ namespace bf
 		
         for (uint32_t x = 0; x < polynom_length; x++) // Cycle by vectors
             for (uint32_t i = 0; i < polynom_length; i++) // Cycle by coeffs
-                _values[x] += field->multiply(coeff[i], field->power(x, i));
+                _values[x] ^= field->multiply(coeff[i], field->power(x, i));
     }
 
 
