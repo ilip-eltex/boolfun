@@ -206,18 +206,24 @@ namespace bf
         unsigned int lastX = 0;
         int writeElem = 0;
         uint32_t elem;
+        int lastOp = 0;
 
         while(true)
         {
             switch(get_token(arg, index, elem))
             {
                 case -3:
+                    if(lastOp == -2)
+                        throw std::invalid_argument("bad string!");
                     if(!writeElem)
                     {
                         br = 1;
                         break;
                     }
+                    lastOp = -3;
                 case -2:
+                    if(lastOp != -3)
+                        lastOp = -2;
                     if(!writeElem)
                         throw std::invalid_argument("bad string!");
 
@@ -281,6 +287,7 @@ namespace bf
                 case -1:
                     throw std::invalid_argument("bad string!");
                 case 0:
+                    lastOp = 0;
                     if(!elem)
                         break;
                     if(elements.empty())
@@ -305,6 +312,7 @@ namespace bf
                     lastX = 0;
                     break;
                 case 1://coeff of x
+                    lastOp = 1;
                     if(elem)
                     {
                         lastCoeff = elem;
@@ -323,14 +331,15 @@ namespace bf
                     }
                     break;
                 case 2://x index
+                    lastOp = 2;
                     if(elem == 0)
                         throw std::invalid_argument("Zero index!");
 
                     if(maxDeg < elem)
                     {
                         maxDeg = elem;
-                        for(int i = 0; i < transformed.size(); ++i)
-                            transformed[i].resize((unsigned) 1 << (unsigned) maxDeg, 0);
+                        for(auto n : transformed)
+                            n.resize((unsigned) 1 << (unsigned) maxDeg, 0);
 
                         coeff.resize((unsigned) 1 << (unsigned) maxDeg);
                     }
@@ -375,4 +384,3 @@ namespace bf
         }
     }
 }
-

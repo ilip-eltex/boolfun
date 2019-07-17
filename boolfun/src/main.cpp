@@ -7,7 +7,7 @@ using namespace bf;
 int main()
 {
     ANF anf;
-    anf.parse_ANF("x22x4x1 + 5x2x1 + x2x1 + 23");
+    anf.parse_ANF("x22x4x1 + 5x2x1 + x2x1 + 23 ");
     cout << anf << endl;
 
     /*
