@@ -19,7 +19,7 @@ namespace bf
         vector<vector<uint64_t>> transformed;
     public:
         virtual void             getANF(ttable& table);
-        virtual vector<vector<uint64_t>> getFunction();
+        virtual ttable           getFunction();
         virtual string           to_str();
         virtual int              deg();
         virtual void             parse_ANF(string arg);

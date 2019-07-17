@@ -27,7 +27,9 @@ namespace bf
 
     ttable::ttable(vector<bvect32> values, unsigned int n)
     {
-    	long long int max=-1;
+    	this-> _values.resize(power2(n));
+    	this->_length = power2(n);
+        long long int max=-1;
         for (uint64_t i=0; i<values.size(); i++) {
         	if (values[i] > max)
         		max = values[i];

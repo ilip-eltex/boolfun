@@ -79,8 +79,8 @@ namespace bf
             for(int k = 0; k < (unsigned long long) pow(2, table_length); ++k)
                 for(int j = 0; j < table.get_output_length(); ++j)
                 {
-                    coeff[k] |= (unsigned) (elements0[j][k] > 0 ? 1 : 0);
                     coeff[k] <<= (unsigned) 1;
+                    coeff[k] |= (unsigned) (elements0[k][j] > 0 ? 1 : 0);
 
                     if(!elements[k])
                         elements[k] = k;
@@ -88,7 +88,20 @@ namespace bf
         }
     }
 
-    vector<vector<uint64_t>> ANF::getFunction()
+    int get_num_of_variables(unsigned int size_vector)
+    {
+        if(get_weight_32(size_vector) == 1)
+            return deg_32(size_vector);
+        else
+        {
+            for(int i = 0; i < 32; ++i)
+                if(size_vector <= ((unsigned)1 << (unsigned)i))
+                    return i;
+        }
+        return -1;
+    }
+
+    ttable ANF::getFunction()
     {
         if(elements.empty())
             throw std::exception();
@@ -101,7 +114,7 @@ namespace bf
             transformed0[i] = transformed[i];
 
             if(transformed0[i].size() == 1)
-                for(int k = table_length / 2; k > 1; k /= 2)
+                for(int k = table_length / 2; k >= 1; k /= 2)
                 {
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
@@ -111,7 +124,7 @@ namespace bf
                                        (i0 + 1) * k + j);
                 }
             else
-                for(int k = transformed0[i].size() / 2; k > 1; k /= 2)
+                for(int k = transformed0[i].size() / 2; k >= 1; k /= 2)
                 {
                     blocks *= 2;
                     for(int i0 = 0; i0 < blocks - 1; i0 += 2)
@@ -119,9 +132,22 @@ namespace bf
                             transformed0[i][(i0 + 1) * k + j] ^= transformed0[i][i0 * k + j];
                 }
             blocks = 1;
-
         }
-        return transformed0;
+
+        //for(int i = 0; i < transformed[0].size(); ++i)
+         //   cout << transformed0[0][i] << endl;
+
+        vector<bvect32> values(transformed[0].size(), 0);
+
+        for(int m = 0; m < transformed0[0].size(); ++m)
+            for(auto a : transformed0)
+            {
+                values[m] <<= (unsigned) 1;
+                values[m] |= (unsigned) a[m];
+            }
+
+        ttable table(values, get_num_of_variables(transformed[0].size()));
+        return table;
     }
 
     ostream &operator<<(ostream &stream, ANF &anf)
@@ -228,7 +254,14 @@ namespace bf
                         throw std::invalid_argument("bad string!");
 
                     if(!lastCoeff)
+                    {
                         lastCoeff = 1;
+                        if(transformed.empty())
+                        {
+                            transformed.resize(1);
+                            transformed[0].resize((unsigned) 1 << (unsigned) maxDeg);
+                        }
+                    }
 
                     if(lastX)
                     {
@@ -295,15 +328,13 @@ namespace bf
                     if(coeff.empty())
                         coeff.resize(1);
 
-                    if(elem != 1)
+                    //cout << elem << endl;
+
+                    if(transformed.size() < deg_32(elem) + 1)
                     {
-                        if(transformed.size() < deg_32(elem) + 1)
-                        {
-                            int size = transformed.size();
-                            transformed.resize(deg_32(elem) + 1);
-                            for(int i = size; i < transformed.size(); ++i)
-                                transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
-                        }
+                        transformed.resize(deg_32(elem) + 1);
+                        for(int i = 0; i < transformed.size(); ++i)
+                            transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
                     }
 
                     writeElem = 1;
@@ -318,13 +349,12 @@ namespace bf
                         lastCoeff = elem;
                         writeElem = 1;
 
-                        if(elem != 1)
+                        if(transformed.size() < deg_32(elem) + 1)
                         {
                             if(transformed.size() < deg_32(elem) + 1)
                             {
-                                int size = transformed.size();
                                 transformed.resize(deg_32(elem) + 1);
-                                for(int i = size; i < transformed.size(); ++i)
+                                for(int i = 0; i < transformed.size(); ++i)
                                     transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
                             }
                         }
@@ -335,6 +365,7 @@ namespace bf
                     if(elem == 0)
                         throw std::invalid_argument("Zero index!");
 
+                    //cout << elem << endl;
                     if(maxDeg < elem)
                     {
                         maxDeg = elem;
