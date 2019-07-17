@@ -12,22 +12,25 @@ namespace bf
         this->_coeff.resize(static_cast<size_t>(this->_length));
     }
 
-    polynom::polynom(ttable &t, GF *field)
+    polynom::polynom(ttable &t, GF *field) 
     {
-        this->_length = t.get_length();
-        this->_coeff.resize(static_cast<size_t>(this->_length));
-        this->set_coeff(0, t.get_value(0));
-        this->_field = field;
-        vector<bvect32> values;
-        const uint32_t tlen = tlen;
-
-        for (uint32_t i = 0; i < tlen; i++)
-            values.push_back(t.get_value(i));
-
-        for (uint32_t coeffq = 0; coeffq < this->_length; coeffq++)
-            for (uint32_t valuesq = 0; valuesq < tlen; valuesq++)
-                this->set_coeff(coeffq,
-                                (field->multiply(t.get_value(valuesq), field->power(valuesq, (tlen - valuesq - 1)))));
+        const uint64_t len = t.get_length();
+        
+        this-> _m = t.get_output_length(); 
+		this-> _length = len;           
+        this-> _field = field;
+        
+        this-> _coeff.resize ( static_cast<size_t>(len) );        
+        this-> set_coeff (0, t.get_value(0) ); // Coeff #0 == F(0)
+        
+        bvect32 temp;
+        for (uint64_t j = 1; j < len; j++) {
+        	temp = 0;
+			for (uint64_t a = 0; a < len; a++) {
+				temp ^= field->multiply( t.get_value(a) , field->power( a, (len - 1 - j) ) );  	
+			}
+			this-> set_coeff(j,temp);
+		}
     }
 
     void polynom::set_coeff(uint32_t index, bvect32 coeff)
