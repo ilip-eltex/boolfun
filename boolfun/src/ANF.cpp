@@ -363,6 +363,8 @@ namespace bf
                 if((elements[i] || (!i && coeff[0])) && i != 0)
                     anf += " + ";
             }
+            if(anf.empty())
+                anf += "0";
             return anf;
         }
     }
