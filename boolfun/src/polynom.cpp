@@ -43,7 +43,7 @@ namespace bf
         return this->_coeff[index];
     }
 
-    uint32_t polynom::get_length()
+    uint64_t polynom::get_length()
     {
         return this->_length;
     }
