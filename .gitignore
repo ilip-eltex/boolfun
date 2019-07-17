@@ -9,4 +9,4 @@ stale_outputs_checked
 Debug
 .vs
 boolfun.vcxproj.user
-
+boolfun/src/*2019*
