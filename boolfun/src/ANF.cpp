@@ -58,7 +58,7 @@ namespace bf
         transformed0 = ivec;
     }
 
-    void ANF::getANF(ttable &table)//FIXME чекай индексы
+    void ANF::getANF(ttable &table)
     {
         if(!table.is_NM_function())
         {
@@ -161,18 +161,14 @@ namespace bf
             index++;
         }
 
-        int exp = 1;
+        int exp = 10;
 
         if(isdigit(arg[index]))
         {
-            exp = 10;
             unsigned int a = arg[index] - '0';
             index++;
             while(isdigit(arg[index]) && index < arg.length())
-            {
                 a = a * exp + (arg[index++] - '0');
-                exp *= 10;
-            }
 
             elem = a;
             if(index == arg.length() || (index < arg.length() && (arg[index] == ' ' || arg[index] == '+')))
@@ -190,10 +186,7 @@ namespace bf
                 unsigned int a = 0;
                 index++;
                 while(isdigit(arg[index]) && index < arg.length())
-                {
                     a = a * exp + (arg[index++] - '0');
-                    exp *= 10;
-                }
 
                 elem = a;
 
@@ -204,6 +197,8 @@ namespace bf
 
     void ANF::parse_ANF(string arg)
     {
+        if(arg.empty())
+            throw std::invalid_argument("empty string!");
         int br = 0;
         int maxDeg = 0;
         unsigned int index = 0;
@@ -211,16 +206,13 @@ namespace bf
         unsigned int lastX = 0;
         int writeElem = 0;
         uint32_t elem;
-        transformed.resize(1);
 
         while(true)
         {
             switch(get_token(arg, index, elem))
             {
                 case -3:
-                    if(elements.empty())
-                        throw std::invalid_argument("bad string!");
-                    else if(!writeElem)
+                    if(!writeElem)
                     {
                         br = 1;
                         break;
@@ -263,6 +255,7 @@ namespace bf
                             transformed[j][lastX] |= lastCoeff >> (unsigned) (transformed.size() - 1 - j);
                     } else
                     {
+
                         if(coeff[lastX])
                         {
                             coeff[lastX] ^= lastCoeff;
@@ -288,10 +281,23 @@ namespace bf
                 case -1:
                     throw std::invalid_argument("bad string!");
                 case 0:
+                    if(!elem)
+                        break;
                     if(elements.empty())
                         elements.resize(1);
                     if(coeff.empty())
                         coeff.resize(1);
+
+                    if(elem != 1)
+                    {
+                        if(transformed.size() < deg_32(elem) + 1)
+                        {
+                            int size = transformed.size();
+                            transformed.resize(deg_32(elem) + 1);
+                            for(int i = size; i < transformed.size(); ++i)
+                                transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
+                        }
+                    }
 
                     writeElem = 1;
 
@@ -306,11 +312,11 @@ namespace bf
 
                         if(elem != 1)
                         {
-                            if(transformed.size() < deg_32(elem))
+                            if(transformed.size() < deg_32(elem) + 1)
                             {
                                 int size = transformed.size();
-                                transformed.resize(deg_32(elem));
-                                for(int i = size + 1; i < transformed.size(); ++i)
+                                transformed.resize(deg_32(elem) + 1);
+                                for(int i = size; i < transformed.size(); ++i)
                                     transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
                             }
                         }
@@ -319,7 +325,6 @@ namespace bf
                 case 2://x index
                     if(elem == 0)
                         throw std::invalid_argument("Zero index!");
-
 
                     if(maxDeg < elem)
                     {
@@ -344,11 +349,10 @@ namespace bf
     string ANF::to_str()
     {
         if(elements.empty())
-            return nullptr;
+            return "0";
         else
         {
             string anf;
-            //cout << elements.size() << endl;
             for(int i = elements.size() - 1; i >= 0; --i)
             {
                 if(elements[i])
