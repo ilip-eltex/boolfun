@@ -1,8 +1,4 @@
-#include <string>
-#include <vector>
-
-#include <string>
-#include <sstream>
+#include "ios.h"
 
 using namespace std;
 
