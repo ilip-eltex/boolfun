@@ -15,8 +15,8 @@ namespace bf
     {
     private:
         vector<uint32_t> coeff;
-        vector<uint32_t> elements;
-        vector<vector<uint64_t>> transformed;
+        int input_size;
+        int empty_table = 1;
     public:
         virtual void             getANF(ttable& table);
         virtual ttable           getFunction();

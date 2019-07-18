@@ -1,152 +1,57 @@
-#include <vector>
-#include <cmath>
-#include <iostream>
-#include <ctype.h>
 #include "ANF.h"
+#include "ttable.h"
+#include <vector>
 
 namespace bf
 {
-    uint64_t table_length;
-
-    void gen_ANF_for_boolean_function(ttable &table, unsigned int bit_vector, vector<uint32_t> &elements0,
-                                      vector<uint64_t> &transformed0)
+    void ANF::getANF(ttable& table)
     {
-        table_length = table.get_length();
+        coeff.resize(table.get_length());
+        input_size = table.get_input_length();
 
-        vector<uint64_t> ivec(table_length <= sizeof(uint64_t) ? 1 : table_length / sizeof(uint64_t), 0);
-        uint64_t count = 0;
-
-        for(auto a : ivec)
+        for(bvect32 i = 0; i < table.get_length(); ++i)
         {
-            for(int j = 0; j < sizeof(uint64_t) * 8; ++j)
-            {
-                a |= (table.get_value(count++) >> bit_vector) & (unsigned) 1;
-                a <<= (unsigned) 1;
-            }
+            coeff[i] = table.get_value(i);
+            if(coeff[i])
+                empty_table = 0;
         }
+
         uint32_t blocks = 1;
-        elements0.resize(table_length, 0);
 
-        if(ivec.size() == 1)
+        for(int k = coeff.size() / 2; k >= 1; k /= 2)
         {
-            for(int k = table_length / 2; k >= 1; k /= 2)
-            {
-                blocks *= 2;
-                for(int i = 0; i < blocks - 1; i += 2)
-                    for(int j = 0; j < k; ++j)
-                        set_bit_64(ivec[0], get_bit_64(ivec[0], (i + 1) * k + j) ^ get_bit_64(ivec[0], i * k + j),
-                                   (i + 1) * k + j);
-            }
-
-            for(int l = 0; l < table_length; ++l)
-                if(ivec[0] >> (table_length - 1 - l))
-                    elements0[l] = l;
-        } else
-        {
-            for(int k = ivec.size() / 2; k >= 1; k /= 2)
-            {
-                blocks *= 2;
-                for(int i = 0; i < blocks - 1; i += 2)
-                    for(int j = 0; j < k; ++j)
-                        ivec[(i + 1) * k + j] ^= ivec[i * k + j];
-            }
-
-            for(int l = 0; l < table_length; ++l)
-                if(ivec[l / sizeof(uint64_t)] >> (sizeof(uint64_t) - 1 - (l % sizeof(uint64_t))))
-                    elements0[l] = l;
+            blocks *= 2;
+            for(int i = 0; i < blocks - 1; i += 2)
+                for(int j = 0; j < k; ++j)
+                    coeff[(i + 1) * k + j] ^= coeff[i * k + j];
         }
-        transformed0 = ivec;
-    }
-
-    void ANF::getANF(ttable &table)
-    {
-        if(!table.is_NM_function())
-        {
-            transformed.resize(1);
-            gen_ANF_for_boolean_function(table, 0, elements, transformed[0]);
-        } else
-        {
-            vector<vector<uint32_t>> elements0;
-
-            coeff.resize(table_length);
-            elements0.resize(table.get_output_length());
-            transformed.resize(table.get_output_length());
-            elements.resize(table_length, 0);
-
-            for(int i = 0; i < table.get_output_length(); ++i)
-                gen_ANF_for_boolean_function(table, (unsigned) i, elements0[i], transformed[i]);
-
-            for(int k = 0; k < (unsigned long long) pow(2, table_length); ++k)
-                for(int j = 0; j < table.get_output_length(); ++j)
-                {
-                    coeff[k] <<= (unsigned) 1;
-                    coeff[k] |= (unsigned) (elements0[k][j] > 0 ? 1 : 0);
-
-                    if(!elements[k])
-                        elements[k] = k;
-                }
-        }
-    }
-
-    int get_num_of_variables(unsigned int size_vector)
-    {
-        if(get_weight_32(size_vector) == 1)
-            return deg_32(size_vector);
-        else
-        {
-            for(int i = 0; i < 32; ++i)
-                if(size_vector <= ((unsigned)1 << (unsigned)i))
-                    return i;
-        }
-        return -1;
     }
 
     ttable ANF::getFunction()
     {
-        if(elements.empty())
+        if(coeff.empty())
             throw std::exception();
 
-        uint32_t blocks = 1;
-        vector<vector<uint64_t>> transformed0(transformed.size());
-
-        for(int i = 0; i < transformed.size(); ++i)
+        if(empty_table)
         {
-            transformed0[i] = transformed[i];
-
-            if(transformed0[i].size() == 1)
-                for(int k = table_length / 2; k >= 1; k /= 2)
-                {
-                    blocks *= 2;
-                    for(int i0 = 0; i0 < blocks - 1; i0 += 2)
-                        for(int j = 0; j < k; ++j)
-                            set_bit_64(transformed0[i][0], get_bit_64(transformed0[i][0], (i0 + 1) * k + j) ^
-                                                           get_bit_64(transformed0[i][0], i0 * k + j),
-                                       (i0 + 1) * k + j);
-                }
-            else
-                for(int k = transformed0[i].size() / 2; k >= 1; k /= 2)
-                {
-                    blocks *= 2;
-                    for(int i0 = 0; i0 < blocks - 1; i0 += 2)
-                        for(int j = 0; j < k; ++j)
-                            transformed0[i][(i0 + 1) * k + j] ^= transformed0[i][i0 * k + j];
-                }
-            blocks = 1;
+            vector<bvect32> copy((unsigned)1 << (unsigned)input_size, 0);
+            ttable table(copy, input_size);
+            return table;
         }
 
-        //for(int i = 0; i < transformed[0].size(); ++i)
-         //   cout << transformed0[0][i] << endl;
+        vector<bvect32> copy(coeff);
 
-        vector<bvect32> values(transformed[0].size(), 0);
+        uint32_t blocks = 1;
 
-        for(int m = 0; m < transformed0[0].size(); ++m)
-            for(auto a : transformed0)
-            {
-                values[m] <<= (unsigned) 1;
-                values[m] |= (unsigned) a[m];
-            }
+        for(int k = copy.size() / 2; k >= 1; k /= 2)
+        {
+            blocks *= 2;
+            for(int i = 0; i < blocks - 1; i += 2)
+                for(int j = 0; j < k; ++j)
+                    copy[(i + 1) * k + j] ^= copy[i * k + j];
+        }
 
-        ttable table(values, get_num_of_variables(transformed[0].size()));
+        ttable table(copy, input_size);
         return table;
     }
 
@@ -157,14 +62,14 @@ namespace bf
 
     int ANF::deg()
     {
-        if(elements.empty())
+        if(coeff.empty())
             throw std::exception();
 
         unsigned int maxCount = 0;
 
-        for(auto a : elements)
-            if(maxCount < get_weight_32(a))
-                maxCount = get_weight_32(a);
+        for(int i = 0;i < coeff.size();i++)
+            if(coeff[i] && maxCount < get_weight_32(i))
+                maxCount = get_weight_32(i);
 
         return maxCount;
     }
@@ -216,6 +121,7 @@ namespace bf
 
                 elem = a;
 
+
                 return 2;
             }
         }
@@ -225,6 +131,7 @@ namespace bf
     {
         if(arg.empty())
             throw std::invalid_argument("empty string!");
+
         int br = 0;
         int maxDeg = 0;
         unsigned int index = 0;
@@ -233,6 +140,7 @@ namespace bf
         int writeElem = 0;
         uint32_t elem;
         int lastOp = 0;
+        int counter = 0;
 
         while(true)
         {
@@ -253,64 +161,18 @@ namespace bf
                     if(!writeElem)
                         throw std::invalid_argument("bad string!");
 
-                    if(!lastCoeff)
+                    if(coeff[lastX] && lastCoeff)
                     {
-                        lastCoeff = 1;
-                        if(transformed.empty())
-                        {
-                            transformed.resize(1);
-                            transformed[0].resize((unsigned) 1 << (unsigned) maxDeg);
-                        }
+                        coeff[lastX] ^= lastCoeff;
+                        lastCoeff = coeff[lastX];
+                        if(!lastCoeff)
+                            counter--;
                     }
 
-                    if(lastX)
+                    if(lastCoeff)
                     {
-                        if(elements.size() <= lastX)
-                            elements.resize(lastX + 1);
-
-                        if(!elements[lastX])
-                        {
-                            elements[lastX] = lastX;
-                            coeff[lastX] = lastCoeff;
-                        } else
-                        {
-                            coeff[lastX] ^= lastCoeff;
-                            lastCoeff = coeff[lastX];
-
-                            if(!coeff[lastX])
-                            {
-                                elements[lastX] = 0;
-                                for(auto a : transformed)
-                                    a[lastX] = 0;
-
-                                writeElem = 0;
-                                lastX = 0;
-                                lastCoeff = 0;
-                                break;
-                            }
-                        }
-
-                        for(int j = 0; j < transformed.size(); ++j)
-                            transformed[j][lastX] |= lastCoeff >> (unsigned) (transformed.size() - 1 - j);
-                    } else
-                    {
-
-                        if(coeff[lastX])
-                        {
-                            coeff[lastX] ^= lastCoeff;
-                            if(!coeff[lastX])
-                            {
-                                writeElem = 0;
-                                lastCoeff = 0;
-                                break;
-                            }
-                        } else
-                        {
-                            for(int j = 0; j < transformed.size(); ++j)
-                                transformed[j][lastX] |= lastCoeff >> (unsigned) (transformed.size() - 1 - j);
-
-                            coeff[lastX] = lastCoeff;
-                        }
+                        coeff[lastX] = lastCoeff;
+                        counter++;
                     }
 
                     writeElem = 0;
@@ -321,97 +183,79 @@ namespace bf
                     throw std::invalid_argument("bad string!");
                 case 0:
                     lastOp = 0;
-                    if(!elem)
-                        break;
-                    if(elements.empty())
-                        elements.resize(1);
+
                     if(coeff.empty())
                         coeff.resize(1);
-
-                    //cout << elem << endl;
-
-                    if(transformed.size() < deg_32(elem) + 1)
-                    {
-                        transformed.resize(deg_32(elem) + 1);
-                        for(int i = 0; i < transformed.size(); ++i)
-                            transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
-                    }
 
                     writeElem = 1;
 
                     lastCoeff = elem;
                     lastX = 0;
                     break;
-                case 1://coeff of x
+                case 1:
                     lastOp = 1;
                     if(elem)
                     {
                         lastCoeff = elem;
                         writeElem = 1;
-
-                        if(transformed.size() < deg_32(elem) + 1)
-                        {
-                            if(transformed.size() < deg_32(elem) + 1)
-                            {
-                                transformed.resize(deg_32(elem) + 1);
-                                for(int i = 0; i < transformed.size(); ++i)
-                                    transformed[i].resize((unsigned) 1 << (unsigned) maxDeg);
-                            }
-                        }
                     }
                     break;
-                case 2://x index
+                case 2:
                     lastOp = 2;
                     if(elem == 0)
-                        throw std::invalid_argument("Zero index!");
+                        throw std::invalid_argument("zero x index!");
+                    if(elem > 31)
+                        throw std::invalid_argument("x index more than 31!");
 
-                    //cout << elem << endl;
+                    if(!lastCoeff)
+                        lastCoeff = 1;
+
                     if(maxDeg < elem)
                     {
                         maxDeg = elem;
-                        for(auto n : transformed)
-                            n.resize((unsigned) 1 << (unsigned) maxDeg, 0);
-
-                        coeff.resize((unsigned) 1 << (unsigned) maxDeg);
+                        input_size = maxDeg;
+                        coeff.resize((unsigned)1 << (unsigned)maxDeg);
                     }
-
                     writeElem = 1;
 
                     lastX |= (unsigned int) ((unsigned) 1 << (elem - 1));
-
                     break;
             }
             if(br)
                 break;
         }
+        if(counter)
+            empty_table = 0;
     }
 
     string ANF::to_str()
     {
-        if(elements.empty())
+        if(coeff.empty())
+            return nullptr;
+
+        if(empty_table)
             return "0";
-        else
+
+        string anf;
+        int was = 0;
+
+        for(int i = coeff.size() - 1; i >= 0; --i)
         {
-            string anf;
-            for(int i = elements.size() - 1; i >= 0; --i)
+            if(coeff[i])
             {
-                if(elements[i])
-                {
-                    if(!coeff.empty() && coeff[i] != 1)
-                        anf += std::to_string(coeff[i]);
-
-                    for(int j = 0; j < sizeof(uint32_t) * 8; ++j)
-                        if(get_bit_32(elements[i], j))
-                            anf += "x" + std::to_string(j + 1);
-                } else if(!i && coeff[0])
-                    anf += std::to_string(coeff[0]);
-
-                if((elements[i] || (!i && coeff[0])) && i != 0)
+                if(!was)
+                    was = 1;
+                else
                     anf += " + ";
+
+                if(coeff[i] != 1 || i == 0)
+                    anf += std::to_string(coeff[i]);
+
+                for(int j = 0; j < sizeof(uint32_t) * 8; ++j)
+                    if(get_bit_32(i, j))
+                        anf += "x" + std::to_string(j + 1);
             }
-            if(anf.empty())
-                anf += "0";
-            return anf;
         }
+        return anf;
     }
 }
