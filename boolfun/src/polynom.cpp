@@ -63,75 +63,95 @@ namespace bf
     bool polynom::set_from_string(const std::string &s)
     {
         // s must be low-cased and a[0] == %number%
-        std::string in = s, s1;
-        in = trim_all(in);
-        stringstream ss;
-        char c;
-        ss.clear();
-        ss << in;
-        std::vector<string> words;
+		string trimmed = trim_all(s), temp_string;
+		const std::vector<uint32_t> FAIL (0);
+		
+		const unsigned int n = str2int(trimmed);
+		this->_n = n;
+		if (n==0) 
+			return false;
+			
+		int t=0;
+		for (t=0; t<trimmed.size(); t++) // getting length of 'n:'
+			if (trimmed[t] == ':')
+				break;
+				
+		char a[trimmed.size()];
+		char b[trimmed.size()];
+		strcpy(b,trimmed.c_str());
+		strncpy(a, &b[t+1], trimmed.size()-t); //cut 'n:'
+		trimmed = a;
+		stringstream ss;
+		ss.clear();
+		ss << trimmed;
+		
+		std::vector<string> words;
 
-        while (getline(ss, s1, '+')) // get words between '+'
-            words.push_back(s1);
+		while (getline(ss, temp_string, '+')) 
+			words.push_back(temp_string); // get words between '+'
+		ss.clear();
+		
+		vector<position> got;
+		int max_degree=-1, tempd;
+		char temp_char;
 
-        ss.clear();
+		for (int i=0; i<words.size(); i++) {
+		    
+			bool has_degree = true;
+			bool no_x = true;
+			
+			position temp_got;
+			if ( words[i][0] != 'x' )
+				tempd = str2int(words[i]);
+			else 
+				tempd = 1;
+			
+			temp_got.coeff = tempd;
+			
+			for (int j=0; j<words[i].size(); j++) {
+				if (words[i][j] == 'x' ) {
+					no_x = false;
+					break;
+				}
+			}
+			
+			if (no_x) {
+				temp_got.index = 0;
+				got.push_back(temp_got);
+				continue;
+			}
+			
+			temp_char = words[i][words[i].length()-1];
+			
+			if ( not ((temp_char >= '0') and (temp_char <= '9')) ) {
+				has_degree = false;
+				temp_string = "1";
+			}
 
-        // Begin checking control (first) word {n:}
-        ss << words[0];
-        uint32_t t; //temp
-
-        ss >> t; // read first word from stream
-
-
-        if (t == 0)
-            return false;
-        this->_n = t;
-        std::vector<uint32_t> coeffs(static_cast<size_t>(t));
-        for (uint32_t i = 0; i < coeffs.size(); i++)
-            coeffs[i] = 0;
-        std::string tstr = words[0]; // temp string; get first word
-        t = 0; // set vector<uint32_t> begin counter value
-        //if ( tstr[tstr.length()-1] != ':' ) { // if wrote {n:C1x} in first word
-        ss >> c; //skip ':'
-        ss >> t;
-        coeffs[0] = t;
-        t = 1; // set begin counter to second element due to first word wrote wrong
-
-
-        for (uint32_t i = t; i < words.size(); i++)
-        {
-            uint32_t degree = 0;
-            ss.clear();
-
-            tstr = words[i];
-            ss << tstr;
-            t = str2int(tstr);
-            if (t == 0) // if no coeff
-                t = 1; // coeff == 1
-            ss >> c;
-            if (c != 'x')
-            {
-                if (t == 1)
-                    return false;
-                coeffs[0] ^= t;
-                continue;
-            }
-            while (ss >> c)
-                if (c == '^')
-                {
-                    ss >>
-                       tstr;
-                    if (tstr == "0")
-                    {
-                        degree = 0;
-                        break;
-                    }
-                    degree = str2int(tstr);
-                    break;
-                }
-            coeffs[degree] ^= t;
-        }
-        this->_coeff = coeffs;
+			ss.clear();
+			ss << words[i];
+			while ( (ss >> temp_char) and has_degree) {
+				if (temp_char == '^') {
+					temp_string = "";
+					temp_char = '0';
+					while ( (temp_char >= '0') and (temp_char <= '9') and (ss >> temp_char) ) 
+						temp_string += temp_char;
+	
+					break;
+				}
+			}
+			temp_got.index = str2int(temp_string);
+			got.push_back(temp_got);
+		}
+			 
+		vector<uint32_t> polynom_coeffs(1 << n);
+		for (uint32_t i=0; i<got.size(); i++) {
+			uint32_t index = got[i].index;
+			index %= power2(n) - 1;
+			if ( (index == 0) and (got[i].index != 0) )
+				 index = power2(n) - 1;
+			polynom_coeffs[index] ^= got[i].coeff;
+		}
         return true;
     }
 }
