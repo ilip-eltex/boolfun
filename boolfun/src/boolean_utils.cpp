@@ -119,8 +119,6 @@ namespace bf
 
     void get_GAC_characteristics(ttable &a, unsigned long *sigma, unsigned int *delta)
     {
-        check_is_boolean_function(a);
-
         if(!sigma && !delta)
             return;
 
@@ -129,37 +127,37 @@ namespace bf
         int blocks = 1;
         int tmp;
 
-        for(auto el : spector)
+        for(int e = 0;e < spector.size();e++)
         {
-            for(auto el1 : el)
-                el1 *= el1;
+            for(int o = 0;o < spector[e].size();o++)
+                spector[e][o] *= spector[e][o];
 
-            for(int k = el.size() / 2; k > 1; k /= 2)
+            for(int k = spector[e].size() / 2; k >= 1; k /= 2)
             {
                 blocks *= 2;
                 for(int u = 0; u < blocks - 1; u += 2)
                     for(int j = 0; j < k; ++j)
                     {
-                        tmp = el[u * k + j];
-                        el[u * k + j] += el[(u + 1) * k + j];//FIXME
-                        el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
+                        tmp = spector[e][u * k + j];
+                        spector[e][u * k + j] += spector[e][(u + 1) * k + j];
+                        spector[e][(u + 1) * k + j] = tmp - spector[e][(u + 1) * k + j];
                     }
             }
 
-            for(auto el1 : el)
-                el1 /= a.get_length();
+            for(int o = 0;o < spector[e].size();o++)
+                spector[e][o] /= a.get_length();
 
             if(sigma)
-                for(auto el1 : el)
-                    (*sigma) += el1 * el1;
+                for(int o = 0;o < spector[e].size();o++)
+                    (*sigma) += spector[e][o] * spector[e][o];
 
             if(delta)
             {
-                tmp = el[0];
+                tmp = spector[e][1];
 
-                for(auto el1 : el)
-                    if(tmp < el1)
-                        tmp = el1;
+                for(int i = 2;i < spector[e].size();i++)
+                    if(tmp < spector[e][i])
+                        tmp = spector[e][i];
 
                 if((*delta) < tmp)
                     (*delta) = tmp;

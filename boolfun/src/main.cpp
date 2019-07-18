@@ -20,6 +20,10 @@ int main()
     cout << anf << endl;
     auto x = anf.getFunction();
 
+    ANF aff;
+    aff.parse_ANF("x1+x2+x3+x4+x5+x6+x7+x8+x9+x10");
+    auto y = aff.getFunction();
+
     /*vector<vector<int>> spec = get_walsh_hadamard_spec(x);
     //cout << spec[0].size() << endl;
 
@@ -28,8 +32,8 @@ int main()
     cout << "---------------------\n";
 
     cout << get_index_nonlinearity(x) << endl;*/
-    cout << is_PC(x, 9) << endl;
 
+    cout << get_hemming_distance(x,y) << endl;
 
     return 0;
 }
