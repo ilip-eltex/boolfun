@@ -1,6 +1,7 @@
 #include <exception>
 #include <cstring>
 #include <stdexcept>
+#include <iostream>
 
 #include "GF_simple.h"
 #include "Field_polynom_table.h"
@@ -79,7 +80,7 @@ namespace bf
 
         int was = 0;
 
-        for (bvect32 i = 2; i < true_order; i++)
+        for (bvect32 i = 1; i < true_order; i++)
         {
             memset(num_to_deg.data(), 0, true_order * sizeof(bvect32));
 
@@ -97,9 +98,12 @@ namespace bf
             if (!was)
             {
                 for (bvect32 k = 0; k < true_order; k++)
-                    deg_to_num[num_to_deg[k]] = k;
+                    deg_to_num[k] = power(i, k);
 
                 gen_el_found = 1;
+
+                num_to_deg[1] = 0;
+                deg_to_num[0] = 1;
 
                 return i;
             }
@@ -115,9 +119,9 @@ namespace bf
 
     bvect32 GFSimple::multiply(bvect32 a, bvect32 b)
     {
-        if(gen_el_found)//Если таблица доступна
+        /*if(gen_el_found)//Если таблица доступна
             return deg_to_num[(num_to_deg[a] + num_to_deg[b]) % (true_order - 1)];
-        else
+        else*/
         {
             bvect64 c = 0;
 

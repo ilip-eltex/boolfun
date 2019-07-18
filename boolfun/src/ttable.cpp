@@ -6,22 +6,30 @@ using namespace std;
 namespace bf
 {
 
-    ttable::ttable(polynom &p, unsigned int n)
+    ttable::ttable(polynom &p)
     {
-        auto field = p.get_field();
+        GF *field = p.get_field();
+        this->_field = field;
         this->_n = p.get_input_length();
-        
+
         vector<bvect32> coeff;
         
 		const uint32_t polynom_length = p.get_length(); // aka x-quanity aka coeff-quanity
-        for (bvect32 i = 0; i < polynom_length; i++)
+        this->_length = polynom_length;
+		for (bvect32 i = 0; i < polynom_length; i++)
             coeff.push_back(p.get_coeff(i));
-            
-        _values.resize(polynom_length);
-		
-        for (uint32_t x = 0; x < polynom_length; x++) // Cycle by vectors
+        this->_values.resize(polynom_length);
+        for (uint32_t i=0; i < this->_values.size(); i++)
+            this->_values[i] = 0;
+        for (uint32_t x = 0; x < this->_values.size(); x++)
             for (uint32_t i = 0; i < polynom_length; i++) // Cycle by coeffs
-                _values[x] ^= field->multiply(coeff[i], field->power(x, i));
+               this->_values[x] ^= field->multiply(coeff[i], field->power(x, i));
+
+        } // Cycle by vectors
+
+
+    GF* ttable::get_field() {
+        return this->_field;
     }
 
 

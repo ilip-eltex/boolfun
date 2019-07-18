@@ -19,4 +19,5 @@ namespace bf
     int is_SAC(ttable&);
     int get_index_nonlinearity(ttable&);
     unsigned int get_hemming_distance(ttable&, ttable&);
+    int is_differentially_uniform(ttable, unsigned char);
 }
