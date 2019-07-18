@@ -149,15 +149,15 @@ int main () {
 	
 	// set_from_string ("4: 10x^2 + 5x^29")
 	bool b;
-	std:vector<uint32_t> result_vect = set_from_string("5: 10x^2 + 66x^29");
+	std:vector<uint32_t> result_vect = set_from_string("2: 15x^2 + 31x^29");
 	for (int i=0; i<result_vect.size(); i++)
 		std::cout << result_vect[i] << ' ';
 	std::cout << "\n\n\n";
 	if (result_vect[2] == 0)
 		b = false;
 	else
-		b = (result_vect[2]==10) and (result_vect[29]==66);
-	temp.set("set_from_string('5: 11x^2 + 6x^29')", b);
+		b = (result_vect[0]==0) and (result_vect[2]==16);
+	temp.set("set_from_string('2: 15x^2 + 31x^29') a[2]=16", b);
 	tests.push_back(temp); 
 		
 	// 
@@ -298,11 +298,15 @@ int main () {
 			 
 		vector<uint32_t> polynom_coeffs(1 << n);
 		for (uint32_t i=0; i<got.size(); i++) {
-			polynom_coeffs[got[i].index] ^= got[i].coeff;
+			uint32_t index = got[i].index;
+			index %= power2(n) - 1;
+			if ( (index == 0) and (got[i].index != 0) )
+				 index = power2(n) - 1;
+			polynom_coeffs[index] ^= got[i].coeff;
 		}
 		return polynom_coeffs;		
 }
-//////////////////// get_from_string ////////////////////
+//////////////////// end get_from_string ////////////////////
 string trim_left(string s)
     {
         if (s.empty()) return s;
