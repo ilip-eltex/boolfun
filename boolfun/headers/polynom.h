@@ -26,7 +26,7 @@ namespace bf {
 
 		public:
 			polynom (GF *field);
-			polynom (ttable &t, GF *field);
+			polynom (ttable &t);
 
 			bool set_from_string (const std::string &s);
 			void set_coeff (uint32_t index, bvect32 coeff);

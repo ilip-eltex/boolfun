@@ -10,16 +10,17 @@ namespace bf
     {
         this->_length = power2(static_cast<uint32_t>(field->get_order()));
         this->_coeff.resize(static_cast<size_t>(this->_length));
+        this->_field = field;
     }
 
-    polynom::polynom(ttable &t, GF *field) 
+    polynom::polynom(ttable &t)
     {
         const uint64_t len = t.get_length();
         
         this-> _m = t.get_output_length(); 
 		this-> _length = len;           
-        this-> _field = field;
-        
+        this-> _field = t.get_field();
+        auto field = this->_field;
         this-> _coeff.resize ( static_cast<size_t>(len) );        
         this-> set_coeff (0, t.get_value(0) ); // Coeff #0 == F(0)
         

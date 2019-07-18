@@ -4,6 +4,7 @@
 #include "bitslib.h"
 #include "GF.h"
 #include "GF_simple.h"
+#include <cstring>
 
 using namespace std;
 
@@ -36,9 +37,9 @@ namespace bf
         for(uint64_t j = 1; j < values.size(); j++)
         {
             temp = 0;
-            for(uint64_t a = 0; a < field.get_order(); a++)
-                temp ^= field.power(j, (unsigned) 1 << a);
-
+            for(uint64_t a = 0; a < field.get_order(); a++){
+            temp ^= field.power(j, ((unsigned) 1 << a));
+            }
             values[j] = temp;
         }
         ttable table(values, field.get_order());
@@ -97,7 +98,7 @@ namespace bf
                     for(int j = 0; j < k; ++j)
                     {
                         tmp = ivec[i][u * k + j];
-                        ivec[i][u * k + j] += ivec[i][(u + 1) * k + j];//FIXME
+                        ivec[i][u * k + j] += ivec[i][(u + 1) * k + j];
                         ivec[i][(u + 1) * k + j] = tmp - ivec[i][(u + 1) * k + j];
                     }
             }
@@ -105,6 +106,41 @@ namespace bf
         }
 
         return ivec;
+    }
+
+    int is_differentially_uniform(ttable table, unsigned char delta)
+    {
+        vector<uint32_t> array((unsigned)1 << table.get_output_length(), 0);
+        vector<uint32_t> array1((unsigned)1 << table.get_input_length(), 0);
+
+        uint32_t max;
+        for(int a = 1; a < (unsigned)1 << table.get_input_length(); ++a)
+        {
+            ttable der = get_derivative(table, a);
+
+            for(int x = 0; x < (unsigned) 1 << table.get_input_length(); ++x)
+                array[der.get_value(x)]++;
+
+            max = array[0];
+            for(int i = 1; i < array.size(); ++i)
+                if(array[i] > max)
+                    max = array[i];
+
+            array1[a] = max;
+            memset(array.data(), 0, ((unsigned)1 << table.get_output_length()) * sizeof(bvect32));
+        }
+        max = array1[0];
+        for(int i = 1; i < array1.size(); ++i)
+        {
+            cout << array1[i] << endl;
+            if(array1[i] > max)
+                max = array1[i];
+        }
+
+
+        cout << max << endl;
+
+        return delta >= max;
     }
 
     ttable get_derivative(ttable &a, bvect32 direction)
