@@ -152,6 +152,7 @@ namespace bf
 				 index = power2(n) - 1;
 			polynom_coeffs[index] ^= got[i].coeff;
 		}
+		this->_coeffs = polynom_coeffs;
         return true;
     }
 }
