@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$TRAVIS_BRANCH" = "test" ]; then 
-	cd boolfun/test 
+	#cd boolfun/test 
 	make tests
 	./tests
 	exit $?
