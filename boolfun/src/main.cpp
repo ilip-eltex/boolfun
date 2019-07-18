@@ -10,15 +10,16 @@ using namespace bf;
 
 int main()
 {
-    GF* field = get_field(3);
-   /*vector<bvect32> values((unsigned)1 << field->get_order(), 0);
+    GF *field = get_field(5);
+    vector<bvect32> values((unsigned) 1 << field->get_order(), 0);
 
-   for(int x = 0; x < (unsigned)1 << field->get_order(); ++x)
-        values[x] = field->power(x,3);
+    for(int x = 0; x < (unsigned) 1 << field->get_order(); ++x)
+        values[x] = field->power(x, 3);
 
     ttable table(values, field->get_order());
 
-    cout << is_differentially_uniform(table, 2);*/
+    cout << is_differentially_uniform(table, 2);
+
 
     /*GF* field = get_field(4);
     ttable res = get_trace(*field);
@@ -27,6 +28,8 @@ int main()
 
     cout << is_affine(res) << endl;*/
 
+    //GF* field = get_field(6);
+    // ANF anf;
     /*
      GF* field = get_field(6);
     ANF anf;
@@ -36,16 +39,14 @@ int main()
      */
 
     /*ANF aff;
-    aff.parse_ANF("x1+x2+x3+x4+x5");
+    aff.parse_ANF("x1x2+x3x4+x5x6+x7x8+x9x10");
     auto y = aff.getFunction();
-    GF* field = get_field(11);
 
-    for(int i = 0; i < y.get_length(); ++i)
-        cout << y.get_value(i) << endl;
-    cout << "-----------------------------\n";
-    auto x = get_trace(*field);
-    aff.getANF(x);
-    cout << aff;*/
+   // for(int i = 0;i < y.get_length();i++)
+    //    cout << y.get_value(i) << endl;
+
+    cout << get_correlation_immunity(y) <<endl;*/
+
 
     /*vector<vector<int>> spec = get_walsh_hadamard_spec(x);
     //cout << spec[0].size() << endl;
@@ -57,7 +58,7 @@ int main()
     cout << get_index_nonlinearity(x) << endl;*/
 
     //cout << get_hemming_distance(x,y) << endl;
-    polynom p(field);
+    /*polynom p(field);
     p.set_from_string("3: 5x^7 + 10x^300");
     cout << "n: " << p.get_input_length() << endl;
     cout << "coeffs: ";
@@ -73,6 +74,6 @@ int main()
     polynom p2(tabletka);
     cout << "\n\ncoeffs-2: ";
     for (uint32_t i=0; i<p.get_length(); i++)
-        cout << p.get_coeff(i) << ' ';
+        cout << p.get_coeff(i) << ' ';*/
     return 0;
 }

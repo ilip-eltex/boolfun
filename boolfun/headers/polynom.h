@@ -18,9 +18,7 @@ namespace bf {
 			uint32_t index;
 			uint32_t coeff;
 		};
-		
-	
-	
+
 	class polynom {
 			// over field type
 

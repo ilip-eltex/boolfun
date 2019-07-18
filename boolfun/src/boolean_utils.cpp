@@ -72,6 +72,20 @@ namespace bf
         }
     }
 
+    unsigned int get_correlation_immunity(ttable &table)
+    {
+        check_is_boolean_function(table);
+
+        unsigned int corr = table.get_input_length();
+        vector<vector<int>> spec = get_walsh_hadamard_spec(table);
+
+        for(unsigned int i = 1; i < spec[0].size(); ++i)
+            if(spec[0][i] && get_weight_32(i) - 1 < corr)
+                corr = get_weight_32(i) - 1;
+
+        return corr;
+    }
+
     vector<vector<int>> get_walsh_hadamard_spec(ttable &a)
     {
         int blocks = 1;
@@ -131,14 +145,8 @@ namespace bf
         }
         max = array1[0];
         for(int i = 1; i < array1.size(); ++i)
-        {
-            cout << array1[i] << endl;
             if(array1[i] > max)
                 max = array1[i];
-        }
-
-
-        cout << max << endl;
 
         return delta >= max;
     }

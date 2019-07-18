@@ -36,7 +36,7 @@ namespace bf
             j++;
         }
         coeffs = vect;
-        cnst = (values[0] != 0);
+        cnst = (values[0] != 0); // if cnst then
         return true;
     }
 
