@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 #include <stdint.h>
 #include <cstdlib>
-#include "bitslib.h"
-#include "ios.h"
+#include <cstring>
 #include <cstdint>
 //#include "ttable.h"
 //#include "polynom.h"
 //#include "sandbox.h"
+using namespace std;
 
 class test {
 		
@@ -150,8 +150,8 @@ int main () {
 	// set_from_string ("4: 10x^2 + 5x^29")
 	bool b;
 	std:vector<uint32_t> result_vect = set_from_string("2: 15x^2 + 31x^29");
-	for (int i=0; i<result_vect.size(); i++)
-		std::cout << result_vect[i] << ' ';
+	/*for (int i=0; i<result_vect.size(); i++)
+		std::cout << result_vect[i] << ' '; */
 	std::cout << "\n\n\n";
 	if (result_vect[2] == 0)
 		b = false;
