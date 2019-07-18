@@ -11,7 +11,7 @@ namespace bf
 {
     void check_is_boolean_function(ttable &table)
     {
-        if (table.is_NM_function())
+        if(table.is_NM_function())
             throw std::invalid_argument("Unsupported NM functions!!!");
     }
 
@@ -22,39 +22,47 @@ namespace bf
         check_is_boolean_function(table);
 
         uint64_t weight = 0;
-        for (bvect32 i = 0; i < table.get_length(); ++i)
+        for(bvect32 i = 0; i < table.get_length(); ++i)
             weight += table.get_value(i);
 
         return weight;
     }
 
-    bvect32 get_trace(GF &field)
+    ttable get_trace(GF &field)
     {
-        bvect32 sum0 = 0;
+        vector<bvect32> values((unsigned) 1 << field.get_order(), 0);
 
-        for (bvect32 i = 0; i < field.get_order(); ++i)
-            field.sum(sum0, field.power((bvect32) 4, i));
+        bvect32 temp;
+        for(uint64_t j = 1; j < values.size(); j++)
+        {
+            temp = 0;
+            for(uint64_t a = 0; a < field.get_order(); a++)
+                temp ^= field.power(j, (unsigned) 1 << a);
 
-        return sum0;
+            values[j] = temp;
+        }
+        ttable table(values, field.get_order());
+
+        return table;
     }
 
     int is_balanced(ttable &table)
     {
-        if (!table.is_NM_function())
+        if(!table.is_NM_function())
         {
-            if (get_function_weight(table) == table.get_length() / 2)
+            if(get_function_weight(table) == table.get_length() / 2)
                 return 1;
             else
                 return 0;
         } else
         {
             uint64_t weight = 0;
-            for (unsigned int j = 0; j < table.get_output_length(); ++j)
+            for(unsigned int j = 0; j < table.get_output_length(); ++j)
             {
-                for (bvect32 i = 0; i < table.get_length(); ++i)
+                for(bvect32 i = 0; i < table.get_length(); ++i)
                     weight += (table.get_value(i) >> j) & (unsigned) 1;
 
-                if (weight != table.get_length() / 2)
+                if(weight != table.get_length() / 2)
                     return 0;
 
                 weight = 0;
@@ -70,27 +78,27 @@ namespace bf
 
         vector<vector<int>> ivec(a.get_output_length());
 
-        for (auto el : ivec)
+        for(int i = 0;i < ivec.size();i++)
         {
-            el.resize(a.get_length());
+            ivec[i].resize(a.get_length());
 
-            for (int l = 0; l < el.size(); ++l)
+            for(int l = 0; l < ivec[i].size(); ++l)
             {
-                if (!a.get_value(l))
-                    el[l] = 1;
+                if(!a.get_value(l))
+                    ivec[i][l] = 1;
                 else
-                    el[l] = -1;
+                    ivec[i][l] = -1;
             }
 
-            for (int k = el.size() / 2; k > 1; k /= 2)
+            for(int k = ivec[i].size() / 2; k >= 1; k /= 2)
             {
                 blocks *= 2;
-                for (int u = 0; u < blocks - 1; u += 2)
-                    for (int j = 0; j < k; ++j)
+                for(int u = 0; u < blocks - 1; u += 2)
+                    for(int j = 0; j < k; ++j)
                     {
-                        tmp = el[u * k + j];
-                        el[u * k + j] += el[(u + 1) * k + j];//FIXME
-                        el[(u + 1) * k + j] = tmp - el[(u + 1) * k + j];
+                        tmp = ivec[i][u * k + j];
+                        ivec[i][u * k + j] += ivec[i][(u + 1) * k + j];//FIXME
+                        ivec[i][(u + 1) * k + j] = tmp - ivec[i][(u + 1) * k + j];
                     }
             }
             blocks = 1;
@@ -103,8 +111,8 @@ namespace bf
     {
         auto b = ttable(a);
 
-        for (bvect32 i = 0; i < b.get_length(); ++i)
-            b.set(b.get_value(i) ^ b.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
+        for(bvect32 i = 0; i < b.get_length(); ++i)
+            b.set(a.get_value(i) ^ a.get_value(i ^ direction), i);//f(x) ^ f(x ^ dir)
 
         return b;
     }
@@ -113,7 +121,7 @@ namespace bf
     {
         check_is_boolean_function(a);
 
-        if (!sigma && !delta)
+        if(!sigma && !delta)
             return;
 
         vector<vector<int>> spector(get_walsh_hadamard_spec(a));
@@ -121,16 +129,16 @@ namespace bf
         int blocks = 1;
         int tmp;
 
-        for (auto el : spector)
+        for(auto el : spector)
         {
-            for (auto el1 : el)
+            for(auto el1 : el)
                 el1 *= el1;
 
-            for (int k = el.size() / 2; k > 1; k /= 2)
+            for(int k = el.size() / 2; k > 1; k /= 2)
             {
                 blocks *= 2;
-                for (int u = 0; u < blocks - 1; u += 2)
-                    for (int j = 0; j < k; ++j)
+                for(int u = 0; u < blocks - 1; u += 2)
+                    for(int j = 0; j < k; ++j)
                     {
                         tmp = el[u * k + j];
                         el[u * k + j] += el[(u + 1) * k + j];//FIXME
@@ -138,22 +146,22 @@ namespace bf
                     }
             }
 
-            for (auto el1 : el)
+            for(auto el1 : el)
                 el1 /= a.get_length();
 
-            if (sigma)
-                for (auto el1 : el)
+            if(sigma)
+                for(auto el1 : el)
                     (*sigma) += el1 * el1;
 
-            if (delta)
+            if(delta)
             {
                 tmp = el[0];
 
-                for (auto el1 : el)
-                    if (tmp < el1)
+                for(auto el1 : el)
+                    if(tmp < el1)
                         tmp = el1;
 
-                if ((*delta) < tmp)
+                if((*delta) < tmp)
                     (*delta) = tmp;
             }
 
@@ -163,16 +171,16 @@ namespace bf
 
     int get_vector_permutation(ttable &a, int no_ones, int no_zeroes, unsigned int accum)
     {
-        if (no_ones == 0)
+        if(no_ones == 0)
         {
-            for (int i = 0; i < no_zeroes; i++)
+            for(int i = 0; i < no_zeroes; i++)
                 accum <<= (unsigned) 1;
 
             auto table = get_derivative(a, accum);
             return is_balanced(table);
-        } else if (no_zeroes == 0)
+        } else if(no_zeroes == 0)
         {
-            for (int j = 0; j < no_ones; j++)
+            for(int j = 0; j < no_ones; j++)
             {
                 accum <<= (unsigned) 1;
                 accum |= (unsigned) 1;
@@ -187,8 +195,8 @@ namespace bf
 
     int is_PC(ttable &a, int k)
     {
-        for (int i = 1; i <= k; ++i)
-            if (!get_vector_permutation(a, i, a.get_input_length() - i, 0))
+        for(int i = 1; i <= k; ++i)
+            if(!get_vector_permutation(a, i, a.get_input_length() - i, 0))
                 return 0;
 
         return 1;
@@ -196,10 +204,10 @@ namespace bf
 
     int is_SAC(ttable &a)
     {
-        for (unsigned int i = 0; i < a.get_input_length(); ++i)
+        for(unsigned int i = 0; i < a.get_input_length(); ++i)
         {
             auto table = get_derivative(a, (unsigned) 1 << i);
-            if (!is_balanced(table))
+            if(!is_balanced(table))
                 return 0;
         }
 
@@ -211,9 +219,9 @@ namespace bf
         vector<vector<int>> b = get_walsh_hadamard_spec(a);
         int tmp = abs(b[0][0]);
 
-        for (auto el : b)
-            for (auto el1 : el)
-                if (tmp < abs(el1))
+        for(auto el : b)
+            for(auto el1 : el)
+                if(tmp < abs(el1))
                     tmp = abs(el1);
 
         return (((unsigned) 1 << (unsigned) (a.get_input_length())) - tmp) / 2;
@@ -222,7 +230,7 @@ namespace bf
     unsigned int get_hemming_distance(ttable &a, ttable &b)
     {
         unsigned int dist = 0;
-        for (bvect32 i = 0; i < a.get_length(); ++i)
+        for(bvect32 i = 0; i < a.get_length(); ++i)
             dist += (a.get_value(i) != b.get_value(i) ? 1 : 0);
 
         return dist;

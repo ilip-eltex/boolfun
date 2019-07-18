@@ -10,7 +10,7 @@ using namespace std;
 namespace bf
 {
     unsigned int get_function_weight(ttable&);
-    bvect32 get_trace(GF&);
+    ttable get_trace(GF&);
     int is_balanced(ttable&);
     vector<vector<int>> get_walsh_hadamard_spec(ttable&);
     ttable get_derivative(ttable&, bvect32);

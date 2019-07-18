@@ -1,32 +1,35 @@
 #include <iostream>
 #include "ANF.h"
+#include "linear.h"
+#include "boolean_utils.h"
 
 using namespace std;
 using namespace bf;
 
 int main()
 {
+    /*GF* field = get_field(4);
+    ttable res = get_trace(*field);
+    //for(int i = 0; i < res.get_length(); ++i)
+    //    cout << res.get_value(i) << endl;
+
+    cout << is_affine(res) << endl;*/
+
     ANF anf;
-    anf.parse_ANF("x1x2 + 32x2x32 + 4x1x2x3 + x1x3 + x1 + 9x3 + x2 + 65537 + x3 + 7x2 + 7x2");
+    anf.parse_ANF("x1x2+x3x4+x5x6+x7x8+x9x10");
     cout << anf << endl;
     auto x = anf.getFunction();
-    //for(int i = 0; i < x.get_length(); ++i)
-     //   cout << x.get_value(i) << endl;
 
-    anf.getANF(x);
-    cout << anf << endl;
+    /*vector<vector<int>> spec = get_walsh_hadamard_spec(x);
+    //cout << spec[0].size() << endl;
 
-    //с константами проблемы
+    for(int i = 0; i < spec[0].size(); ++i)
+        cout << spec[0][i] << endl;
+    cout << "---------------------\n";
 
-    /*auto x = anf.getFunction();
-    for(int i = 0; i < x[0].size(); ++i)
-        cout << (x[0][i]) << endl;
+    cout << get_index_nonlinearity(x) << endl;*/
+    cout << is_PC(x, 9) << endl;
 
-    ttable table(x);
-    cout << "iam ok!" << endl;
-    anf.getANF(table);
-    cout << anf;
- */
 
     return 0;
 }

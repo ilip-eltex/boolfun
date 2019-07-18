@@ -79,7 +79,7 @@ namespace bf
 
         int was = 0;
 
-        for (bvect32 i = 1; i < true_order; i++)
+        for (bvect32 i = 2; i < true_order; i++)
         {
             memset(num_to_deg.data(), 0, true_order * sizeof(bvect32));
 
