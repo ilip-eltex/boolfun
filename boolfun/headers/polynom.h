@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cstring>
 
 #include "bitslib.h"
 #include "GF.h"
@@ -13,6 +14,13 @@
 namespace bf {
 	class ttable;
 
+	struct position {
+			uint32_t index;
+			uint32_t coeff;
+		};
+		
+	
+	
 	class polynom {
 			// over field type
 
