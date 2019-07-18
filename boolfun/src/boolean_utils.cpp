@@ -4,12 +4,52 @@
 #include "bitslib.h"
 #include "GF.h"
 #include "GF_simple.h"
+#include "ANF.h"
 #include <cstring>
 
 using namespace std;
 
 namespace bf
 {
+    void full_analysis(ttable &table)
+    {
+        cout << "Check information..." << endl <<
+                "Is vector function: " + (string)(table.is_NM_function() ? "yes" : "no") << endl <<
+                "Argument vector size: " + std::to_string(table.get_input_length()) << endl <<
+                "Result vector size: " + std::to_string(table.get_output_length()) << endl <<
+                "Function weight: " + (string)(!table.is_NM_function() ? std::to_string(get_function_weight(table)) : "unsupported for vector functions!") << endl <<
+                "Is balanced: " + (string)(is_balanced(table) ? "yes" : "no") << endl <<
+                "Index of nonlinearity: " + std::to_string(get_index_nonlinearity(table)) << endl <<
+                "Correlation immunity: " + std::to_string(get_correlation_immunity(table)) << endl <<
+                "Satisfies the SAC: " + (string)(is_SAC(table) ? "yes" : "no") << endl <<
+                "Is bent-function: " + (string)(is_bent_function(table) ? "yes" : "no") << endl;
+        unsigned int delta = 0;
+        unsigned long sigma = 0;
+        get_GAC_characteristics(table, &sigma, &delta);
+        cout << "The GAC characteristics: sigma - " + std::to_string(sigma) + (string)(", delta - ") + std::to_string(delta) << endl <<
+                "ANF of this function: ";
+        ANF anf;
+        anf.getANF(table);
+        cout << anf << endl;
+        cout << "The degree of the function: " + std::to_string(anf.deg()) << endl;
+    }
+
+    int is_bent_function(ttable &table)
+    {
+        if(table.get_input_length() & (unsigned)1)
+            return 0;
+
+        string anf_linear;
+        for(int i = 1; i < table.get_input_length() + 1; ++i)
+            anf_linear += "x" + std::to_string(i) + (string)(i == table.get_input_length() ? "" : "+");
+
+        ANF anf;
+        anf.parse_ANF(anf_linear);
+        auto b = anf.getFunction();
+
+        return get_hemming_distance(table, b) == (((unsigned)1 << (table.get_input_length() - 1)) - ((unsigned)1 << ((table.get_input_length() / 2) - 1)));
+    }
+
     void check_is_boolean_function(ttable &table)
     {
         if(table.is_NM_function())

@@ -10,7 +10,7 @@ using namespace bf;
 
 int main()
 {
-    GF *field = get_field(5);
+    /*GF *field = get_field(5);
     vector<bvect32> values((unsigned) 1 << field->get_order(), 0);
 
     for(int x = 0; x < (unsigned) 1 << field->get_order(); ++x)
@@ -18,8 +18,21 @@ int main()
 
     ttable table(values, field->get_order());
 
-    cout << is_differentially_uniform(table, 2);
+    cout << is_differentially_uniform(table, 2);*/
 
+    ANF anf;
+    anf.parse_ANF("x1x2x3 +x2x4x5 + x1x2 + x1x4 + x2x6 + x3x5 + x4x5 + x7x8");
+    ttable a = anf.getFunction();
+
+    /*ANF anf2;
+    anf2.parse_ANF("x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10");
+    ttable b = anf2.getFunction();
+
+    cout << anf << endl;
+    cout << anf2 << endl;
+
+    cout << get_hemming_distance(b, a);*/
+    full_analysis(a);
 
     /*GF* field = get_field(4);
     ttable res = get_trace(*field);

@@ -21,4 +21,6 @@ namespace bf
     unsigned int get_hemming_distance(ttable&, ttable&);
     int is_differentially_uniform(ttable, unsigned char);
     unsigned int get_correlation_immunity(ttable &table);
+    void full_analysis(ttable &table);
+    int is_bent_function(ttable &table);
 }
