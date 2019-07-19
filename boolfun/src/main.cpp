@@ -20,10 +20,12 @@ int main()
 
     cout << is_differentially_uniform(table, 2);*/
 
+    //"x1x2x3 +x2x4x5 + x1x2 + x1x4 + x2x6 + x3x5 + x4x5 + x7x8"
     ANF anf;
-    anf.parse_ANF("x1x2x3 +x2x4x5 + x1x2 + x1x4 + x2x6 + x3x5 + x4x5 + x7x8");
+    anf.parse_ANF("x1+x2+x3+x4 + x5");
     ttable a = anf.getFunction();
-
+    //cout << is_affine(a) << " " << is_linear(a) << endl;
+    full_analysis(a);
     /*ANF anf2;
     anf2.parse_ANF("x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10");
     ttable b = anf2.getFunction();
@@ -32,7 +34,7 @@ int main()
     cout << anf2 << endl;
 
     cout << get_hemming_distance(b, a);*/
-    full_analysis(a);
+
 
     /*GF* field = get_field(4);
     ttable res = get_trace(*field);
