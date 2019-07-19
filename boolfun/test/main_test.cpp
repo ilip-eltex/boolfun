@@ -134,9 +134,9 @@ int main () {
 	
 	// Full analyze
 	
-	std::cout << "Analyze example (ANF): 'x1+x2+x3+x4 + x5'\n\n";
+	std::cout << "Analyze example (ANF): 'x1x2x3 +x2x4x5 + x1x2 + x1x4 + x2x6 + x3x5 + x4x5 + x7x8'\n\n";
 	bf::ANF anf;
-    anf.parse_ANF("x1+x2+x3+x4 + x5");
+    anf.parse_ANF("x1x2x3 +x2x4x5 + x1x2 + x1x4 + x2x6 + x3x5 + x4x5 + x7x8");
     bf::ttable a = anf.getFunction();
     bf::full_analysis(a);
 	
