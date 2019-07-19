@@ -5,6 +5,7 @@
 #include "GF.h"
 #include "GF_simple.h"
 #include "ANF.h"
+#include "linear.h"
 #include <cstring>
 
 using namespace std;
@@ -22,6 +23,8 @@ namespace bf
                 "Index of nonlinearity: " + std::to_string(get_index_nonlinearity(table)) << endl <<
                 "Correlation immunity: " + std::to_string(get_correlation_immunity(table)) << endl <<
                 "Satisfies the SAC: " + (string)(is_SAC(table) ? "yes" : "no") << endl <<
+                "Is linear: " + (string)(is_affine(table) ? "yes" : "no") << endl <<
+                "Is affine: " + (string)(is_linear(table) ? "yes" : "no") << endl <<
                 "Is bent-function: " + (string)(is_bent_function(table) ? "yes" : "no") << endl;
         unsigned int delta = 0;
         unsigned long sigma = 0;
