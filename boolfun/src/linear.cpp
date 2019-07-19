@@ -43,7 +43,7 @@ namespace bf {
 	}
 
 	bool is_linear(ttable &t, bvect32 &coeffs) {
-		if (t.get_value(0) == 0)
+		if (t.get_value(0) != 0)
 			return false;
 		bool b;
 		return is_affine(t, coeffs, b);
